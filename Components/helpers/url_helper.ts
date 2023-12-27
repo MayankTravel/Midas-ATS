@@ -1,6 +1,7 @@
 export const hrms_api_host = "http://44.213.229.250:8077";
-export const job_api_host = "http://34.230.215.187:9291/api";
-// export const job_api_host = "http://192.168.1.34:9291/api";
+// export const job_api_host = "http://34.230.215.187:9291/api";
+export const job_api_host = "http://10.0.0.99:9291/api";
+export const redirect = "http://localhost:3000/auth/reset-password/";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
@@ -105,3 +106,6 @@ export const PROJECT = "/api/v1/project";
 
 //Facility Config
 export const FACILITY = "/api/v1/facility";
+
+//Mail Verification
+export const MAIL = "/email/sendPasswordReset";
