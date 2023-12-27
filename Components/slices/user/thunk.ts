@@ -2,9 +2,12 @@ import {
   EDIT_USER,
   GET_ALL_ROLES,
   GET_ALL_USER,
+  MAIL,
   POST_NEW_USER,
   POST_RESET_,
   hrms_api_host,
+  job_api_host,
+  redirect,
 } from "Components/helpers/url_helper";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -62,7 +65,12 @@ export const AddNewUser =
       const fetch: any = await Factory("POST", setter, url, body);
       if (fetch.status === "OK") {
         dispatch(api_is_userdata_success(fetch));
-        Swal.fire("Success", "User added successfully", "success").then(() => {
+        dispatch(MailSent(fetch.payload, router));
+        Swal.fire(
+          "Success",
+          "User added successfully and activation mail has been send to user e-mail address",
+          "success"
+        ).then(() => {
           // Redirect using router after user clicks "OK"
           router.push("/users/view-user");
         });
@@ -77,6 +85,29 @@ export const AddNewUser =
       dispatch(api_is_userdata_error(error));
     }
   };
+
+export const MailSent = (values: any, router: any) => async (dispatch: any) => {
+  try {
+    var setter: any = [];
+    const url = `${job_api_host}${MAIL}`;
+    const body = {
+      email: values.email,
+      name: values.fullName,
+      link: `${redirect}${values.id}`,
+    };
+    console.log(body);
+    const fetch: any = await Factory("POST", setter, url, body);
+    if (fetch.status === "OK") {
+      dispatch(api_is_userdata_success(fetch));
+    } else {
+      dispatch(api_is_userdata_error(fetch));
+    }
+    dispatch(api_is_userdata_loading(false));
+  } catch (error) {
+    console.log(error);
+    dispatch(api_is_userdata_error(error));
+  }
+};
 
 export const EditNewUser =
   (values: any, router: any) => async (dispatch: any) => {
