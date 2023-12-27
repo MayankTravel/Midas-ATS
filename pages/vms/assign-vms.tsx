@@ -11,7 +11,6 @@ import {
   MRT_ToggleFiltersButton,
 } from "material-react-table";
 import {
-
   Box,
   Button,
   Card,
@@ -106,17 +105,17 @@ const Assigned_VMS = () => {
 
   useEffect(() => {
     dispatch(fetchAllAssignedVms());
-    fetchAllUser(dispatch);
+    dispatch(fetchAllUser());
   }, []);
   const AccountManager = userdata
-    .filter((ite: any) => ite.rollId == "7")
+    .filter((ite: any) => ite.rollId === "7")
     .map((item: any) => item);
 
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     var name = "";
     userdata
-      .filter((item: any) => item.id == element.accountManager)
+      .filter((item: any) => item.id === element.accountManager)
       .map((ite: any) => {
         return (name = ite.name);
       });
@@ -174,7 +173,7 @@ const Assigned_VMS = () => {
 
       <div className="page-content">
         <Container fluid>
-        <Alert variant="error">{isError} </Alert>
+          <Alert variant="error">{isError} </Alert>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -234,8 +233,10 @@ const Assigned_VMS = () => {
                     type="submit"
                   >
                     {isLoading == true ? (
-                     <div className="spinner-border text-light" role="status">
-                   </div>
+                      <div
+                        className="spinner-border text-light"
+                        role="status"
+                      ></div>
                     ) : (
                       "Submit"
                     )}
@@ -252,7 +253,6 @@ const Assigned_VMS = () => {
             </Card>
           </Form>
           <div className="main-table-content">
-
             <Material
               columns={columns}
               data={rows}

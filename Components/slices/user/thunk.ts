@@ -3,6 +3,7 @@ import {
   GET_ALL_ROLES,
   GET_ALL_USER,
   POST_NEW_USER,
+  POST_RESET_,
   hrms_api_host,
 } from "Components/helpers/url_helper";
 import axios from "axios";
@@ -15,6 +16,7 @@ import {
 } from "./reducers";
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
+import { apiError } from "../auth/login/reducer";
 
 export const fetchAllUser = () => async (dispatch: any) => {
   try {
@@ -78,7 +80,6 @@ export const AddNewUser =
 
 export const EditNewUser =
   (values: any, router: any) => async (dispatch: any) => {
-    console.log(values);
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${EDIT_USER}`;
@@ -98,7 +99,6 @@ export const EditNewUser =
       const fetch: any = await Factory("PATCH", setter, url, body);
       console.log("fetch:", fetch);
       if (fetch.status === "OK") {
-        console.log(fetch);
         dispatch(api_is_userdata_success(fetch));
       } else {
         dispatch(api_is_userdata_error(fetch));
@@ -113,5 +113,28 @@ export const EditNewUser =
     } catch (error) {
       console.log(error);
       dispatch(api_is_userdata_error(error));
+    }
+  };
+
+export const ResetPassword =
+  (values: any, router: any, id: any) => async (dispatch: any) => {
+    console.log("API HiT ResetPassword");
+    try {
+      const options: any = {
+        method: "PATCH",
+        url: `${hrms_api_host}${POST_RESET_}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          newPassword: values.password,
+          userId: id,
+        },
+      };
+      const response: any = await axios.request(options);
+      router.push("/auth/login", undefined, { shallow: true });
+      return response;
+    } catch (error) {
+      dispatch(apiError(error));
     }
   };

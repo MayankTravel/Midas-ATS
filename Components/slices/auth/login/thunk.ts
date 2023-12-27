@@ -4,7 +4,6 @@ import {
   postJwtLogin,
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
-import { toast } from "react-toastify";
 import {
   loginSuccess,
   logoutUserSuccess,

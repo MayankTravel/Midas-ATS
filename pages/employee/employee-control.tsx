@@ -9,11 +9,11 @@ import { data } from "@common/data/fakeTableData";
 import Link from "next/link";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployee } from "Components/slices/employee/thunk";
 import { useRouter } from "next/router";
 import Loader2 from "@common/Loader2";
 import { is_selected_success } from "Components/slices/employee/reducers";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
+import { fetchEmployee } from "Components/slices/employee/thunk";
 
 const EmployeeControl = () => {
   const router = useRouter();
