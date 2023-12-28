@@ -107,9 +107,7 @@ const Assigned_VMS = () => {
     dispatch(fetchAllAssignedVms());
     dispatch(fetchAllUser());
   }, []);
-  const AccountManager = userdata
-    .filter((ite: any) => ite.rollId === "7")
-    .map((item: any) => item);
+  var rolesArray: any = [];
 
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
@@ -124,7 +122,18 @@ const Assigned_VMS = () => {
       accountManager: name,
     });
   }
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
 
+    for (var role of element.roles) {
+      rolesArray.push({ ...element, roles: role.id });
+    }
+  }
+
+  const AccountManager = rolesArray.filter(
+    (ite: any) => ite.roles === "658472f94b18126ca69a4927"
+  );
+  console.log(AccountManager);
   const active_vms = [
     "AHSA",
     "FieldGlass",
@@ -165,6 +174,8 @@ const Assigned_VMS = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
+  console.log(validation.values);
   return (
     <React.Fragment>
       <Head>

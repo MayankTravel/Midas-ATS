@@ -53,7 +53,7 @@ export default function Select_Comp(props: any) {
           onBlur={onBlur}
         >
           {data.map((name: any) => {
-            const data = typeof name == "object" ? name.name : name;
+            const data = typeof name == "object" ? name.fullName : name;
             return (
               <MenuItem key={name} value={name}>
                 {multiple == true ? (

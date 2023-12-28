@@ -14,15 +14,20 @@ const ProfileDropdown = () => {
   }));
 
   const [username, setusername] = useState<any>({});
+  const [role, setRole] = useState<any>({});
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
+    if (
+      localStorage.getItem("authUser") &&
+      localStorage.getItem("currentrole")
+    ) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+      const role = JSON.parse(localStorage.getItem("currentrole") || "");
       setusername(obj);
-      fetchAllUser(dispatch);
+      setRole(role);
+      dispatch(fetchAllUser());
     }
   }, []);
-
   return (
     <React.Fragment>
       <Dropdown className="ms-sm-3 header-item topbar-user">
@@ -39,20 +44,10 @@ const ProfileDropdown = () => {
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                {username.name}
+                {username.fullName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-13 text-muted user-name-sub-text">
-                {username.rollId == 7
-                  ? "Account Manager"
-                  : username.rollId == 6
-                  ? "Team Lead"
-                  : username.rollId == 5
-                  ? "Recruiter"
-                  : username.rollId == 1 || username.rollId == 2
-                  ? "Admin"
-                  : username.rollId == 8
-                  ? "General Manager"
-                  : username.rollId}
+                {/* {role[0]} */}
               </span>
             </span>
           </span>

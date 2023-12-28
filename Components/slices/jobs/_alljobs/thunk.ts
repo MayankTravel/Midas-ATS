@@ -15,7 +15,6 @@ export const fetchAllJobs = async (dispatch: any) => {
     const response = data.map((ite: any) =>
       Object.keys(ite).map((item, index) => ite[item])
     );
-
     dispatch(api_is_jobdata_success(response));
     toast.success("API Key Added Successfully", { autoClose: 3000 });
     return data;
