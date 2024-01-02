@@ -23,7 +23,9 @@ const JobAssignmentRole = (props: any) => {
   );
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const data: any = localStorage.getItem("authUser");
+  const data: any = localStorage.getItem("currentrole");
+  const currUser: any = localStorage.getItem("authUser");
+  const parseUser: any = JSON.parse(currUser);
   const user: any = JSON.parse(data);
   const [isValidate, setIsValidate] = useState(false);
   const [teamLeadID, setTeamLeadID] = useState([]);
@@ -41,7 +43,6 @@ const JobAssignmentRole = (props: any) => {
     jobIds: seljob.map((item: any) => item),
     assignType: "",
   });
-
   const formik = useFormik({
     initialValues: {
       assigneeUserId: "",
@@ -69,13 +70,14 @@ const JobAssignmentRole = (props: any) => {
 
   useEffect(() => handleCheckuser(), []);
   const recruiterOptions =
-    user.rollId == 6
-      ? recruiterData.filter((item: any) => item.managerId === user.id)
-      : user.rollId == 7
+    user[0].role === "RECRUITER"
+      ? recruiterData.filter((item: any) => item.managerId === user[0].id)
+      : user[0].role == "ACCOUNTMANAGER"
       ? activeRecuiter === true
         ? recruiter.filter((item: any) => item.managerId === teamLeadId)
         : []
       : [];
+  console.log(recruiterOptions);
   return (
     <div>
       <form className="g-3 needs-validation" onSubmit={formik.handleSubmit}>
@@ -92,13 +94,12 @@ const JobAssignmentRole = (props: any) => {
                 <>
                   <div className="assign-container">
                     <label>Assigner</label>
-
                     <input
-                      value={user.name}
+                      value={parseUser.fullName}
                       disabled
                       className="col-md-10 mx-2 mt-2 form-input"
                     />
-                    {user.rollId === 6 ? null : (
+                    {user[0].role === "RECRUITER" ? null : (
                       <div
                         className={`col-md-10 mx-2 mt-2 ${
                           formik.touched.assigneeUserId &&
@@ -118,6 +119,7 @@ const JobAssignmentRole = (props: any) => {
                           aria-label="Floating label select example"
                           onChange={(e) => {
                             formik.handleChange(e);
+                            console.log(e.target.value);
                             formik.setFieldValue(
                               "assigneeUserId",
                               JSON.parse(e.target.value)

@@ -38,7 +38,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { deleteVMS, submitAssignedPayload } from "Components/slices/vms/thunk";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { api_is_loading } from "Components/slices/vms/reducers";
 
 const Assigned_VMS = () => {
   var rows: any[] = [];
@@ -112,16 +111,19 @@ const Assigned_VMS = () => {
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     var name = "";
+
     userdata
       .filter((item: any) => item.id === element.accountManager)
       .map((ite: any) => {
-        return (name = ite.name);
+        return (name = ite.fullName);
       });
+
     rows.push({
       ...element,
       accountManager: name,
     });
   }
+
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];
 
@@ -133,7 +135,7 @@ const Assigned_VMS = () => {
   const AccountManager = rolesArray.filter(
     (ite: any) => ite.roles === "658472f94b18126ca69a4927"
   );
-  console.log(AccountManager);
+  console.log(data);
   const active_vms = [
     "AHSA",
     "FieldGlass",
@@ -175,7 +177,6 @@ const Assigned_VMS = () => {
     );
   };
 
-  console.log(validation.values);
   return (
     <React.Fragment>
       <Head>
@@ -211,7 +212,7 @@ const Assigned_VMS = () => {
                           );
                           validation.setFieldValue(
                             "accountManagerName",
-                            item.target.value.name
+                            item.target.value.fullName
                           );
                         }}
                       />

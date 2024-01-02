@@ -3,7 +3,6 @@ import Head from "next/head";
 import Layout from "@common/Layout";
 import Breadcrumb from "@common/Breadcrumb";
 import { Container } from "react-bootstrap";
-import moment from "moment";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,7 @@ import { fetchVMS } from "Components/slices/vms/thunk";
 import { useRouter } from "next/router";
 import Loader2 from "@common/Loader2";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
-import { is_vms_selected_success } from "Components/slices/vms/reducers";
+import { is_vms_selected_success } from "../../Components/slices/vms/reducers";
 
 const ViewVMS = () => {
   const router = useRouter();

@@ -35,11 +35,11 @@ const ViewUser = () => {
     rows.push({
       ...element,
       status:
-        element.status == 1
+        element.active === true
           ? "Active"
-          : element.status == 2
+          : element.active === false
           ? "Inactive"
-          : element.status,
+          : element.active,
       rollId:
         element.rollId == 1
           ? "Super-Admin"
@@ -102,6 +102,12 @@ const ViewUser = () => {
       name: "Number",
       id: "mobileNumber",
       selector: (row: any) => JSON.parse(row.mobileNumber),
+      sortable: true,
+    },
+    {
+      name: "Status",
+      id: "status",
+      selector: (row: any) => row.status,
       sortable: true,
     },
     {

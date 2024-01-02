@@ -95,7 +95,7 @@ export const MailSent = (values: any, router: any) => async (dispatch: any) => {
       name: values.fullName,
       link: `${redirect}${values.id}`,
     };
-    console.log(body);
+
     const fetch: any = await Factory("POST", setter, url, body);
     if (fetch.status === "OK") {
       dispatch(api_is_userdata_success(fetch));
@@ -115,12 +115,12 @@ export const EditNewUser =
       var setter: any = [];
       const url = `${hrms_api_host}${EDIT_USER}`;
       const body = {
-        active: true,
+        active: values.status,
         email: values.email,
         firstName: values.firstName,
         id: values.id,
         lastName: values.lastName,
-        manager: "null",
+        manager: values.manager,
         mobileNumber: JSON.stringify(values.mobileNumber),
         password: values.password,
         profilePicture: "string",
@@ -128,17 +128,17 @@ export const EditNewUser =
         userType: "INTERNAL",
       };
       const fetch: any = await Factory("PATCH", setter, url, body);
-      console.log("fetch:", fetch);
+      console.log("fetch:", JSON.stringify(fetch));
       if (fetch.status === "OK") {
         dispatch(api_is_userdata_success(fetch));
-      } else {
-        dispatch(api_is_userdata_error(fetch));
-
-        // Display SweetAlert on success
         Swal.fire("Success", "User Edit successfully", "success").then(() => {
           // Redirect using router after user clicks "OK"
           router.push("/users/view-user");
         });
+      } else {
+        dispatch(api_is_userdata_error(fetch));
+
+        // Display SweetAlert on success
       }
       dispatch(api_is_userdata_loading(false));
     } catch (error) {
@@ -163,7 +163,16 @@ export const ResetPassword =
         },
       };
       const response: any = await axios.request(options);
-      router.push("/auth/login", undefined, { shallow: true });
+      if (response.status === "OK") {
+        Swal.fire(
+          "Success",
+          "Password has been reset successfully ",
+          "success"
+        ).then(() => {
+          // Redirect using router after user clicks "OK"
+          router.push("/auth/login", undefined, { shallow: true });
+        });
+      }
       return response;
     } catch (error) {
       dispatch(apiError(error));

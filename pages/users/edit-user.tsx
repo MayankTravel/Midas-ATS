@@ -14,6 +14,7 @@ import {
 } from "Components/slices/user/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import status from "@common/utils/status";
 
 const EditUser = (props: any) => {
   const dispatch: any = useDispatch();
@@ -31,33 +32,25 @@ const EditUser = (props: any) => {
     initialValues: {
       id: selectedRow.id,
       firstName: selectedRow.firstName,
-
       lastName: selectedRow.lastName,
-
       email: selectedRow.email,
-
       mobileNumber: selectedRow.mobileNumber,
-
       roles: selectedRow.roles,
       password: selectedRow.password,
       manager: "",
       rolesName: "",
+      status: "",
     },
-
     validationSchema: Yup.object({
       firstName: Yup.string().required("First Name is Required"),
       lastName: Yup.string().required("Last Name is Required"),
       mobileNumber: Yup.string().required("Mobile Number is Required"),
-
       email: Yup.string()
-
         .email("Invalid email address")
-
         .required("Email is Required"),
-
       roles: Yup.array().required("Required"),
+      status: Yup.string().required("Required"),
     }),
-
     onSubmit: (values) => {
       dispatch(EditNewUser(values, router));
     },
@@ -71,9 +64,8 @@ const EditUser = (props: any) => {
   if (isLoading) {
     return "Wait";
   }
-
+  console.log(formik.values);
   var rolesArray: any = [];
-
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];
 
@@ -81,13 +73,6 @@ const EditUser = (props: any) => {
       rolesArray.push({ ...element, roles: role.id });
     }
   }
-
-  console.log(
-    "userdata:",
-    rolesArray
-      .filter((ite: any) => ite.roles === "658472f94b18126ca69a4927")
-      .map((item: any) => item)
-  );
 
   return (
     <React.Fragment>
@@ -183,17 +168,6 @@ const EditUser = (props: any) => {
                   onBlur={formik.handleBlur}
                   name="roles"
                 >
-                  {/* {selectedRow.roles.map((item: any) => {
-                    return (
-                      <option
-                        key={item.id}
-                        value={JSON.stringify(item)}
-                        selected
-                      >
-                        Current: {item.role}
-                      </option>
-                    );
-                  })} */}
                   <option>Open this select menu</option>
                   {roleslist.map((item: any) => {
                     return (
@@ -256,6 +230,33 @@ const EditUser = (props: any) => {
                 </Col>
               ) : null}
 
+              <Col className="mt-3" lg={4} xs={4}>
+                <FormLabel for="Status" labelname="Status" />
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  onChange={(e) => {
+                    formik.handleChange;
+                    formik.setFieldValue("status", JSON.parse(e.target.value));
+                  }}
+                  onBlur={formik.handleBlur}
+                  name="status"
+                >
+                  <option>Open this select menu</option>
+                  {status.map((item: any) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.status}
+                      </option>
+                    );
+                  })}
+                </select>
+                <span className="text-danger">
+                  {formik.touched.roles && formik.errors.roles ? (
+                    <div className="text-danger">{formik.errors.roles}</div>
+                  ) : null}
+                </span>
+              </Col>
               <Col lg={12} className="mt-4 mb-3">
                 <Button variant="primary" type="submit">
                   Edit User

@@ -18,6 +18,7 @@ export const AddNewOrganisation =
         website: values.website,
       };
       const fetch: any = await Factory("POST", setter, url, body);
+      console.log(fetch);
       if (fetch.status === "OK") {
         dispatch(api_is_organisationdata_success(fetch));
         Swal.fire("Success", "Organisation added successfully", "success").then(

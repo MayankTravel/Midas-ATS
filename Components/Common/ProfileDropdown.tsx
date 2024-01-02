@@ -54,40 +54,9 @@ const ProfileDropdown = () => {
         </Dropdown.Toggle>
         <Dropdown.Menu className="dropdown-menu-end">
           <h6 className="dropdown-header">Welcome {username.name}!</h6>
-          {/* <Dropdown.Item href="/pages/profile/page">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Profile</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/#!">
-            <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Messages</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/#!">
-            <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Taskboard</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/pages/faqs">
-            <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Help</span>
-          </Dropdown.Item> */}
+
           <div className="dropdown-divider"></div>
-          {/* <Dropdown.Item href="/pages/profile/page">
-            <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">
-              Balance : <b>$8451.36</b>
-            </span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/pages/profile/settings">
-            <span className="badge bg-success-subtle text-success mt-1 float-end">
-              New
-            </span>
-            <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Settings</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/auth-pages/lockscreen/lockscreen-basic">
-            <i className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Lock screen</span>
-          </Dropdown.Item> */}
+
           <Dropdown.Item href="/auth/logout">
             <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{" "}
             <span

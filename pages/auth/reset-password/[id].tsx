@@ -38,7 +38,6 @@ const Register = ({ id }: any) => {
   const history: any = useRouter();
   const dispatch: any = useDispatch();
   const router = useRouter();
-  console.log(id);
 
   const [passwordtype, setPasswordtype] = useState<boolean>(true);
 
@@ -141,7 +140,7 @@ const Register = ({ id }: any) => {
                         <Card.Body className="px-0 p-sm-5 m-lg-4">
                           <div className="text-center mt-2">
                             <h5 className="text-primary fs-20">
-                              Create New Account
+                              Reset your Password
                             </h5>
                             <p className="text-muted">
                               Get your free Midas account now
