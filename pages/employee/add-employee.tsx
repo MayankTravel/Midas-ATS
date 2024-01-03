@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import Head from "next/head";
 import Layout from "@common/Layout";
 import Breadcrumb from "@common/Breadcrumb";
@@ -11,13 +11,28 @@ import { useRouter } from "next/router";
 import { AddNewEmployee } from "Components/slices/employee/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import { fetchProjects } from "Components/slices/project/thunk";
 
 const AddEmployee = () => {
   const dispatch: any = useDispatch();
-  const { organisationdata, isLoading } = useSelector((state: any) => ({
-    organisationdata: state.organisationdata.organisationdata,
-    isLoading: state.employee.isLoading,
+
+  const [projects, setProjects]: any = useState([]);
+
+  const { organisationdata, isLoading, projectdata } = useSelector(
+    (state: any) => ({
+      organisationdata: state.organisationdata.organisationdata,
+      isLoading: state.employee.isLoading,
+      projectdata: state.project.projectdata,
+    })
+  );
+  const options = projectdata.map((item: any) => ({
+    value: item.id,
+    label: item.name,
   }));
+
+  const animatedComponents = makeAnimated();
 
   const router = useRouter();
 
@@ -33,6 +48,7 @@ const AddEmployee = () => {
       zipCode: "",
       email: "",
       contactDetails: "",
+      projects: options[0],
     },
     validationSchema: Yup.object({
       organisation: Yup.string().required("Required"),
@@ -62,6 +78,7 @@ const AddEmployee = () => {
 
   useEffect(() => {
     dispatch(fetchOrganisation());
+    dispatch(fetchProjects());
   }, []);
 
   return (
@@ -75,6 +92,23 @@ const AddEmployee = () => {
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
+              <Col lg={4} xs={4}>
+                <FormLabel for="projects" labelname="Projects" />
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={options}
+                  defaultValue={options}
+                  value={formik.values.projects}
+                  onChange={(selectedOption) => {
+                    var projectsSelected: any = selectedOption.map(
+                      (selectedProject) => selectedProject.value
+                    );
+                    formik.setFieldValue("projects", selectedOption);
+                  }}
+                />
+              </Col>
               <Col lg={4} xs={4}>
                 <FormLabel for="organisation" labelname="Organisation" />
                 <select
@@ -116,7 +150,7 @@ const AddEmployee = () => {
                 </span>
               </Col>
 
-              <Col lg={4} xs={4}>
+              <Col lg={4} xs={4} className="mt-3">
                 <FormLabel for="address" labelname="Address" />
                 <FormInput
                   inpType="text"

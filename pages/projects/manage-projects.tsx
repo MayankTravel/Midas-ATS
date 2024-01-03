@@ -11,12 +11,14 @@ import { fetchProjects } from "Components/slices/project/thunk";
 import { useRouter } from "next/router";
 import { selected_projectdata_success } from "Components/slices/project/reducer";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
+import Loader2 from "@common/Loader2";
 
 const ManageProjects = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { projectdata } = useSelector((state: any) => ({
+  const { projectdata, isLoading } = useSelector((state: any) => ({
     projectdata: state.project.projectdata,
+    isLoading: state.project.isLoading,
   }));
   const [filteredData, setFilteredData] = useState<any>([]);
 
@@ -129,24 +131,30 @@ const ManageProjects = () => {
           <Link href="/projects/add-projects">
             <Button variant="primary">Add Projects</Button>
           </Link>
-          <DataTable
-            columns={columns}
-            data={filteredData.length === 0 ? projectdata : filteredData}
-            pagination
-            defaultSortFieldId={1}
-            subHeader
-            subHeaderComponent={
-              <Custom_Filter
-                data={projectdata}
-                setFilteredData={setFilteredData}
-              />
-            }
-            selectableRows
-            persistTableHead
-            theme={
-              layoutModeType === LAYOUT_MODE_TYPES.DARKMODE ? "dark" : "default"
-            }
-          />
+          {isLoading === true ? (
+            <Loader2 />
+          ) : (
+            <DataTable
+              columns={columns}
+              data={filteredData.length === 0 ? projectdata : filteredData}
+              pagination
+              defaultSortFieldId={1}
+              subHeader
+              subHeaderComponent={
+                <Custom_Filter
+                  data={projectdata}
+                  setFilteredData={setFilteredData}
+                />
+              }
+              selectableRows
+              persistTableHead
+              theme={
+                layoutModeType === LAYOUT_MODE_TYPES.DARKMODE
+                  ? "dark"
+                  : "default"
+              }
+            />
+          )}
         </Container>
       </div>
     </React.Fragment>
