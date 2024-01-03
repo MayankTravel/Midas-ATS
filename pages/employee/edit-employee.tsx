@@ -10,19 +10,29 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { EditedEmployee } from "Components/slices/employee/thunk";
+import { fetchProjects } from "Components/slices/project/thunk";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const EditEmployee = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
   const [filteredData, setFilteredData] = useState<any>([]);
 
-  const { employeedata, selecteddata, organisationdata } = useSelector(
-    (state: any) => ({
+  const { employeedata, selecteddata, organisationdata, projectdata } =
+    useSelector((state: any) => ({
       employeedata: state.employee.employeedata,
       selecteddata: state.employee.selected,
       organisationdata: state.organisationdata.organisationdata,
-    })
-  );
+      projectdata: state.project.projectdata,
+    }));
+
+  const options = projectdata.map((item: any) => ({
+    value: item.id,
+    label: item.name,
+  }));
+
+  const animatedComponents = makeAnimated();
 
   const formik: any = useFormik({
     initialValues: {
@@ -59,6 +69,7 @@ const EditEmployee = () => {
     }),
     onSubmit: (values) => {
       dispatch(EditedEmployee(values, router));
+      dispatch(fetchProjects());
     },
   });
 
@@ -73,6 +84,23 @@ const EditEmployee = () => {
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
+              <Col lg={4} xs={4}>
+                <FormLabel for="projects" labelname="Projects" />
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={options}
+                  defaultValue={options}
+                  value={formik.values.projects}
+                  onChange={(selectedOption) => {
+                    var projectsSelected: any = selectedOption.map(
+                      (selectedProject) => selectedProject.value
+                    );
+                    formik.setFieldValue("projects", selectedOption);
+                  }}
+                />
+              </Col>
               <Col lg={4} xs={4}>
                 <FormLabel for="name" labelname="Name" />
                 <FormInput
@@ -90,7 +118,7 @@ const EditEmployee = () => {
                 </span>
               </Col>
 
-              <Col lg={4} xs={4}>
+              <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="address" labelname="Address" />
                 <FormInput
                   inpType="text"

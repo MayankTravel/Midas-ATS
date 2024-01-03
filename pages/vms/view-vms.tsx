@@ -64,11 +64,11 @@ const ViewVMS = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>View Facility | Midas - HRMS</title>
+        <title>View VMS | Midas - HRMS</title>
       </Head>
 
       <div className="page-content">
-        <Breadcrumb breadcrumbItem="View Facility" breadcrumb="Dashboard" />
+        <Breadcrumb breadcrumbItem="View VMS" breadcrumb="Dashboard" />
         <Container fluid={true}>
           {isLoading === true ? (
             <Loader2 />

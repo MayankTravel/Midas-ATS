@@ -1,8 +1,8 @@
 import {
+  ADDEMPLOYEE,
   EMPLOYEE,
   GET_ALL_USER,
   POST_DOCUMENT,
-  SAVE_EMPLOYEE,
   hrms_api_host,
 } from "Components/helpers/url_helper";
 
@@ -21,7 +21,7 @@ export const AddNewEmployee =
   (values: any, router: any) => async (dispatch: any) => {
     try {
       var setter: any = [];
-      const url = `${hrms_api_host}${SAVE_EMPLOYEE}`;
+      const url = `${hrms_api_host}${ADDEMPLOYEE}`;
       const body = {
         address: values.address,
         city: values.city,
@@ -30,11 +30,14 @@ export const AddNewEmployee =
         email: values.email,
         name: values.name,
         organisation: values.organisation,
-        projects: [],
+        projects: values.projects.map(
+          (selectedProject: any) => selectedProject.value
+        ),
         ssn: values.ssn,
         state: values.state,
         zipCode: values.zipCode,
       };
+      console.log("requiredBody", body);
 
       const fetch: any = await Factory("POST", setter, url, body);
       if (fetch.status === "OK") {
@@ -80,7 +83,9 @@ export const EditedEmployee =
         dob: values.dob,
         email: values.email,
         name: values.name,
-        projects: [],
+        projects: values.projects.map(
+          (selectedProject: any) => selectedProject.value
+        ),
         ssn: values.ssn,
         state: values.state,
         zipCode: values.zipCode,
