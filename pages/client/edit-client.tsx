@@ -47,6 +47,7 @@ const EditClient = () => {
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
+  console.log(selectedclient);
 
   return (
     <React.Fragment>
@@ -164,7 +165,7 @@ const EditClient = () => {
                 >
                   {organisationdata
                     .filter(
-                      (ite: any) => ite.id === selectedclient.organisation
+                      (ite: any) => ite.id === selectedclient.organisation?.id
                     )
                     .map((item: any) => (
                       <option selected>(Current) : {item.name}</option>
