@@ -36,7 +36,7 @@ export const AddNewProject =
       };
 
       const fetch: any = await Factory("POST", setter, url, body);
-      console.log(fetch);
+
       if (fetch.status === "OK") {
         dispatch(api_is_projectdata_success(fetch));
         Swal.fire("Success", "Project added successfully", "success").then(

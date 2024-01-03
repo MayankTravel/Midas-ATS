@@ -46,6 +46,7 @@ const EditClient = () => {
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
+  console.log(selectedclient);
 
   console.log("selectedclient:", selectedclient);
 

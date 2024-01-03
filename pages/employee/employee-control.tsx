@@ -69,6 +69,7 @@ const EmployeeControl = () => {
           className="cursor-pointer"
           title="Edit"
           onClick={() => {
+            console.log("row:", row);
             dispatch(is_selected_success(row));
             router.push(`/employee/edit-employee`);
           }}
@@ -104,7 +105,7 @@ const EmployeeControl = () => {
         <span
           className="cursor-pointer"
           title="Upload document"
-          // onClick={() => router.push(`/employee/edit-employee?${row.id}`)}
+          onClick={() => router.push(`/document/${row.id}`)}
         >
           <i
             style={{ fontSize: "20px", marginLeft: "20px" }}
