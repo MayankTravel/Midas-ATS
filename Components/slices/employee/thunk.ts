@@ -2,6 +2,7 @@ import {
   ADDEMPLOYEE,
   EMPLOYEE,
   GET_ALL_USER,
+  GET_DOCUMENT,
   POST_DOCUMENT,
   hrms_api_host,
 } from "Components/helpers/url_helper";
@@ -60,6 +61,19 @@ export const fetchEmployee = () => async (dispatch: any) => {
   try {
     var setter: any = [];
     const url = `${hrms_api_host}${EMPLOYEE}`;
+    dispatch(api_is_employeedata_loading(true));
+    const fetch = await Factory("GET", setter, url, {});
+    console.log(fetch);
+    dispatch(api_is_employeedata_success(fetch));
+    // dispatch(api_is_userdata_loading(false));
+  } catch (error) {
+    dispatch(api_is_employeedata_error(error));
+  }
+};
+export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
+  try {
+    var setter: any = [];
+    const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
     dispatch(api_is_employeedata_loading(true));
     const fetch = await Factory("GET", setter, url, {});
     console.log(fetch);

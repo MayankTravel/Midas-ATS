@@ -4,8 +4,8 @@ export const job_api_host = "http://34.230.215.187:9291/api";
 export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 
 /* LOCAL */
-/* Dheeraj Sir */
 
+/* Dheeraj Sir */
 // export const job_api_host = "http://10.0.0.99:9291/api";
 // export const hrms_api_host = "http://10.0.0.99:8077";
 // export const redirect = "http://localhost:3000/auth/reset-password/";
@@ -108,6 +108,7 @@ export const ORGANISATION = "/api/v1/organisation";
 export const EMPLOYEE = "/api/v1/employee";
 export const ADDEMPLOYEE = "/api/v1/employee/saveEmployee";
 export const POST_DOCUMENT = "/api/v1/employee/uploadFile";
+export const GET_DOCUMENT = "/api/v1/employee/getDocsByEmployeeId";
 
 //VMS Config
 export const POST_VMS = "/api/v1/vms";
