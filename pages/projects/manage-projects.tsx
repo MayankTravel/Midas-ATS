@@ -119,6 +119,7 @@ const ManageProjects = () => {
     dispatch(fetchProjects());
   }, []);
 
+  console.log(projectdata);
   return (
     <React.Fragment>
       <Head>

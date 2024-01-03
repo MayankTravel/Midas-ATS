@@ -106,7 +106,7 @@ const EditProjects = () => {
     },
   });
 
-  console.log(formik.values);
+  console.log(selecteddata);
 
   useEffect(() => {
     dispatch(fetchOrganisation());

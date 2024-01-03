@@ -70,6 +70,8 @@ const ViewClient = () => {
     dispatch(fetchClient());
   }, []);
 
+  console.log(clientdata);
+
   return (
     <React.Fragment>
       <Head>

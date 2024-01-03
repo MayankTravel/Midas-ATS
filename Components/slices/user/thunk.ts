@@ -131,14 +131,11 @@ export const EditNewUser =
       console.log("fetch:", JSON.stringify(fetch));
       if (fetch.status === "OK") {
         dispatch(api_is_userdata_success(fetch));
-        Swal.fire("Success", "User Edit successfully", "success").then(() => {
-          // Redirect using router after user clicks "OK"
+        Swal.fire("Success", "User edited successfully", "success").then(() => {
           router.push("/users/view-user");
         });
       } else {
         dispatch(api_is_userdata_error(fetch));
-
-        // Display SweetAlert on success
       }
       dispatch(api_is_userdata_loading(false));
     } catch (error) {

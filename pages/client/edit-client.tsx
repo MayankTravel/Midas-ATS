@@ -28,8 +28,7 @@ const EditClient = () => {
       address: selectedclient.address,
       phone: selectedclient.phone,
       contactPerson: selectedclient.contactPerson,
-      parentOrganization: selectedclient.parentOrganization,
-      website: "",
+      parentOrganization: selectedclient.organisation?.id,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -47,6 +46,8 @@ const EditClient = () => {
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
+
+  console.log("selectedclient:", selectedclient);
 
   return (
     <React.Fragment>
@@ -164,7 +165,7 @@ const EditClient = () => {
                 >
                   {organisationdata
                     .filter(
-                      (ite: any) => ite.id === selectedclient.organisation
+                      (ite: any) => ite.id === selectedclient.organisation?.id
                     )
                     .map((item: any) => (
                       <option selected>(Current) : {item.name}</option>

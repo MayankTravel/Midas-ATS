@@ -51,10 +51,9 @@ export const EditNewClient =
         name: values.name,
         email: values.email,
         address: values.address,
-        phone: JSON.stringify(values.phone),
+        phone: values.phone,
         contactPerson: values.contactPerson,
         parentOrganization: values.parentOrganization,
-        website: "",
       };
       const fetch: any = await Factory("PATCH", setter, url, body);
       if (fetch.status === "OK") {

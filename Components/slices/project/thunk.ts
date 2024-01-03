@@ -85,7 +85,7 @@ export const EditedProject =
 
       if (fetch.status === "OK") {
         dispatch(api_is_projectdata_success(fetch));
-        Swal.fire("Success", "Project added successfully", "success").then(
+        Swal.fire("Success", "Project edited successfully", "success").then(
           () => {
             router.push("/projects/manage-projects");
           }
