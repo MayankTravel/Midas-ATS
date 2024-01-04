@@ -65,7 +65,13 @@ const ViewVMS = () => {
               Swal.fire({
                 title: "Delete VMS?",
                 text: `Are you sure you want to delete the vms?`,
-              }).then(() => dispatch(deteleVMS(row.id)));
+                showCancelButton: true,
+                showCloseButton: true,
+              }).then((results) => {
+                if (results.isConfirmed) {
+                  dispatch(deteleVMS(row.id));
+                }
+              });
             }}
           >
             <i
@@ -107,7 +113,6 @@ const ViewVMS = () => {
                   setFilteredData={setFilteredData}
                 />
               }
-              selectableRows
               persistTableHead
             />
           )}

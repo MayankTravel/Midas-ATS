@@ -50,8 +50,8 @@ const ViewFacility = () => {
     },
 
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
       width: "100px",
       cell: (row: any) => (
@@ -82,7 +82,13 @@ const ViewFacility = () => {
               Swal.fire({
                 title: "Delete Facility?",
                 text: `Are you sure you want to delete the facility?`,
-              }).then(() => dispatch(deteleFacility(row.id)));
+                showCancelButton: true,
+                showCloseButton: true,
+              }).then((results) => {
+                if (results.isConfirmed) {
+                  dispatch(deteleFacility(row.id));
+                }
+              });
             }}
           >
             <i

@@ -68,10 +68,8 @@ export const AddNewUser =
 
       const fetch: any = await Factory("POST", setter, url, body);
       if (fetch.status === "OK") {
-        dispatch(api_is_userdata_success(fetch));
         dispatch(MailSent(fetch.payload, router));
         dispatch(api_is_userdata_loading(false));
-
         Swal.fire(
           "Success",
           "User added successfully and activation mail has been send to user e-mail address",

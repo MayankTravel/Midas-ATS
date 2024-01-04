@@ -62,7 +62,6 @@ const EmployeeControl = () => {
       name: "Action",
       id: "action",
       sortable: true,
-
       width: "100px",
       cell: (row: any) => (
         <>
@@ -70,7 +69,6 @@ const EmployeeControl = () => {
             className="cursor-pointer"
             title="Edit"
             onClick={() => {
-              console.log("row:", row);
               dispatch(is_selected_success(row));
               router.push(`/employee/edit-employee`);
             }}

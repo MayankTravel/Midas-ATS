@@ -128,7 +128,7 @@ const Assigned_VMS = () => {
     const element = userdata[index];
 
     for (var role of element.roles) {
-      rolesArray.push({ ...element, roles: role.id });
+      rolesArray.push({ ...element, roles: role === null ? "" : role.id });
     }
   }
 

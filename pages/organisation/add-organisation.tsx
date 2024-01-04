@@ -21,6 +21,8 @@ const AddOrganisation = () => {
   const { isLoading } = useSelector((state: any) => ({
     isLoading: state.organisationdata.isLoading,
   }));
+  const urlRegex = /^\S+(?:\s+\S+)*$/;
+
   const formik = useFormik({
     initialValues: {
       organizationName: "",
@@ -28,7 +30,10 @@ const AddOrganisation = () => {
     },
     validationSchema: Yup.object({
       organizationName: Yup.string().required("Organisation Name is required"),
-      website: Yup.string().required("Website is required"),
+      website: Yup.string()
+        .trim()
+        .matches(urlRegex, "URL cannot contain spaces")
+        .required("Website is required"),
     }),
     onSubmit: (values) => {
       formik.resetForm();

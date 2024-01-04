@@ -25,6 +25,7 @@ import {
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import Loader2 from "@common/Loader2";
+import moment from "moment";
 
 const TAGS_OPTION = [
   "Driving-License",
@@ -135,7 +136,7 @@ const sample: any = [
 
 const UploadDocument = (props: any) => {
   const [file, setFile] = useState("");
-  const { employeedata, isLoading } = useSelector(
+  const { employeedata, isLoading, docs } = useSelector(
     (state: any) => state.employee
   );
   const dispatch: any = useDispatch();
@@ -159,9 +160,9 @@ const UploadDocument = (props: any) => {
       sortable: true,
     },
     {
-      name: "Start Date",
-      id: "startDate",
-      selector: (row: any) => row.createDate,
+      name: "Expiry Date",
+      id: "expiryDate",
+      selector: (row: any) => moment(row.expiryDate).format("DD-MM-YYYY"),
       sortable: true,
     },
     {
@@ -206,20 +207,21 @@ const UploadDocument = (props: any) => {
     return (
       <div className="page-content">
         <Loader2 />
-        Waiting
       </div>
     );
   }
-  for (let index = 0; index < employeedata.length; index++) {
-    const element = employeedata[index];
+  for (let index = 0; index < docs.length; index++) {
+    const element = docs[index];
     const parse_url =
       element.docStructure !== undefined && JSON.parse(element.docStructure);
     rows.push({
       type: element.type,
       employeeName: element.employee?.name,
       downloadUrl: parse_url["@microsoft.graph.downloadUrl"],
+      expiryDate: element.expiryDate,
     });
   }
+  console.log(rows);
   return (
     <React.Fragment>
       <Head>

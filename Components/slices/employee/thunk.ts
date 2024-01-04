@@ -11,6 +11,7 @@ import {
   api_is_employeedata_error,
   api_is_employeedata_loading,
   api_is_employeedata_success,
+  is_doc_success,
 } from "./reducers";
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
@@ -72,18 +73,15 @@ export const AddNewEmployee =
   };
 
 export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
-  const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
-  console.log(url);
   try {
     dispatch(api_is_employeedata_loading(true));
     var setter: any = [];
     const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
     dispatch(api_is_employeedata_loading(true));
     const fetch: any = await Factory("GET", setter, url, {});
-
     if (fetch.status === "OK") {
-      dispatch(api_is_employeedata_success(fetch));
       dispatch(api_is_employeedata_loading(false));
+      dispatch(is_doc_success(fetch));
     } else {
       dispatch(api_is_employeedata_loading(false));
     }
@@ -170,17 +168,14 @@ export const PostDocument =
 
       if (response.status === "OK") {
         dispatch(api_is_employeedata_loading(false));
-
+        dispatch(fetchEmployeeDoc(values.empId));
         Swal.fire(
           "Success",
           "Employee Document Uploaded successfully",
           "success"
-        ).then(() => {
-          router.push("#");
-        });
+        );
       } else {
         dispatch(api_is_employeedata_loading(false));
-
         Swal.fire("Error ", "Error while uploading document", "error");
       }
       return response;

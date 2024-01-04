@@ -69,6 +69,8 @@ export const AddNewProject =
           }
         );
       } else {
+        dispatch(api_is_projectdata_loading(false));
+
         Swal.fire({
           title: "Error",
           text: fetch.errors,

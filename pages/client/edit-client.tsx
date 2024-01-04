@@ -61,7 +61,7 @@ const EditClient = () => {
       </Head>
 
       <div className="page-content">
-        <Breadcrumb breadcrumbItem="Add Client" breadcrumb="Dashboard" />
+        <Breadcrumb breadcrumbItem="Edit Client" breadcrumb="Dashboard" />
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
@@ -176,12 +176,20 @@ const EditClient = () => {
                       <option selected>(Current) : {item.name}</option>
                     ))}
 
-                  <option>Open this to select</option>
+                  <option value={""}>Open this to select</option>
 
                   {organisationdata.map((item: any) => {
                     return <option value={item.id}>{item.name}</option>;
                   })}
                 </select>
+                <span className="text-danger">
+                  {formik.touched.parentOrganization &&
+                  formik.errors.parentOrganization ? (
+                    <div className="text-danger">
+                      {formik.errors.parentOrganization}
+                    </div>
+                  ) : null}
+                </span>
               </Col>
 
               <Col lg={12} className="mt-4">

@@ -15,10 +15,14 @@ import { fetchOrganisation } from "Components/slices/organisation/thunk";
 const AddVMS = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
+
   const { organisationdata } = useSelector((state: any) => ({
     organisationdata: state.organisationdata.organisationdata,
     isLoading: state.isLoading,
   }));
+
+  const urlRegex = /^\S+(?:\s+\S+)*$/;
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -26,7 +30,10 @@ const AddVMS = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
-      url: Yup.string().required("URL is required"),
+      url: Yup.string()
+        .trim("")
+        .matches(urlRegex, "URL cannot contain spaces")
+        .required("URL is required"),
     }),
     onSubmit: (values) => {
       formik.resetForm();

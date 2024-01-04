@@ -78,12 +78,13 @@ export const EditNewClient =
       dispatch(api_is_clientdata_loading(true));
 
       if (fetch.status === "OK") {
-        dispatch(api_is_clientdata_loading(true));
+        dispatch(api_is_clientdata_loading(false));
         dispatch(fetchClient());
         Swal.fire("Success", "Client Edit successfully", "success").then(() => {
           router.push("/client/view-client");
         });
       } else {
+        dispatch(api_is_clientdata_loading(false));
         Swal.fire({
           title: "Error",
           text: fetch.errors,

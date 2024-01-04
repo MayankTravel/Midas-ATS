@@ -72,7 +72,13 @@ const ViewClient = () => {
               Swal.fire({
                 title: "Delete Client?",
                 text: `Are you sure you want to delete the client?`,
-              }).then(() => dispatch(deteleClient(row.id)));
+                showCancelButton: true,
+                showCloseButton: true,
+              }).then((results) => {
+                if (results.isConfirmed) {
+                  dispatch(deteleClient(row.id));
+                }
+              });
             }}
           >
             <i
