@@ -9,39 +9,46 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddNewOrganisation } from "Components/slices/organisation/thunk";
+import { EditNewOrganisation } from "Components/slices/organisation/thunk";
 import { authData } from "Components/APIFactory/authData";
 import { token } from "Components/APIFactory/token";
 import axios from "axios";
 
-const AddOrganisation = () => {
+const EditOrganisation = () => {
   const dispatch: any = useDispatch();
   const router = useRouter();
   var userid = authData().id;
 
-  const formik = useFormik({
+  const { selectedorganisation } = useSelector((state: any) => ({
+    selectedorganisation: state.organisationdata.selectedorganisation,
+  }));
+
+  const formik: any = useFormik({
     initialValues: {
-      organizationName: "",
-      website: "",
+      id: selectedorganisation.id,
+      organizationName: selectedorganisation.name,
+      website: selectedorganisation.website,
     },
     validationSchema: Yup.object({
       organizationName: Yup.string().required("Organisation Name is required"),
       website: Yup.string().required("Website is required"),
     }),
     onSubmit: (values) => {
-      dispatch(AddNewOrganisation(values, router));
+      dispatch(EditNewOrganisation(values, router));
     },
   });
+
+  console.log(selectedorganisation);
   const { errors } = formik;
 
   return (
     <React.Fragment>
       <Head>
-        <title>Add Organisation | Midas - HRMS</title>
+        <title>Edit Organisation | Midas - HRMS</title>
       </Head>
 
       <div className="page-content">
-        <Breadcrumb breadcrumbItem="Add Organisation" breadcrumb="Dashboard" />
+        <Breadcrumb breadcrumbItem="Edit Organisation" breadcrumb="Dashboard" />
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
@@ -87,7 +94,7 @@ const AddOrganisation = () => {
 
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit">
-                  Add Organisation
+                  Edit Organisation
                 </Button>
               </Col>
             </Row>
@@ -98,8 +105,8 @@ const AddOrganisation = () => {
   );
 };
 
-AddOrganisation.getLayout = (page: ReactElement) => {
+EditOrganisation.getLayout = (page: ReactElement) => {
   return <Layout>{page}</Layout>;
 };
 
-export default AddOrganisation;
+export default EditOrganisation;

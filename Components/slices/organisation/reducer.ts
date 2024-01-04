@@ -5,6 +5,7 @@ const initialState = {
   isError: "",
   organisationdata: <any>[],
   roles: <any>[],
+  selectedorganisation: <any>{},
 };
 
 const organisationSlice = createSlice({
@@ -26,6 +27,11 @@ const organisationSlice = createSlice({
       state.isError = "";
       state.organisationdata = action.payload.payload;
     },
+    api_is_organisation_selected_success(state, action) {
+      state.isLoading = false;
+      state.isError = "";
+      state.selectedorganisation = action.payload
+    },
   },
 });
 
@@ -33,5 +39,6 @@ export const {
   api_is_organisationdata_loading,
   api_is_organisationdata_error,
   api_is_organisationdata_success,
+  api_is_organisation_selected_success,
 } = organisationSlice.actions;
 export default organisationSlice.reducer;
