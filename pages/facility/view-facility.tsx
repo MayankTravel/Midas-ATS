@@ -7,12 +7,13 @@ import moment from "moment";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { data } from "@common/data/fakeTableData";
-import { fetchFacilty } from "Components/slices/facility/thunk";
+import { deteleFacility, fetchFacilty } from "Components/slices/facility/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { is_selected_success } from "Components/slices/facility/reducer";
 import Loader2 from "@common/Loader2";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
+import Swal from "sweetalert2";
 
 const ViewFacility = () => {
   const dispatch: any = useDispatch();
@@ -55,24 +56,41 @@ const ViewFacility = () => {
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            var selectedObj = {
-              id: row.id,
-              address: row.address,
-              clientId: row.client.id,
-              name: row.name,
-              parentOrganization: row.vms.organisation?.id,
-              vmsId: row.vms.id,
-            };
+        <>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              var selectedObj = {
+                id: row.id,
+                address: row.address,
+                clientId: row.client.id,
+                name: row.name,
+                parentOrganization: row.vms.organisation?.id,
+                vmsId: row.vms.id,
+              };
 
-            router.push(`/facility/edit-facility`);
-            dispatch(is_selected_success(selectedObj));
-          }}
-        >
-          <i className="bi bi-pencil-square"></i>
-        </span>
+              router.push(`/facility/edit-facility`);
+              dispatch(is_selected_success(selectedObj));
+            }}
+          >
+            <i className="bi bi-pencil-square"></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            title="Delete"
+            onClick={() => {
+              Swal.fire({
+                title: "Delete VMS?",
+                text: `Are you sure you want to delete the vms?`,
+              }).then(() => dispatch(deteleFacility(row.id)));
+            }}
+          >
+            <i
+              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              className="bi bi-trash"
+            ></i>
+          </span>
+        </>
       ),
     },
   ];

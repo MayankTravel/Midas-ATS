@@ -18,7 +18,7 @@ const EditVMS = () => {
   const { organisationdata, selectedvms, isLoading } = useSelector(
     (state: any) => ({
       organisationdata: state.organisationdata.organisationdata,
-      isLoading: state.isLoading,
+      isLoading: state.VMS.isLoading,
       selectedvms: state.VMS.selectedvms,
     })
   );
@@ -157,7 +157,7 @@ const EditVMS = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit VMS
                 </Button>
               </Col>

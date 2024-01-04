@@ -59,23 +59,25 @@ const EmployeeControl = () => {
       sortable: true,
     },
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
 
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          title="Edit"
-          onClick={() => {
-            console.log("row:", row);
-            dispatch(is_selected_success(row));
-            router.push(`/employee/edit-employee`);
-          }}
-        >
-          <i style={{ fontSize: "18px" }} className="bi bi-pencil-square"></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            title="Edit"
+            onClick={() => {
+              console.log("row:", row);
+              dispatch(is_selected_success(row));
+              router.push(`/employee/edit-employee`);
+            }}
+          >
+            <i style={{ fontSize: "18px" }} className="bi bi-pencil-square"></i>
+          </span>
+        </>
       ),
     },
 

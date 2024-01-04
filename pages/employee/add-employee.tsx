@@ -11,14 +11,11 @@ import { useRouter } from "next/router";
 import { AddNewEmployee } from "Components/slices/employee/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
+
 import { fetchProjects } from "Components/slices/project/thunk";
 
 const AddEmployee = () => {
   const dispatch: any = useDispatch();
-
-  const [projects, setProjects]: any = useState([]);
 
   const { organisationdata, isLoading, projectdata } = useSelector(
     (state: any) => ({
@@ -31,8 +28,6 @@ const AddEmployee = () => {
     value: item.id,
     label: item.name,
   }));
-
-  const animatedComponents = makeAnimated();
 
   const router = useRouter();
 
@@ -168,7 +163,7 @@ const AddEmployee = () => {
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="ssn" labelname="Social Security Number" />
                 <FormInput
-                  inpType="text"
+                  inpType="number"
                   inpId="ssn"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
@@ -219,7 +214,7 @@ const AddEmployee = () => {
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="zip code" labelname="Zip Code" />
                 <FormInput
-                  inpType="text"
+                  inpType="number"
                   inpId="zipCode"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
@@ -253,7 +248,7 @@ const AddEmployee = () => {
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="contact" labelname="Contact Details" />
                 <FormInput
-                  inpType="text"
+                  inpType="number"
                   inpId="contactDetails"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}

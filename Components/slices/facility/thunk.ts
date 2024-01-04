@@ -7,8 +7,22 @@ import {
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
 
+export const fetchFacilty = () => async (dispatch: any) => {
+  try {
+    var setter: any = [];
+    const url = `${hrms_api_host}${FACILITY}`;
+    dispatch(api_is_facilitydata_loading(true));
+    const fetch = await Factory("GET", setter, url, {});
+    dispatch(api_is_facilitydata_success(fetch));
+    // dispatch(api_is_userdata_loading(false));
+  } catch (error) {
+    dispatch(api_is_facilitydata_error(error));
+  }
+};
+
 export const AddNewFacility =
   (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_facilitydata_loading(true));
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${FACILITY}`;
@@ -19,9 +33,12 @@ export const AddNewFacility =
         parentOrganization: values.parentOrganization,
         vmsId: values.vmsId,
       };
+      dispatch(api_is_facilitydata_loading(true));
       const fetch: any = await Factory("POST", setter, url, body);
+      dispatch(api_is_facilitydata_loading(true));
       if (fetch.status === "OK") {
-        dispatch(api_is_facilitydata_success(fetch));
+        dispatch(api_is_facilitydata_loading(false));
+        dispatch(fetchFacilty());
         Swal.fire("Success", "Facility added successfully", "success").then(
           () => {
             router.push("/facility/view-facility");
@@ -30,7 +47,6 @@ export const AddNewFacility =
       } else {
         dispatch(api_is_facilitydata_error(fetch));
       }
-      dispatch(api_is_facilitydata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_facilitydata_error(error));
@@ -39,6 +55,8 @@ export const AddNewFacility =
 
 export const EditedFacility =
   (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_facilitydata_loading(true));
+
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${FACILITY}`;
@@ -50,11 +68,16 @@ export const EditedFacility =
         parentOrganization: values.parentOrganization,
         vmsId: values.vmsId,
       };
-      console.log("body:", JSON.stringify(body));
+
+      dispatch(api_is_facilitydata_loading(true));
 
       const fetch: any = await Factory("PATCH", setter, url, body);
+      dispatch(api_is_facilitydata_loading(true));
+
       if (fetch.status === "OK") {
-        dispatch(api_is_facilitydata_success(fetch));
+        dispatch(api_is_facilitydata_loading(false));
+
+        dispatch(fetchFacilty());
         Swal.fire("Success", "Facility Edited successfully", "success").then(
           () => {
             router.push("/facility/view-facility");
@@ -63,21 +86,22 @@ export const EditedFacility =
       } else {
         dispatch(api_is_facilitydata_error(fetch));
       }
-      dispatch(api_is_facilitydata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_facilitydata_error(error));
     }
   };
-export const fetchFacilty = () => async (dispatch: any) => {
+
+export const deteleFacility = (id: any) => async (dispatch: any) => {
   try {
     var setter: any = [];
-    const url = `${hrms_api_host}${FACILITY}`;
-    dispatch(api_is_facilitydata_loading(true));
-    const fetch = await Factory("GET", setter, url, {});
-    dispatch(api_is_facilitydata_success(fetch));
-    // dispatch(api_is_userdata_loading(false));
+    const url = `${hrms_api_host}${FACILITY}/${id}`;
+    const fetch: any = await Factory("DELETE", setter, url, {});
+    console.log(fetch);
+    if (fetch.status === "OK") {
+      dispatch(fetchFacilty());
+    }
   } catch (error) {
-    dispatch(api_is_facilitydata_error(error));
+    console.log(error);
   }
 };

@@ -258,7 +258,7 @@ const EditUser = (props: any) => {
                 </span>
               </Col>
               <Col lg={12} className="mt-4 mb-3">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit User
                 </Button>
               </Col>

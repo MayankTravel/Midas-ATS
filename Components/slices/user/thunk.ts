@@ -51,6 +51,8 @@ export const fetchAllRoles = () => async (dispatch: any) => {
 export const AddNewUser =
   (values: any, router: any) => async (dispatch: any) => {
     try {
+      dispatch(api_is_userdata_loading(true));
+
       var setter: any = [];
       const url = `${hrms_api_host}${POST_NEW_USER}`;
       const body = {
@@ -62,10 +64,14 @@ export const AddNewUser =
         password: values.password,
         roles: values.roles,
       };
+      dispatch(api_is_userdata_loading(true));
+
       const fetch: any = await Factory("POST", setter, url, body);
       if (fetch.status === "OK") {
         dispatch(api_is_userdata_success(fetch));
         dispatch(MailSent(fetch.payload, router));
+        dispatch(api_is_userdata_loading(false));
+
         Swal.fire(
           "Success",
           "User added successfully and activation mail has been send to user e-mail address",
@@ -112,6 +118,8 @@ export const MailSent = (values: any, router: any) => async (dispatch: any) => {
 export const EditNewUser =
   (values: any, router: any) => async (dispatch: any) => {
     try {
+      dispatch(api_is_userdata_loading(true));
+
       var setter: any = [];
       const url = `${hrms_api_host}${EDIT_USER}`;
       const body = {
@@ -127,9 +135,13 @@ export const EditNewUser =
         roles: values.roles,
         userType: "INTERNAL",
       };
+      dispatch(api_is_userdata_loading(true));
+
       const fetch: any = await Factory("PATCH", setter, url, body);
-      console.log("fetch:", JSON.stringify(fetch));
+      dispatch(api_is_userdata_loading(true));
+
       if (fetch.status === "OK") {
+        dispatch(api_is_userdata_loading(false));
         dispatch(api_is_userdata_success(fetch));
         Swal.fire("Success", "User edited successfully", "success").then(() => {
           router.push("/users/view-user");
@@ -137,7 +149,6 @@ export const EditNewUser =
       } else {
         dispatch(api_is_userdata_error(fetch));
       }
-      dispatch(api_is_userdata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_userdata_error(error));
@@ -146,7 +157,6 @@ export const EditNewUser =
 
 export const ResetPassword =
   (values: any, router: any, id: any) => async (dispatch: any) => {
-    console.log("API HiT ResetPassword");
     try {
       const options: any = {
         method: "PATCH",

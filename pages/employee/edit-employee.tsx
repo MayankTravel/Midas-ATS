@@ -11,28 +11,30 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { EditedEmployee } from "Components/slices/employee/thunk";
 import { fetchProjects } from "Components/slices/project/thunk";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 const EditEmployee = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
   const [filteredData, setFilteredData] = useState<any>([]);
 
-  const { employeedata, selecteddata, organisationdata, projectdata } =
-    useSelector((state: any) => ({
-      employeedata: state.employee.employeedata,
-      selecteddata: state.employee.selected,
-      organisationdata: state.organisationdata.organisationdata,
-      projectdata: state.project.projectdata,
-    }));
+  const {
+    employeedata,
+    selecteddata,
+    organisationdata,
+    isLoading,
+    projectdata,
+  } = useSelector((state: any) => ({
+    employeedata: state.employee.employeedata,
+    selecteddata: state.employee.selected,
+    organisationdata: state.organisationdata.organisationdata,
+    projectdata: state.project.projectdata,
+    isLoading: state.employee.isLoading,
+  }));
 
   const options = projectdata.map((item: any) => ({
     value: item.id,
     label: item.name,
   }));
-
-  const animatedComponents = makeAnimated();
 
   const formik: any = useFormik({
     initialValues: {
@@ -243,6 +245,7 @@ const EditEmployee = () => {
                   style={{ marginTop: "20px" }}
                   variant="primary"
                   type="submit"
+                  disabled={isLoading}
                 >
                   Edit Employee
                 </Button>

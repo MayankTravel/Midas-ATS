@@ -7,10 +7,12 @@ import moment from "moment";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClient } from "Components/slices/client/thunk";
+import { deteleClient, fetchClient } from "Components/slices/client/thunk";
 import { useRouter } from "next/router";
 import { is_client_selected_success } from "Components/slices/client/reducer";
 import Loader2 from "@common/Loader2";
+import { deleteVMS } from "Components/slices/vms/thunk";
+import Swal from "sweetalert2";
 
 const ViewClient = () => {
   const router = useRouter();
@@ -48,20 +50,37 @@ const ViewClient = () => {
       sortable: true,
     },
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            dispatch(is_client_selected_success(row));
-            router.push(`/client/edit-client`);
-          }}
-        >
-          <i className="bi bi-pencil-square"></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              dispatch(is_client_selected_success(row));
+              router.push(`/client/edit-client`);
+            }}
+          >
+            <i className="bi bi-pencil-square"></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            title="Delete"
+            onClick={() => {
+              Swal.fire({
+                title: "Delete VMS?",
+                text: `Are you sure you want to delete the vms?`,
+              }).then(() => dispatch(deteleClient(row.id)));
+            }}
+          >
+            <i
+              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              className="bi bi-trash"
+            ></i>
+          </span>
+        </>
       ),
     },
   ];

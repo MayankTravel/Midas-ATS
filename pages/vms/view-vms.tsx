@@ -6,11 +6,12 @@ import { Container } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVMS } from "Components/slices/vms/thunk";
+import { deteleVMS, fetchVMS } from "Components/slices/vms/thunk";
 import { useRouter } from "next/router";
 import Loader2 from "@common/Loader2";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
 import { is_vms_selected_success } from "../../Components/slices/vms/reducers";
+import Swal from "sweetalert2";
 
 const ViewVMS = () => {
   const router = useRouter();
@@ -42,24 +43,40 @@ const ViewVMS = () => {
       sortable: true,
     },
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            dispatch(is_vms_selected_success(row));
-            router.push(`/vms/edit-vms`);
-          }}
-        >
-          <i className="bi bi-pencil-square"></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              dispatch(is_vms_selected_success(row));
+              router.push(`/vms/edit-vms`);
+            }}
+          >
+            <i className="bi bi-pencil-square"></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            title="Delete"
+            onClick={() => {
+              Swal.fire({
+                title: "Delete VMS?",
+                text: `Are you sure you want to delete the vms?`,
+              }).then(() => dispatch(deteleVMS(row.id)));
+            }}
+          >
+            <i
+              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              className="bi bi-trash"
+            ></i>
+          </span>
+        </>
       ),
     },
   ];
-  console.log("row:", vmsdata);
 
   return (
     <React.Fragment>

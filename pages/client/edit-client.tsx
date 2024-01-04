@@ -15,10 +15,13 @@ import { EditNewClient } from "Components/slices/client/thunk";
 const EditClient = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { organisationdata, selectedclient } = useSelector((state: any) => ({
-    organisationdata: state.organisationdata.organisationdata,
-    selectedclient: state.client.selectedclient,
-  }));
+  const { organisationdata, selectedclient, isLoading } = useSelector(
+    (state: any) => ({
+      organisationdata: state.organisationdata.organisationdata,
+      selectedclient: state.client.selectedclient,
+      isLoading: state.client.isLoading,
+    })
+  );
 
   const formik: any = useFormik({
     initialValues: {
@@ -46,9 +49,6 @@ const EditClient = () => {
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
-  console.log(selectedclient);
-
-  console.log("selectedclient:", selectedclient);
 
   return (
     <React.Fragment>
@@ -181,7 +181,7 @@ const EditClient = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit Client
                 </Button>
               </Col>
