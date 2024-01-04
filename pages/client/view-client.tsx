@@ -115,7 +115,6 @@ const ViewClient = () => {
                   setFilteredData={setFilteredData}
                 />
               }
-              selectableRows
               persistTableHead
             />
           )}

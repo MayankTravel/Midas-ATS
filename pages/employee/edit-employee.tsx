@@ -51,7 +51,17 @@ const EditEmployee = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
-      dob: Yup.string().required("Required"),
+      dob: Yup.date()
+        .required("Date of Birth is required")
+        .test(
+          "not-in-future",
+          "Date of Birth cannot be a future date",
+          function (value) {
+            const selectedDate = new Date(value);
+            const currentDate = new Date();
+            return selectedDate <= currentDate;
+          }
+        ),
       ssn: Yup.string()
         .required("Social Security Number is required")
         .min(9, "Social Security Number Must be 9 Digits long")

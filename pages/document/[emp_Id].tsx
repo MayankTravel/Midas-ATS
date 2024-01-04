@@ -291,7 +291,6 @@ const UploadDocument = (props: any) => {
           subHeaderComponent={
             <Custom_Filter data={rows} setFilteredData={setFilteredData} />
           }
-          selectableRows
           persistTableHead
         />
       </div>

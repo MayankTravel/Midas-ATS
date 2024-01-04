@@ -96,8 +96,70 @@ const AddProjects = (props: any) => {
       projectStatus: Yup.string().required("Required"),
       guaranteeHours: Yup.number().required("Required"),
       designation: Yup.string().required("Required"),
-      startDate: Yup.string().required("Required"),
-      endDate: Yup.string().required("Required"),
+      // startDate: Yup.string()
+      //   .required("Required")
+      //   .test(
+      //     "valid-year",
+      //     "Invalid year format. Please enter a valid year.",
+      //     function (value) {
+      //       // Check if the year is not a 5-digit number
+      //       return value && !/^\d{5}$/.test(value.split("-")[0])
+      //         ? true
+      //         : new Yup.ValidationError(
+      //             "Invalid year format. Please enter a valid year.",
+      //             value,
+      //             "startDate"
+      //           );
+      //     }
+      //   ),
+      // endDate: Yup.string()
+      //   .required("Required")
+      //   .test(
+      //     "valid-year",
+      //     "Invalid year format. Please enter a valid year.",
+      //     function (value) {
+      //       // Check if the year is not a 5-digit number
+      //       return value && !/^\d{5}$/.test(value.split("-")[0])
+      //         ? true
+      //         : new Yup.ValidationError(
+      //             "Invalid year format. Please enter a valid year.",
+      //             value,
+      //             "endDate"
+      //           );
+      //     }
+      //   ),
+      startDate: Yup.string()
+        .required("Required")
+        .test(
+          "valid-year",
+          "Invalid year format. Please enter a valid year.",
+          function (value) {
+            const year = value.split("-")[0];
+            // Check if the year is a valid numeric value greater than or equal to 4 digits
+            return (
+              (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
+              this.createError({
+                message: "Invalid year format. Please enter a valid year.",
+              })
+            );
+          }
+        ),
+      endDate: Yup.string()
+        .required("Required")
+        .test(
+          "valid-year",
+          "Invalid year format. Please enter a valid year.",
+          function (value) {
+            const year = value.split("-")[0];
+            // Check if the year is a valid numeric value greater than or equal to 4 digits
+            return (
+              (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
+              this.createError({
+                message: "Invalid year format. Please enter a valid year.",
+              })
+            );
+          }
+        ),
       billRates: Yup.string().required("Required"),
       payRates: Yup.string().required("Required"),
       preDeim: Yup.string().required("Required"),
@@ -434,7 +496,6 @@ AddProjects.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps = (context: any) => {
   const { emp_id } = context.query;
-
 
   return {
     props: { emp_id },

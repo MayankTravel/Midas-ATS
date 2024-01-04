@@ -146,7 +146,6 @@ const ManageProjects = (props: any) => {
                   setFilteredData={setFilteredData}
                 />
               }
-              selectableRows
               persistTableHead
               theme={
                 layoutModeType === LAYOUT_MODE_TYPES.DARKMODE

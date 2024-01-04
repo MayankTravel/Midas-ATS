@@ -124,7 +124,6 @@ const ViewFacility = () => {
                 />
               }
               dense
-              selectableRows
               persistTableHead
               theme={
                 layoutModeType === LAYOUT_MODE_TYPES.DARKMODE

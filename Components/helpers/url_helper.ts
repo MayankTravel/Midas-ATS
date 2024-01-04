@@ -6,8 +6,8 @@ export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 /* LOCAL */
 
 /* Dheeraj Sir */
-// export const job_api_host = "http://10.0.0.99:9291/api";
-// export const hrms_api_host = "http://10.0.0.99:8077";
+// export const job_api_host = "http://10.0.0.101:9291/api";
+// export const hrms_api_host = "http://10.0.0.105:8077";
 // export const redirect = "http://localhost:3000/auth/reset-password/";
 
 /* Own */

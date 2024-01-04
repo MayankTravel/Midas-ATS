@@ -154,7 +154,6 @@ const ViewUser = () => {
               subHeaderComponent={
                 <Custom_Filter data={rows} setFilteredData={setFilteredData} />
               }
-              selectableRows
               persistTableHead
               theme={
                 layoutModeType === LAYOUT_MODE_TYPES.DARKMODE
