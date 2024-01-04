@@ -15,7 +15,7 @@ import { fetchOrganisation } from "Components/slices/organisation/thunk";
 
 const AddProjects = (props: any) => {
   const { emp_id } = props;
-  console.log(props);
+
   const router = useRouter();
   const dispatch: any = useDispatch();
   const { organisationdata, facilitydata, isLoading } = useSelector(
@@ -168,6 +168,7 @@ const AddProjects = (props: any) => {
       travelAllowance: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewProject(values, router));
     },
   });

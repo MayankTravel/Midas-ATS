@@ -38,6 +38,7 @@ export const AddNewClient =
       };
       dispatch(api_is_clientdata_loading(true));
       const fetch: any = await Factory("POST", setter, url, body);
+
       dispatch(api_is_clientdata_loading(true));
       if (fetch.status === "OK") {
         dispatch(api_is_clientdata_loading(false));
@@ -48,7 +49,9 @@ export const AddNewClient =
           }
         );
       } else {
-        dispatch(api_is_clientdata_error(fetch));
+        dispatch(api_is_clientdata_loading(false));
+
+        Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {
       console.log(error);
@@ -81,7 +84,11 @@ export const EditNewClient =
           router.push("/client/view-client");
         });
       } else {
-        dispatch(api_is_clientdata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +101,7 @@ export const deteleClient = (id: any) => async (dispatch: any) => {
     var setter: any = [];
     const url = `${hrms_api_host}${CLIENT}/${id}`;
     const fetch: any = await Factory("DELETE", setter, url, {});
-    console.log(fetch);
+
     if (fetch.status === "OK") {
       dispatch(fetchClient());
     }

@@ -59,6 +59,7 @@ const Login = () => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       setLoading(true);
       dispatch(UserLogin(values, router));
     },

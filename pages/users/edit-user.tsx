@@ -52,6 +52,7 @@ const EditUser = (props: any) => {
       status: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewUser(values, router));
     },
   });

@@ -1,7 +1,15 @@
 import React, { useState, useEffect, ReactElement } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { Container, Row, Col, Card, Alert, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Alert,
+  Button,
+  Form,
+} from "react-bootstrap";
 
 // Formik Validation
 import * as Yup from "yup";
@@ -26,7 +34,7 @@ const UserProfile = () => {
 
   const { success, error } = useSelector((state: any) => ({
     success: state.Profile.success,
-    error: state.Profile.error
+    error: state.Profile.error,
   }));
 
   useEffect(() => {
@@ -34,16 +42,16 @@ const UserProfile = () => {
       if (process.env.NEXT_PUBLIC_DEFAULTAUTH === "firebase") {
         const obj = JSON.parse(localStorage.getItem("authUser") || "");
         setUserName(obj.displayName);
-        setemail(obj.email)
-        setuid(obj.uid)
+        setemail(obj.email);
+        setuid(obj.uid);
       } else if (
         process.env.NEXT_PUBLIC_DEFAULTAUTH === "fake" ||
         process.env.NEXT_PUBLIC_DEFAULTAUTH === "jwt"
       ) {
         const obj = JSON.parse(localStorage.getItem("authUser") || "");
         setUserName(obj.username);
-        setemail(obj.email)
-        setuid(obj.uid)
+        setemail(obj.email);
+        setuid(obj.uid);
       }
       setTimeout(() => {
         dispatch(resetProfileFlag());
@@ -56,15 +64,16 @@ const UserProfile = () => {
     enableReinitialize: true,
 
     initialValues: {
-      username: userName || 'Admin',
-      idx: uid || '',
+      username: userName || "Admin",
+      idx: uid || "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your UserName"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(editProfile(values));
-    }
+    },
   });
 
   return (
@@ -77,12 +86,18 @@ const UserProfile = () => {
           <Row>
             <Col lg={12}>
               {error && error ? <Alert variant="danger">{error}</Alert> : null}
-              {success ? <Alert variant="success">Username Updated To {userName}</Alert> : null}
+              {success ? (
+                <Alert variant="success">Username Updated To {userName}</Alert>
+              ) : null}
               <Card>
                 <Card.Body>
                   <div className="d-flex">
                     <div className="mx-3">
-                      <Image src={avatar} alt="" className="avatar-md rounded-circle img-thumbnail" />
+                      <Image
+                        src={avatar}
+                        alt=""
+                        className="avatar-md rounded-circle img-thumbnail"
+                      />
                     </div>
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
@@ -101,22 +116,42 @@ const UserProfile = () => {
 
           <Card>
             <Card.Body>
-              <Form className="form-horizontal" onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }}>
+              <Form
+                className="form-horizontal"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  validation.handleSubmit();
+                  return false;
+                }}
+              >
                 <div className="form-group">
                   <Form.Label className="form-label">User Name</Form.Label>
-                  <Form.Control name="username" className="form-control" placeholder="Enter User Name" type="text"
+                  <Form.Control
+                    name="username"
+                    className="form-control"
+                    placeholder="Enter User Name"
+                    type="text"
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     value={validation.values.username || ""}
                     isInvalid={
-                      validation.touched.username && validation.errors.username ? true : false
+                      validation.touched.username && validation.errors.username
+                        ? true
+                        : false
                     }
                   />
-                  {validation.touched.username && validation.errors.username ? (<Form.Control.Feedback type="invalid">{validation.errors.username}</Form.Control.Feedback>) : null}
+                  {validation.touched.username && validation.errors.username ? (
+                    <Form.Control.Feedback type="invalid">
+                      {validation.errors.username}
+                    </Form.Control.Feedback>
+                  ) : null}
                   <Form.Control name="uid" value={uid} type="hidden" />
                 </div>
                 <div className="text-center mt-4">
-                  <Button type="submit" variant="danger"> Update User Name </Button>
+                  <Button type="submit" variant="danger">
+                    {" "}
+                    Update User Name{" "}
+                  </Button>
                 </div>
               </Form>
             </Card.Body>
@@ -127,13 +162,8 @@ const UserProfile = () => {
   );
 };
 
-
 UserProfile.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
+  return <Layout>{page}</Layout>;
 };
 
 export default UserProfile;

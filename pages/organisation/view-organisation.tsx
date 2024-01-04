@@ -7,7 +7,10 @@ import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
-import { fetchOrganisation } from "Components/slices/organisation/thunk";
+import {
+  deteleOrganisation,
+  fetchOrganisation,
+} from "Components/slices/organisation/thunk";
 import Loader2 from "@common/Loader2";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
 import { useRouter } from "next/router";
@@ -15,6 +18,7 @@ import {
   api_is_organisation_selected_success,
   api_is_organisationdata_success,
 } from "Components/slices/organisation/reducer";
+import Swal from "sweetalert2";
 
 const ViewOrganisation = () => {
   const dispatch: any = useDispatch();
@@ -48,20 +52,36 @@ const ViewOrganisation = () => {
       sortable: true,
     },
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          onClick={() => {
-            dispatch(api_is_organisation_selected_success(row));
-            router.push(`/organisation/edit-organisation`);
-          }}
-        >
-          <i className="bi bi-pencil-square"></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              dispatch(api_is_organisation_selected_success(row));
+              router.push(`/organisation/edit-organisation`);
+            }}
+          >
+            <i className="bi bi-pencil-square"></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              Swal.fire({
+                title: "Delete Organisation?",
+                text: `Are you sure you want to delete the organisation?`,
+              }).then(() => dispatch(deteleOrganisation(row.id)));
+            }}
+          >
+            <i
+              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              className="bi bi-trash"
+            ></i>
+          </span>
+        </>
       ),
     },
   ];

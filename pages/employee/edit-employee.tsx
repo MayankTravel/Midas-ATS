@@ -80,6 +80,7 @@ const EditEmployee = () => {
         .max(10, "Contact Number should not be long more than 10 digits"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditedEmployee(values, router));
     },
   });

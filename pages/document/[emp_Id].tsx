@@ -194,6 +194,7 @@ const UploadDocument = (props: any) => {
       expiryDate: Yup.string().required("Requried"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(PostDocument(values, router));
       formik.resetForm();
     },

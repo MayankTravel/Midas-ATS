@@ -144,9 +144,7 @@ export const AddNewVMS =
       const url = `${hrms_api_host}${POST_VMS}`;
       const body = {
         name: values.name,
-        orgCode: values.orgCode,
-        parentOrganization: values.parentOrganization,
-        password: values.password,
+
         url: values.url,
       };
       dispatch(api_is_vmsdata_loading(true));
@@ -163,11 +161,18 @@ export const AddNewVMS =
           `VMS(s) ${values.name}  added successfully`,
           "success"
         ).then(() => {
-          // Redirect using router after user clicks "OK"
-          router.push("/vms/view-vms");
+          Swal.fire({
+            title: "Error",
+            text: fetch.errors,
+            timer: 2000,
+          });
         });
       } else {
-        dispatch(api_is_vmsdata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -222,7 +227,7 @@ export const deteleVMS = (id: any) => async (dispatch: any) => {
     var setter: any = [];
     const url = `${hrms_api_host}${POST_VMS}/${id}`;
     const fetch: any = await Factory("DELETE", setter, url, {});
-    console.log(fetch);
+
     if (fetch.status === "OK") {
       dispatch(fetchVMS());
     }

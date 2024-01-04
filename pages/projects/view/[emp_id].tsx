@@ -99,7 +99,7 @@ const ManageProjects = (props: any) => {
         <span
           className="cursor-pointer"
           onClick={() => {
-            router.push(`/projects/edit-projects`);
+            router.push(`/projects/edit/${emp_id}`);
             dispatch(selected_projectdata_success(row));
           }}
         >

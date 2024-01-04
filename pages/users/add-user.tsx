@@ -62,6 +62,7 @@ const AddUser = () => {
     }),
 
     onSubmit: (values) => {
+      formik.resetForm();
       // console.log(values);
       dispatch(AddNewUser(values, router));
       formik.resetForm();

@@ -37,11 +37,15 @@ const EditClient = () => {
       name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       address: Yup.string().required("Required"),
-      phone: Yup.string().required("Required"),
+      phone: Yup.string()
+        .required("Contact-Number is required")
+        .min(10, "Contact Number should not be long less than 10 digits")
+        .max(10, "Contact Number should not be long more than 10 digits"),
       contactPerson: Yup.string().required("Required"),
       parentOrganization: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewClient(values, router));
     },
   });
@@ -113,7 +117,7 @@ const EditClient = () => {
               <Col className="mt-3" lg={6} xs={6}>
                 <FormLabel for="phone" labelname="Phone No." />
                 <FormInput
-                  inpType="text"
+                  inpType="number"
                   inpId="phone"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}

@@ -52,6 +52,7 @@ export const AddNewEmployee =
 
       dispatch(api_is_employeedata_loading(true));
       const fetch: any = await Factory("POST", setter, url, body);
+      console.log(fetch);
       dispatch(api_is_employeedata_loading(true));
       if (fetch.status === "OK") {
         dispatch(api_is_employeedata_loading(false));
@@ -62,7 +63,8 @@ export const AddNewEmployee =
           }
         );
       } else {
-        dispatch(api_is_employeedata_error(fetch));
+        dispatch(api_is_employeedata_loading(false));
+        Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {
       dispatch(api_is_employeedata_error(error));
@@ -121,10 +123,13 @@ export const EditedEmployee =
           }
         );
       } else {
-        dispatch(api_is_employeedata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
     } catch (error) {
-      console.log(error);
       dispatch(api_is_employeedata_error(error));
     }
   };

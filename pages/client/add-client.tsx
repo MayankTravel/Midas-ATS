@@ -33,11 +33,15 @@ const AddClient = () => {
       name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       address: Yup.string().required("Required"),
-      phone: Yup.string().required("Required"),
+      phone: Yup.string()
+        .required("Contact-Number is required")
+        .min(10, "Contact Number should not be long less than 10 digits")
+        .max(10, "Contact Number should not be long more than 10 digits"),
       contactPerson: Yup.string().required("Required"),
       parentOrganization: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewClient(values, router));
     },
   });

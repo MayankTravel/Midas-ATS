@@ -56,6 +56,7 @@ const JobAssignmentRole = (props: any) => {
       ),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(assignjobs(values, setShow, router));
       dispatch(api_is_jobsel_success([]));
     },
