@@ -1,4 +1,8 @@
-import { PROJECT, hrms_api_host } from "Components/helpers/url_helper";
+import {
+  GET_PROJECT,
+  PROJECT,
+  hrms_api_host,
+} from "Components/helpers/url_helper";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -11,7 +15,6 @@ import Swal from "sweetalert2";
 
 export const AddNewProject =
   (values: any, router: any) => async (dispatch: any) => {
-    console.log(values);
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${PROJECT}`;
@@ -22,6 +25,7 @@ export const AddNewProject =
         facilityId: values.facilityId,
         guaranteeHours: values.guaranteeHours,
         name: values.name,
+        employeeId: values.empId,
         occupationType: values.occupationType,
         organisationId: values.organisationId,
         overTimeRates: values.overTimeRates,
@@ -41,7 +45,7 @@ export const AddNewProject =
         dispatch(api_is_projectdata_success(fetch));
         Swal.fire("Success", "Project added successfully", "success").then(
           () => {
-            router.push("/projects/manage-projects");
+            router.push("/employee/employee-control");
           }
         );
       } else {
@@ -79,8 +83,6 @@ export const EditedProject =
         travelAllowance: values.travelAllowance,
       };
 
-      console.log("body:", body);
-
       const fetch: any = await Factory("PATCH", setter, url, body);
 
       if (fetch.status === "OK") {
@@ -100,13 +102,13 @@ export const EditedProject =
     }
   };
 
-export const fetchProjects = () => async (dispatch: any) => {
+export const fetchProjects = (id: any) => async (dispatch: any) => {
   try {
     var setter: any = [];
-    const url = `${hrms_api_host}${PROJECT}`;
+    const url = `${hrms_api_host}${GET_PROJECT}/${id}`;
+
     dispatch(api_is_projectdata_loading(true));
     const fetch = await Factory("GET", setter, url, {});
-
     dispatch(api_is_projectdata_success(fetch));
     // dispatch(api_is_userdata_loading(false));
   } catch (error) {

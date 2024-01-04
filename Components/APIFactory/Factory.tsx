@@ -29,7 +29,7 @@ const Factory = async (
         method: method,
         url: url,
         headers: {
-          "Content-type": "application/json , multipart/form-data",
+          "Content-type": "application/json",
           Authorization: `Bearer ${token()}`,
         },
         data: JSON.stringify(body),

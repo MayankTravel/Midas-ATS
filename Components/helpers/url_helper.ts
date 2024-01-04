@@ -1,5 +1,5 @@
 /* Live */
-// export const hrms_api_host = "http://44.213.229.250:8077";
+export const hrms_api_host = "http://44.213.229.250:8077";
 export const job_api_host = "http://34.230.215.187:9291/api";
 export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 
@@ -12,7 +12,7 @@ export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 
 /* Own */
 // export const job_api_host = "http://localhost:9291/api";
-export const hrms_api_host = "http://10.0.0.101:8077";
+// export const hrms_api_host = "http://10.0.0.101:8077";
 // export const redirect = "http://localhost:3000/auth/reset-password/";
 
 //REGISTER
@@ -118,6 +118,7 @@ export const CLIENT = "/api/v1/client";
 
 //Project Config
 export const PROJECT = "/api/v1/project";
+export const GET_PROJECT = "/api/v1/project/getProjectByEmployeeId";
 
 //Facility Config
 export const FACILITY = "/api/v1/facility";

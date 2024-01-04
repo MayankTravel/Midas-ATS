@@ -63,7 +63,6 @@ export const fetchEmployee = () => async (dispatch: any) => {
     const url = `${hrms_api_host}${EMPLOYEE}`;
     dispatch(api_is_employeedata_loading(true));
     const fetch = await Factory("GET", setter, url, {});
-    console.log(fetch);
     dispatch(api_is_employeedata_success(fetch));
     // dispatch(api_is_userdata_loading(false));
   } catch (error) {
@@ -72,13 +71,16 @@ export const fetchEmployee = () => async (dispatch: any) => {
 };
 export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
   try {
+    dispatch(api_is_employeedata_loading(true));
     var setter: any = [];
     const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
     dispatch(api_is_employeedata_loading(true));
-    const fetch = await Factory("GET", setter, url, {});
-    console.log(fetch);
-    dispatch(api_is_employeedata_success(fetch));
-    // dispatch(api_is_userdata_loading(false));
+    const fetch: any = await Factory("GET", setter, url, {});
+
+    if (fetch.status === "OK") {
+      dispatch(api_is_employeedata_success(fetch));
+      dispatch(api_is_employeedata_loading(false));
+    }
   } catch (error) {
     dispatch(api_is_employeedata_error(error));
   }

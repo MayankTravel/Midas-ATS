@@ -78,7 +78,6 @@ const AddEmployee = () => {
 
   useEffect(() => {
     dispatch(fetchOrganisation());
-    dispatch(fetchProjects());
   }, []);
 
   return (
@@ -92,23 +91,6 @@ const AddEmployee = () => {
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
-              <Col lg={4} xs={4}>
-                <FormLabel for="projects" labelname="Projects" />
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  options={options}
-                  defaultValue={options}
-                  value={formik.values.projects}
-                  onChange={(selectedOption) => {
-                    var projectsSelected: any = selectedOption.map(
-                      (selectedProject) => selectedProject.value
-                    );
-                    formik.setFieldValue("projects", selectedOption);
-                  }}
-                />
-              </Col>
               <Col lg={4} xs={4}>
                 <FormLabel for="organisation" labelname="Organisation" />
                 <select

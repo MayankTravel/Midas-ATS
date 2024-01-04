@@ -47,6 +47,8 @@ const ViewOrganisation = () => {
     dispatch(fetchOrganisation());
   }, []);
 
+  console.log(organisationdata);
+
   return (
     <React.Fragment>
       <Head>

@@ -24,6 +24,7 @@ import {
 } from "Components/slices/employee/thunk";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
+import Loader2 from "@common/Loader2";
 
 const TAGS_OPTION = [
   "Driving-License",
@@ -134,23 +135,15 @@ const sample: any = [
 
 const UploadDocument = (props: any) => {
   const [file, setFile] = useState("");
-  const { employeedata } = useSelector((state: any) => state.employee);
+  const { employeedata, isLoading } = useSelector(
+    (state: any) => state.employee
+  );
   const dispatch: any = useDispatch();
   const router = useRouter();
   const [filteredData, setFilteredData] = useState("");
   const { emp_Id } = props;
 
   var rows: any = [];
-
-  for (let index = 0; index < employeedata.length; index++) {
-    const element = employeedata[index];
-    const parse_url = JSON.parse(element.docStructure);
-    rows.push({
-      type: element.type,
-      employeeName: element.employee.name,
-      downloadUrl: parse_url["@microsoft.graph.downloadUrl"],
-    });
-  }
 
   const columns = [
     {
@@ -209,6 +202,23 @@ const UploadDocument = (props: any) => {
   useEffect(() => {
     dispatch(fetchEmployeeDoc(emp_Id));
   }, []);
+  if (isLoading === true) {
+    return (
+      <div className="page-content">
+        <Loader2 />
+      </div>
+    );
+  }
+  for (let index = 0; index < employeedata.length; index++) {
+    const element = employeedata[index];
+    const parse_url =
+      element.docStructure !== undefined && JSON.parse(element.docStructure);
+    rows.push({
+      type: element.type,
+      employeeName: element.employee?.name,
+      downloadUrl: parse_url["@microsoft.graph.downloadUrl"],
+    });
+  }
   return (
     <React.Fragment>
       <Head>

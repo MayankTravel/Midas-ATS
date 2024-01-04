@@ -211,9 +211,12 @@ const EditProjects = () => {
                     onBlur={formik.handleBlur}
                     name="projectStatus"
                   >
-                    <option selected>Open this select menu</option>
+                    <option selected>
+                      Current : {selecteddata.projectStatus}
+                    </option>
+                    <option>Open this select menu</option>
 
-                    {PROJECT.map((item, index) => {
+                    {PROJECT.map((item: any) => {
                       return <option value={item.value}>{item.label}</option>;
                     })}
                   </select>
@@ -239,8 +242,11 @@ const EditProjects = () => {
                     onBlur={formik.handleBlur}
                     name="occupationType"
                   >
+                    {" "}
+                    <option selected>
+                      Current : {selecteddata.occupationType}
+                    </option>
                     <option selected>Open this select menu</option>
-
                     {OCCUPATION.map((item, index) => {
                       return <option value={item.value}>{item.label}</option>;
                     })}

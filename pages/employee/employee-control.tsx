@@ -85,16 +85,28 @@ const EmployeeControl = () => {
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          title="See Project"
-          // onClick={() => router.push(`/employee/edit-employee?${row.id}`)}
-        >
-          <i
-            style={{ fontSize: "20px", marginLeft: "10px" }}
-            className="bi bi-eye-fill"
-          ></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            title="See Project"
+            onClick={() => router.push(`/projects/view/${row.id}`)}
+          >
+            <i
+              style={{ fontSize: "20px", marginLeft: "10px" }}
+              className="bi bi-eye-fill"
+            ></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            title="See Project"
+            onClick={() => router.push(`/projects/add/${row.id}`)}
+          >
+            <i
+              style={{ fontSize: "20px", marginLeft: "10px" }}
+              className="bi bi-plus-square-fill"
+            ></i>
+          </span>
+        </>
       ),
     },
     {
