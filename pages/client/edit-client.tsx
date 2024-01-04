@@ -15,10 +15,13 @@ import { EditNewClient } from "Components/slices/client/thunk";
 const EditClient = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { organisationdata, selectedclient } = useSelector((state: any) => ({
-    organisationdata: state.organisationdata.organisationdata,
-    selectedclient: state.client.selectedclient,
-  }));
+  const { organisationdata, selectedclient, isLoading } = useSelector(
+    (state: any) => ({
+      organisationdata: state.organisationdata.organisationdata,
+      selectedclient: state.client.selectedclient,
+      isLoading: state.client.isLoading,
+    })
+  );
 
   const formik: any = useFormik({
     initialValues: {
@@ -34,11 +37,15 @@ const EditClient = () => {
       name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       address: Yup.string().required("Required"),
-      phone: Yup.string().required("Required"),
+      phone: Yup.string()
+        .required("Contact-Number is required")
+        .min(10, "Contact Number should not be long less than 10 digits")
+        .max(10, "Contact Number should not be long more than 10 digits"),
       contactPerson: Yup.string().required("Required"),
       parentOrganization: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewClient(values, router));
     },
   });
@@ -46,9 +53,6 @@ const EditClient = () => {
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
-  console.log(selectedclient);
-
-  console.log("selectedclient:", selectedclient);
 
   return (
     <React.Fragment>
@@ -113,7 +117,7 @@ const EditClient = () => {
               <Col className="mt-3" lg={6} xs={6}>
                 <FormLabel for="phone" labelname="Phone No." />
                 <FormInput
-                  inpType="text"
+                  inpType="number"
                   inpId="phone"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
@@ -181,7 +185,7 @@ const EditClient = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit Client
                 </Button>
               </Col>

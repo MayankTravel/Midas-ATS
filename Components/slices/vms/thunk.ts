@@ -21,6 +21,7 @@ import {
 import { clientJobs } from "../jobs/_client/thunk";
 import Swal from "sweetalert2";
 import Factory from "Components/APIFactory/Factory";
+import { fetchAllJobs } from "../jobs/_alljobs/thunk";
 
 export const fetchAllAssignedVms = () => async (dispatch: any) => {
   try {
@@ -52,6 +53,18 @@ export const fetchAllAssignedVms = () => async (dispatch: any) => {
   }
 };
 
+export const fetchVMS = () => async (dispatch: any) => {
+  try {
+    var setter: any = [];
+    const url = `${hrms_api_host}${POST_VMS}`;
+    dispatch(api_is_vmsdata_loading(true));
+    const fetch = await Factory("GET", setter, url, {});
+    dispatch(api_is_vmsdata_success(fetch));
+    // dispatch(api_is_userdata_loading(false));
+  } catch (error) {
+    dispatch(api_is_vmsdata_error(error));
+  }
+};
 export const submitAssignedPayload =
   (values: any, router: any) => async (dispatch: any) => {
     try {
@@ -124,31 +137,43 @@ export const deleteVMS = async ({ id, dispatch }: any) => {
 
 export const AddNewVMS =
   (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_vmsdata_loading(true));
+
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${POST_VMS}`;
       const body = {
         name: values.name,
-        orgCode: values.orgCode,
-        parentOrganization: values.parentOrganization,
-        password: values.password,
+
         url: values.url,
       };
+      dispatch(api_is_vmsdata_loading(true));
+
       const fetch: any = await Factory("POST", setter, url, body);
+      dispatch(api_is_vmsdata_loading(true));
+
       if (fetch.status === "OK") {
-        dispatch(api_is_vmsdata_success(fetch));
+        dispatch(api_is_vmsdata_loading(true));
+
+        dispatch(fetchVMS());
         Swal.fire(
           "Success",
           `VMS(s) ${values.name}  added successfully`,
           "success"
         ).then(() => {
-          // Redirect using router after user clicks "OK"
-          router.push("/vms/view-vms");
+          Swal.fire({
+            title: "Error",
+            text: fetch.errors,
+            timer: 2000,
+          });
         });
       } else {
-        dispatch(api_is_vmsdata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
-      dispatch(api_is_vmsdata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_vmsdata_error(error));
@@ -157,7 +182,8 @@ export const AddNewVMS =
 
 export const EditNewVMS =
   (values: any, router: any) => async (dispatch: any) => {
-    console.log(values);
+    dispatch(api_is_vmsdata_loading(true));
+
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${POST_VMS}`;
@@ -169,10 +195,16 @@ export const EditNewVMS =
         password: values.password,
         url: values.url,
       };
+      dispatch(api_is_vmsdata_loading(true));
+
       const fetch: any = await Factory("PATCH", setter, url, body);
+      dispatch(api_is_vmsdata_loading(true));
+
       if (fetch.status === "OK") {
         // console.log(fetch);
-        dispatch(api_is_vmsdata_success(fetch));
+        dispatch(api_is_vmsdata_loading(false));
+
+        dispatch(fetchVMS());
         Swal.fire(
           "Success",
           `VMS(s) ${values.name}  edit successfully`,
@@ -184,21 +216,21 @@ export const EditNewVMS =
       } else {
         dispatch(api_is_vmsdata_error(fetch));
       }
-      dispatch(api_is_vmsdata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_vmsdata_error(error));
     }
   };
 
-export const fetchVMS = () => async (dispatch: any) => {
+export const deteleVMS = (id: any) => async (dispatch: any) => {
   try {
     var setter: any = [];
-    const url = `${hrms_api_host}${POST_VMS}`;
-    dispatch(api_is_vmsdata_loading(true));
-    const fetch = await Factory("GET", setter, url, {});
-    dispatch(api_is_vmsdata_success(fetch));
-    // dispatch(api_is_userdata_loading(false));
+    const url = `${hrms_api_host}${POST_VMS}/${id}`;
+    const fetch: any = await Factory("DELETE", setter, url, {});
+
+    if (fetch.status === "OK") {
+      dispatch(fetchVMS());
+    }
   } catch (error) {
     dispatch(api_is_vmsdata_error(error));
   }

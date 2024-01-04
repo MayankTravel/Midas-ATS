@@ -99,7 +99,7 @@ const ManageProjects = (props: any) => {
         <span
           className="cursor-pointer"
           onClick={() => {
-            router.push(`/projects/edit-projects`);
+            router.push(`/projects/edit/${emp_id}`);
             dispatch(selected_projectdata_success(row));
           }}
         >
@@ -146,7 +146,6 @@ const ManageProjects = (props: any) => {
                   setFilteredData={setFilteredData}
                 />
               }
-              selectableRows
               persistTableHead
               theme={
                 layoutModeType === LAYOUT_MODE_TYPES.DARKMODE

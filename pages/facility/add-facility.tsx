@@ -17,10 +17,11 @@ import { fetchClient } from "Components/slices/client/thunk";
 const AddFacility = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { organisationdata, vmsdata, clientdata } = useSelector(
+  const { organisationdata, vmsdata, clientdata, isLoading } = useSelector(
     (state: any) => ({
       organisationdata: state.organisationdata.organisationdata,
       vmsdata: state.VMS.vmsdata,
+      isLoading: state.VMS.isLoading,
       clientdata: state.client.clientdata,
     })
   );
@@ -41,6 +42,7 @@ const AddFacility = () => {
       vmsId: Yup.string().required("Please Choose VMS"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewFacility(values, router));
     },
   });
@@ -153,7 +155,7 @@ const AddFacility = () => {
                 </select>
               </Col>
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Add Facility
                 </Button>
               </Col>

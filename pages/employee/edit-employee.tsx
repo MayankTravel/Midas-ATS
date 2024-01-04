@@ -11,28 +11,30 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { EditedEmployee } from "Components/slices/employee/thunk";
 import { fetchProjects } from "Components/slices/project/thunk";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 const EditEmployee = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
   const [filteredData, setFilteredData] = useState<any>([]);
 
-  const { employeedata, selecteddata, organisationdata, projectdata } =
-    useSelector((state: any) => ({
-      employeedata: state.employee.employeedata,
-      selecteddata: state.employee.selected,
-      organisationdata: state.organisationdata.organisationdata,
-      projectdata: state.project.projectdata,
-    }));
+  const {
+    employeedata,
+    selecteddata,
+    organisationdata,
+    isLoading,
+    projectdata,
+  } = useSelector((state: any) => ({
+    employeedata: state.employee.employeedata,
+    selecteddata: state.employee.selected,
+    organisationdata: state.organisationdata.organisationdata,
+    projectdata: state.project.projectdata,
+    isLoading: state.employee.isLoading,
+  }));
 
   const options = projectdata.map((item: any) => ({
     value: item.id,
     label: item.name,
   }));
-
-  const animatedComponents = makeAnimated();
 
   const formik: any = useFormik({
     initialValues: {
@@ -49,7 +51,17 @@ const EditEmployee = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
-      dob: Yup.string().required("Required"),
+      dob: Yup.date()
+        .required("Date of Birth is required")
+        .test(
+          "not-in-future",
+          "Date of Birth cannot be a future date",
+          function (value) {
+            const selectedDate = new Date(value);
+            const currentDate = new Date();
+            return selectedDate <= currentDate;
+          }
+        ),
       ssn: Yup.string()
         .required("Social Security Number is required")
         .min(9, "Social Security Number Must be 9 Digits long")
@@ -68,6 +80,7 @@ const EditEmployee = () => {
         .max(10, "Contact Number should not be long more than 10 digits"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditedEmployee(values, router));
     },
   });
@@ -243,6 +256,7 @@ const EditEmployee = () => {
                   style={{ marginTop: "20px" }}
                   variant="primary"
                   type="submit"
+                  disabled={isLoading}
                 >
                   Edit Employee
                 </Button>

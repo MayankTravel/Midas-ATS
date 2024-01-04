@@ -19,21 +19,6 @@ const AddOrganisation = () => {
   const router = useRouter();
   var userid = authData().id;
 
-  const Organisation_Name = [
-    {
-      id: "1",
-      label: "Midas Consulting",
-    },
-    {
-      id: "2",
-      label: "Midas Techss",
-    },
-    {
-      id: "3",
-      label: "Apollo USA",
-    },
-  ];
-
   const formik = useFormik({
     initialValues: {
       organizationName: "",
@@ -44,6 +29,7 @@ const AddOrganisation = () => {
       website: Yup.string().required("Website is required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewOrganisation(values, router));
     },
   });
@@ -65,20 +51,14 @@ const AddOrganisation = () => {
                   for="organizationName"
                   labelname="Organisation Name"
                 />
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  name="organizationName"
-                  value={formik.values.organizationName}
-                >
-                  <option selected>Open this select menu</option>
-
-                  {Organisation_Name.map((item: any) => {
-                    return <option value={item.value}>{item.label}</option>;
-                  })}
-                </select>
+                <FormInput
+                  inpType="text"
+                  inpId="organizationName"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.organizationName}
+                  inpPlaceholder="Enter your Organization Name"
+                />
                 <span className="text-danger">
                   {formik.touched.organizationName &&
                   formik.errors.organizationName ? (

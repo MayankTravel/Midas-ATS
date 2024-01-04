@@ -194,6 +194,7 @@ const UploadDocument = (props: any) => {
       expiryDate: Yup.string().required("Requried"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(PostDocument(values, router));
       formik.resetForm();
     },
@@ -291,7 +292,6 @@ const UploadDocument = (props: any) => {
           subHeaderComponent={
             <Custom_Filter data={rows} setFilteredData={setFilteredData} />
           }
-          selectableRows
           persistTableHead
         />
       </div>

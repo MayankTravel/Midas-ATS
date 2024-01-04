@@ -52,6 +52,7 @@ const EditUser = (props: any) => {
       status: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewUser(values, router));
     },
   });
@@ -64,7 +65,6 @@ const EditUser = (props: any) => {
   if (isLoading) {
     return "Wait";
   }
-  console.log(formik.values);
   var rolesArray: any = [];
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];
@@ -258,7 +258,7 @@ const EditUser = (props: any) => {
                 </span>
               </Col>
               <Col lg={12} className="mt-4 mb-3">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit User
                 </Button>
               </Col>

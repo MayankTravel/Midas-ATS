@@ -18,45 +18,6 @@ import moment from "moment";
 import { token } from "Components/APIFactory/token";
 import axios from "axios";
 
-export const AddNewEmployee =
-  (values: any, router: any) => async (dispatch: any) => {
-    try {
-      var setter: any = [];
-      const url = `${hrms_api_host}${ADDEMPLOYEE}`;
-      const body = {
-        address: values.address,
-        city: values.city,
-        contactDetails: values.contactDetails,
-        dob: values.dob,
-        email: values.email,
-        name: values.name,
-        organisation: values.organisation,
-        projects: values.projects.map(
-          (selectedProject: any) => selectedProject.value
-        ),
-        ssn: values.ssn,
-        state: values.state,
-        zipCode: values.zipCode,
-      };
-      console.log("requiredBody", body);
-
-      const fetch: any = await Factory("POST", setter, url, body);
-      if (fetch.status === "OK") {
-        dispatch(api_is_employeedata_success(fetch));
-        Swal.fire("Success", "Employee added successfully", "success").then(
-          () => {
-            router.push("/employee/employee-control");
-          }
-        );
-      } else {
-        dispatch(api_is_employeedata_error(fetch));
-      }
-      dispatch(api_is_employeedata_loading(false));
-    } catch (error) {
-      dispatch(api_is_employeedata_error(error));
-    }
-  };
-
 export const fetchEmployee = () => async (dispatch: any) => {
   try {
     var setter: any = [];
@@ -69,6 +30,47 @@ export const fetchEmployee = () => async (dispatch: any) => {
     dispatch(api_is_employeedata_error(error));
   }
 };
+export const AddNewEmployee =
+  (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_employeedata_loading(true));
+    try {
+      var setter: any = [];
+      const url = `${hrms_api_host}${ADDEMPLOYEE}`;
+      const body = {
+        address: values.address,
+        city: values.city,
+        contactDetails: values.contactDetails,
+        dob: values.dob,
+        email: values.email,
+        name: values.name,
+        organisation: values.organisation,
+        projects: [],
+        ssn: values.ssn,
+        state: values.state,
+        zipCode: values.zipCode,
+      };
+
+      dispatch(api_is_employeedata_loading(true));
+      const fetch: any = await Factory("POST", setter, url, body);
+      console.log(fetch);
+      dispatch(api_is_employeedata_loading(true));
+      if (fetch.status === "OK") {
+        dispatch(api_is_employeedata_loading(false));
+        dispatch(fetchEmployee());
+        Swal.fire("Success", "Employee added successfully", "success").then(
+          () => {
+            router.push("/employee/employee-control");
+          }
+        );
+      } else {
+        dispatch(api_is_employeedata_loading(false));
+        Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
+      }
+    } catch (error) {
+      dispatch(api_is_employeedata_error(error));
+    }
+  };
+
 export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
   try {
     dispatch(api_is_employeedata_loading(true));
@@ -88,6 +90,8 @@ export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
 
 export const EditedEmployee =
   (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_employeedata_loading(true));
+
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${EMPLOYEE}`;
@@ -99,31 +103,33 @@ export const EditedEmployee =
         dob: values.dob,
         email: values.email,
         name: values.name,
-        projects: values.projects.map(
-          (selectedProject: any) => selectedProject.value
-        ),
+        projects: [],
         ssn: values.ssn,
         state: values.state,
         zipCode: values.zipCode,
         status: true,
       };
-      console.log(JSON.stringify(body));
+      dispatch(api_is_employeedata_loading(true));
 
       const fetch: any = await Factory("PATCH", setter, url, body);
-      console.log(fetch);
+      dispatch(api_is_employeedata_loading(true));
+
       if (fetch.status === "OK") {
-        dispatch(api_is_employeedata_success(fetch));
+        dispatch(api_is_employeedata_loading(false));
+        dispatch(fetchEmployee());
         Swal.fire("Success", "Employee Edited successfully", "success").then(
           () => {
             router.push("/employee/employee-control");
           }
         );
       } else {
-        dispatch(api_is_employeedata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
-      dispatch(api_is_employeedata_loading(false));
     } catch (error) {
-      console.log(error);
       dispatch(api_is_employeedata_error(error));
     }
   };
