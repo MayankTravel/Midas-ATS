@@ -10,9 +10,15 @@ import Custom_Filter from "@common/utils/filter/filter_utils";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
 import Loader2 from "@common/Loader2";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
+import { useRouter } from "next/router";
+import {
+  api_is_organisation_selected_success,
+  api_is_organisationdata_success,
+} from "Components/slices/organisation/reducer";
 
 const ViewOrganisation = () => {
   const dispatch: any = useDispatch();
+  const router = useRouter();
   const { organisationdata } = useSelector(
     (state: any) => state.organisationdata
   );
@@ -41,14 +47,28 @@ const ViewOrganisation = () => {
       selector: (row: any) => row.website,
       sortable: true,
     },
+    {
+      name: "Edit",
+      id: "edit",
+      sortable: true,
+      width: "100px",
+      cell: (row: any) => (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            dispatch(api_is_organisation_selected_success(row));
+            router.push(`/organisation/edit-organisation`);
+          }}
+        >
+          <i className="bi bi-pencil-square"></i>
+        </span>
+      ),
+    },
   ];
 
   useEffect(() => {
     dispatch(fetchOrganisation());
   }, []);
-
-  console.log(organisationdata);
-
   return (
     <React.Fragment>
       <Head>
@@ -73,7 +93,6 @@ const ViewOrganisation = () => {
                   setFilteredData={setFilteredData}
                 />
               }
-              selectableRows
               persistTableHead
               theme={
                 layoutModeType === LAYOUT_MODE_TYPES.DARKMODE
