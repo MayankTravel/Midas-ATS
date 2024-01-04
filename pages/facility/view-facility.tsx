@@ -60,13 +60,14 @@ const ViewFacility = () => {
           <span
             className="cursor-pointer"
             onClick={() => {
+              var organisation = row.organisation;
               var selectedObj = {
                 id: row.id,
                 address: row.address,
-                clientId: row.client.id,
+                clientId: row.client?.id,
                 name: row.name,
-                parentOrganization: row.vms.organisation?.id,
-                vmsId: row.vms.id,
+                parentOrganization: organisation.id,
+                vmsId: row.vms?.id,
               };
 
               router.push(`/facility/edit-facility`);
@@ -86,7 +87,7 @@ const ViewFacility = () => {
             }}
           >
             <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              style={{ fontSize: "18px", color: "red", marginLeft: "10px" }}
               className="bi bi-trash"
             ></i>
           </span>
@@ -143,3 +144,21 @@ ViewFacility.getLayout = (page: ReactElement) => {
 };
 
 export default ViewFacility;
+/* address
+: 
+"221"
+clientId
+: 
+"6596df1631d3290a66ed87d6"
+id
+: 
+"6596e5a7d21252416a780e36"
+name
+: 
+"Mayank kumar"
+parentOrganization
+: 
+"658afc3b3b6f1969cc93bdc0"
+vmsId
+: 
+"658afc3b3b6f1969cc93bdc0" */

@@ -64,7 +64,6 @@ const EditUser = (props: any) => {
   if (isLoading) {
     return "Wait";
   }
-  console.log(formik.values);
   var rolesArray: any = [];
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];

@@ -33,6 +33,7 @@ export const AddNewFacility =
         parentOrganization: values.parentOrganization,
         vmsId: values.vmsId,
       };
+      console.log("bodyL", body);
       dispatch(api_is_facilitydata_loading(true));
       const fetch: any = await Factory("POST", setter, url, body);
       dispatch(api_is_facilitydata_loading(true));

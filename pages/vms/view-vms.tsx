@@ -69,7 +69,7 @@ const ViewVMS = () => {
             }}
           >
             <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+              style={{ fontSize: "18px", color: "red", marginLeft: "15px" }}
               className="bi bi-trash"
             ></i>
           </span>

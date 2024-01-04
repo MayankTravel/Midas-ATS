@@ -15,20 +15,19 @@ import { fetchVMS } from "Components/slices/vms/thunk";
 import { fetchClient } from "Components/slices/client/thunk";
 
 const EditFacility = (props: any) => {
-  const { organisationdata, vmsdata, clientdata, selectedrow } = useSelector(
-    (state: any) => ({
+  const { organisationdata, vmsdata, clientdata, selectedrow, facilitydata } =
+    useSelector((state: any) => ({
       organisationdata: state.organisationdata.organisationdata,
       vmsdata: state.VMS.vmsdata,
       clientdata: state.client.clientdata,
       facilitydata: state.facility.facilitydata,
       selectedrow: state.facility.selected,
-    })
-  );
+    }));
   const [selected, setSelected] = useState<any>({});
   const [disable, setDisabled] = useState<boolean>(true);
   const router = useRouter();
   const dispatch: any = useDispatch();
-
+  console.log(selectedrow);
   const formik: any = useFormik({
     initialValues: {
       address: selectedrow.address,
@@ -63,6 +62,9 @@ const EditFacility = (props: any) => {
       dispatch(fetchFacilty());
     }
   }, []);
+  console.log("organisationdata:", organisationdata);
+  console.log("clientdata:", clientdata);
+  console.log("facilitydatadsfsfds:", facilitydata);
 
   return (
     <React.Fragment>
@@ -71,7 +73,7 @@ const EditFacility = (props: any) => {
       </Head>
 
       <div className="page-content">
-        <Breadcrumb breadcrumbItem="Add Facility" breadcrumb="Dashboard" />
+        <Breadcrumb breadcrumbItem="Edit Facility" breadcrumb="Dashboard" />
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
@@ -124,7 +126,7 @@ const EditFacility = (props: any) => {
                   name="vmsId"
                 >
                   {vmsdata
-                    .filter((ite: any) => ite.id == formik.values.vmsId)
+                    .filter((ite: any) => ite.id === selectedrow.vmsId)
                     .map((item: any) => (
                       <option selected>(Current) : {item.name}</option>
                     ))}
@@ -145,7 +147,7 @@ const EditFacility = (props: any) => {
                   name="clientId"
                 >
                   {clientdata
-                    .filter((ite: any) => ite.id == formik.values.clientId)
+                    .filter((ite: any) => ite.id === selectedrow.clientId)
                     .map((item: any) => (
                       <option selected>(Current) : {item.name}</option>
                     ))}
@@ -173,7 +175,7 @@ const EditFacility = (props: any) => {
                 >
                   {organisationdata
                     .filter(
-                      (ite: any) => ite.id == formik.values.parentOrganization
+                      (ite: any) => ite.id === selectedrow.parentOrganization
                     )
                     .map((item: any) => (
                       <option selected>(Current) : {item.name}</option>
