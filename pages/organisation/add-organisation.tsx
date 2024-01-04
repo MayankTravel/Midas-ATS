@@ -18,7 +18,9 @@ const AddOrganisation = () => {
   const dispatch: any = useDispatch();
   const router = useRouter();
   var userid = authData().id;
-
+  const { isLoading } = useSelector((state: any) => ({
+    isLoading: state.organisationdata.isLoading,
+  }));
   const formik = useFormik({
     initialValues: {
       organizationName: "",
@@ -87,7 +89,7 @@ const AddOrganisation = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Add Organisation
                 </Button>
               </Col>

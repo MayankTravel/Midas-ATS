@@ -91,7 +91,7 @@ export const submitAssignedPayload =
               Swal.fire({
                 title: "Failed to Assign",
                 text: `Failed to assign this vms to ${values.accountManagerName}.`,
-                timer: 2000,
+                timer: 8000,
               });
               await dispatch(fetchAllAssignedVms());
               return fetch_api;
@@ -101,7 +101,7 @@ export const submitAssignedPayload =
               Swal.fire({
                 title: "Failed to Assign",
                 text: `Failed to assign this vms to ${values.accountManagerName}.`,
-                timer: 2000,
+                timer: 8000,
               });
               await dispatch(fetchAllAssignedVms());
               return error;
@@ -161,17 +161,13 @@ export const AddNewVMS =
           `VMS(s) ${values.name}  added successfully`,
           "success"
         ).then(() => {
-          Swal.fire({
-            title: "Error",
-            text: fetch.errors,
-            timer: 2000,
-          });
+          router.push("/vms/view-vms");
         });
       } else {
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
     } catch (error) {
@@ -190,9 +186,6 @@ export const EditNewVMS =
       const body = {
         id: values.id,
         name: values.name,
-        orgCode: values.orgCode,
-        parentOrganization: values.parentOrganization,
-        password: values.password,
         url: values.url,
       };
       dispatch(api_is_vmsdata_loading(true));
@@ -207,14 +200,18 @@ export const EditNewVMS =
         dispatch(fetchVMS());
         Swal.fire(
           "Success",
-          `VMS(s) ${values.name}  edit successfully`,
+          `VMS(s) ${values.name} edit successfully`,
           "success"
         ).then(() => {
           // Redirect using router after user clicks "OK"
           router.push("/vms/view-vms");
         });
       } else {
-        dispatch(api_is_vmsdata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 8000,
+        });
       }
     } catch (error) {
       console.log(error);

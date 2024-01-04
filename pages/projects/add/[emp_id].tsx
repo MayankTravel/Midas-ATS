@@ -96,38 +96,6 @@ const AddProjects = (props: any) => {
       projectStatus: Yup.string().required("Required"),
       guaranteeHours: Yup.number().required("Required"),
       designation: Yup.string().required("Required"),
-      // startDate: Yup.string()
-      //   .required("Required")
-      //   .test(
-      //     "valid-year",
-      //     "Invalid year format. Please enter a valid year.",
-      //     function (value) {
-      //       // Check if the year is not a 5-digit number
-      //       return value && !/^\d{5}$/.test(value.split("-")[0])
-      //         ? true
-      //         : new Yup.ValidationError(
-      //             "Invalid year format. Please enter a valid year.",
-      //             value,
-      //             "startDate"
-      //           );
-      //     }
-      //   ),
-      // endDate: Yup.string()
-      //   .required("Required")
-      //   .test(
-      //     "valid-year",
-      //     "Invalid year format. Please enter a valid year.",
-      //     function (value) {
-      //       // Check if the year is not a 5-digit number
-      //       return value && !/^\d{5}$/.test(value.split("-")[0])
-      //         ? true
-      //         : new Yup.ValidationError(
-      //             "Invalid year format. Please enter a valid year.",
-      //             value,
-      //             "endDate"
-      //           );
-      //     }
-      //   ),
       startDate: Yup.string()
         .required("Required")
         .test(

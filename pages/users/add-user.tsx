@@ -40,24 +40,19 @@ const AddUser = () => {
     validationSchema: Yup.object({
       firstName: Yup.string().required("First Name is Required"),
       lastName: Yup.string().required("Last Name is Required"),
-      mobileNumber: Yup.string().required("Mobile Number is Required"),
-
+      mobileNumber: Yup.string()
+        .min(10, "Miniumm digits should be 10")
+        .max(10, "Maximum digits should be 10")
+        .required("Mobile Number is Required"),
       email: Yup.string()
-
         .email("Invalid email address")
-
         .required("Email is Required"),
-
       password: Yup.string()
-
         .matches(
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-
           "Must Contain 5 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
         )
-
         .required("Password is required"),
-
       roles: Yup.array().required("Required"),
     }),
 

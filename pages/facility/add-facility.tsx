@@ -113,6 +113,11 @@ const AddFacility = () => {
                     return <option value={item.id}>{item.name}</option>;
                   })}
                 </select>
+                <span className="text-danger">
+                  {formik.touched.vmsId && formik.errors.vmsId ? (
+                    <div className="text-danger">{formik.errors.vmsId}</div>
+                  ) : null}
+                </span>
               </Col>
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="client" labelname="Client" />
@@ -131,6 +136,11 @@ const AddFacility = () => {
                     return <option value={item.id}>{item.name}</option>;
                   })}
                 </select>
+                <span className="text-danger">
+                  {formik.touched.clientId && formik.errors.clientId ? (
+                    <div className="text-danger">{formik.errors.clientId}</div>
+                  ) : null}
+                </span>
               </Col>
 
               <Col className="mt-3" lg={4} xs={4}>
@@ -153,6 +163,14 @@ const AddFacility = () => {
                     return <option value={item.id}>{item.name}</option>;
                   })}
                 </select>
+                <span className="text-danger">
+                  {formik.touched.parentOrganization &&
+                  formik.errors.parentOrganization ? (
+                    <div className="text-danger">
+                      {formik.errors.parentOrganization}
+                    </div>
+                  ) : null}
+                </span>
               </Col>
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit" disabled={isLoading}>

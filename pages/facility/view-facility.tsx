@@ -29,7 +29,6 @@ const ViewFacility = () => {
     layoutModeType: state.Layout.layoutModeType,
   }));
 
-  console.log("facilitydata:", facilitydata);
   const columns = [
     {
       name: "Name",
@@ -66,7 +65,7 @@ const ViewFacility = () => {
                 address: row.address,
                 clientId: row.client?.id,
                 name: row.name,
-                parentOrganization: organisation.id,
+                parentOrganization: organisation?.id,
                 vmsId: row.vms?.id,
               };
 

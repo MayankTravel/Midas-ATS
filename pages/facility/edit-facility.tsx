@@ -15,20 +15,27 @@ import { fetchVMS } from "Components/slices/vms/thunk";
 import { fetchClient } from "Components/slices/client/thunk";
 
 const EditFacility = (props: any) => {
-  const { organisationdata, vmsdata, clientdata, selectedrow, facilitydata } =
-    useSelector((state: any) => ({
-      organisationdata: state.organisationdata.organisationdata,
-      vmsdata: state.VMS.vmsdata,
-      clientdata: state.client.clientdata,
-      facilitydata: state.facility.facilitydata,
-      selectedrow: state.facility.selected,
-    }));
-  const [selected, setSelected] = useState<any>({});
+  const {
+    organisationdata,
+    vmsdata,
+    clientdata,
+    selectedrow,
+    facilitydata,
+    isLoading,
+  } = useSelector((state: any) => ({
+    organisationdata: state.organisationdata.organisationdata,
+    vmsdata: state.VMS.vmsdata,
+    clientdata: state.client.clientdata,
+    facilitydata: state.facility.facilitydata,
+    selectedrow: state.facility.selected,
+    isLoading: state.facility.isLoading,
+  }));
   const [disable, setDisabled] = useState<boolean>(true);
   const router = useRouter();
   const dispatch: any = useDispatch();
   const formik: any = useFormik({
     initialValues: {
+      id: selectedrow.id,
       address: selectedrow.address,
       clientId: selectedrow.clientId,
       name: selectedrow.name,
@@ -44,27 +51,16 @@ const EditFacility = (props: any) => {
     }),
     onSubmit: (values) => {
       formik.resetForm();
-      const editedValue = {
-        ...values,
-        id: selectedrow.id,
-      };
-      dispatch(EditedFacility(editedValue, router));
+      dispatch(EditedFacility(values, router));
     },
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined" && localStorage.getItem("selected")) {
-      var authData: any = JSON.parse(localStorage.getItem("selected") || "");
-      setSelected(authData);
-      dispatch(fetchOrganisation());
-      dispatch(fetchVMS());
-      dispatch(fetchClient());
-      dispatch(fetchFacilty());
-    }
+    dispatch(fetchOrganisation());
+    dispatch(fetchVMS());
+    dispatch(fetchClient());
+    dispatch(fetchFacilty());
   }, []);
-  console.log("organisationdata:", organisationdata);
-  console.log("clientdata:", clientdata);
-  console.log("facilitydatadsfsfds:", facilitydata);
 
   return (
     <React.Fragment>
@@ -189,7 +185,7 @@ const EditFacility = (props: any) => {
                 </select>
               </Col>
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit Facility
                 </Button>
               </Col>

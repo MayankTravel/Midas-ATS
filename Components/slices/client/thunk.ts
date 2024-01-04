@@ -87,7 +87,7 @@ export const EditNewClient =
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
     } catch (error) {

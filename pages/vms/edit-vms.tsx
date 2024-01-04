@@ -33,9 +33,6 @@ const EditVMS = () => {
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       url: Yup.string().required("URL is required"),
-      orgCode: Yup.string().required("Org Code is required"),
-      password: Yup.string().required("Password is required"),
-      parentOrganization: Yup.string().required("Required"),
     }),
 
     onSubmit: (values) => {

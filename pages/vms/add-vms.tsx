@@ -29,7 +29,7 @@ const AddVMS = () => {
       url: Yup.string().required("URL is required"),
     }),
     onSubmit: (values) => {
-formik.resetForm();
+      formik.resetForm();
       dispatch(AddNewVMS(values, router));
     },
   });

@@ -196,7 +196,6 @@ const UploadDocument = (props: any) => {
     onSubmit: (values) => {
       formik.resetForm();
       dispatch(PostDocument(values, router));
-      formik.resetForm();
     },
   });
 
@@ -207,6 +206,7 @@ const UploadDocument = (props: any) => {
     return (
       <div className="page-content">
         <Loader2 />
+        Waiting
       </div>
     );
   }
@@ -274,7 +274,7 @@ const UploadDocument = (props: any) => {
                 </Col>
 
                 <Col lg={12} className="mt-4">
-                  <Button variant="primary" type="submit">
+                  <Button variant="primary" type="submit" disabled={isLoading}>
                     Upload Document
                   </Button>
                 </Col>

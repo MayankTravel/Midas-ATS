@@ -46,7 +46,7 @@ export const AddNewFacility =
           }
         );
       } else {
-         dispatch(api_is_facilitydata_loading(false));
+        dispatch(api_is_facilitydata_loading(false));
         Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {
@@ -70,6 +70,7 @@ export const EditedFacility =
         parentOrganization: values.parentOrganization,
         vmsId: values.vmsId,
       };
+      console.log(body);
 
       dispatch(api_is_facilitydata_loading(true));
 
@@ -89,8 +90,9 @@ export const EditedFacility =
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
+        dispatch(api_is_facilitydata_loading(false));
       }
     } catch (error) {
       console.log(error);
