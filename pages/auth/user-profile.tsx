@@ -71,7 +71,6 @@ const UserProfile = () => {
       username: Yup.string().required("Please Enter Your UserName"),
     }),
     onSubmit: (values) => {
-      formik.resetForm();
       dispatch(editProfile(values));
     },
   });

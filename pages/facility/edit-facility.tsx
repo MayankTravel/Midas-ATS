@@ -27,7 +27,6 @@ const EditFacility = (props: any) => {
   const [disable, setDisabled] = useState<boolean>(true);
   const router = useRouter();
   const dispatch: any = useDispatch();
-  console.log(selectedrow);
   const formik: any = useFormik({
     initialValues: {
       address: selectedrow.address,

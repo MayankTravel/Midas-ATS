@@ -65,7 +65,6 @@ const AddUser = () => {
       formik.resetForm();
       // console.log(values);
       dispatch(AddNewUser(values, router));
-      formik.resetForm();
     },
   });
 
