@@ -14,15 +14,20 @@ const ProfileDropdown = () => {
   }));
 
   const [username, setusername] = useState<any>({});
+  const [role, setRole] = useState<any>({});
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
+    if (
+      localStorage.getItem("authUser") &&
+      localStorage.getItem("currentrole")
+    ) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+      const role = JSON.parse(localStorage.getItem("currentrole") || "");
       setusername(obj);
-      fetchAllUser(dispatch);
+      setRole(role);
+      dispatch(fetchAllUser());
     }
   }, []);
-
   return (
     <React.Fragment>
       <Dropdown className="ms-sm-3 header-item topbar-user">
@@ -39,60 +44,19 @@ const ProfileDropdown = () => {
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                {username.name}
+                {username.fullName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-13 text-muted user-name-sub-text">
-                {username.rollId == 7
-                  ? "Account Manager"
-                  : username.rollId == 6
-                  ? "Team Lead"
-                  : username.rollId == 5
-                  ? "Recruiter"
-                  : username.rollId == 1 || username.rollId == 2
-                  ? "Admin"
-                  : username.rollId == 8
-                  ? "General Manager"
-                  : username.rollId}
+                {/* {role[0]} */}
               </span>
             </span>
           </span>
         </Dropdown.Toggle>
         <Dropdown.Menu className="dropdown-menu-end">
           <h6 className="dropdown-header">Welcome {username.name}!</h6>
-          {/* <Dropdown.Item href="/pages/profile/page">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Profile</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/#!">
-            <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Messages</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/#!">
-            <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Taskboard</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/pages/faqs">
-            <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Help</span>
-          </Dropdown.Item> */}
+
           <div className="dropdown-divider"></div>
-          {/* <Dropdown.Item href="/pages/profile/page">
-            <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">
-              Balance : <b>$8451.36</b>
-            </span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/pages/profile/settings">
-            <span className="badge bg-success-subtle text-success mt-1 float-end">
-              New
-            </span>
-            <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Settings</span>
-          </Dropdown.Item>
-          <Dropdown.Item href="/auth-pages/lockscreen/lockscreen-basic">
-            <i className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Lock screen</span>
-          </Dropdown.Item> */}
+
           <Dropdown.Item href="/auth/logout">
             <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{" "}
             <span

@@ -3,7 +3,13 @@ import { useSelector } from "react-redux";
 import { token } from "./token";
 import Swal from "sweetalert2";
 
-const Factory = async (method: any, setter: any, url: string, body: any) => {
+const Factory = async (
+  method: any,
+
+  setter: any,
+  url: string,
+  body: any
+) => {
   if (method === "GET") {
     const options = {
       method: method,

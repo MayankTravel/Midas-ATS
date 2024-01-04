@@ -405,7 +405,6 @@ const AssignedJobs = () => {
           ? element.jobsFeedsSet
           : [];
       for (var x of jobsFeeeds) {
-        console.log(x.finalUserAssignee);
         if (obj.rollId === 6) {
           userdata
             .filter((item: any) => item.id === x.finalUserAssignee)
@@ -497,10 +496,9 @@ const AssignedJobs = () => {
       setUserCurrent(obj);
       setUserObj(obj);
     }
-    fetchAllUser(dispatch);
+    dispatch(fetchAllUser());
     dispatch(getAssignedJobByoMe());
     dispatch(getAssignedJobsToMe());
-    // AmParent();
   }, []);
   return (
     <React.Fragment>

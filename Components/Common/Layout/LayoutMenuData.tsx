@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { user } from "Components/interface/user";
 const Navdata = () => {
-  //state data
+  // state data
   const [isAuth, setIsAuth] = useState(false);
+  const [hrms, setHrms] = useState(false);
   const [isPages, setIsPages] = useState(false);
   const [isMultiLevel, setIsMultiLevel] = useState(false);
   const [isVms, setIsVms] = useState(false);
@@ -14,7 +15,7 @@ const Navdata = () => {
   const [isClient, setIsClient] = useState(false);
   const [isFacility, setIsFacility] = useState(false);
   const [user, setUser] = useState(false);
-  // Authentication
+  //  Authentication
   const [isSignIn, setIsSignIn] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPasswordReset, setIsPasswordReset] = useState(false);
@@ -25,10 +26,10 @@ const Navdata = () => {
   const [isVMSHrms, setIsVMSHRMS] = useState(false);
   const [isError, setIsError] = useState(false);
   const [userObj, setUserobj] = useState<any>({});
-  // Pages
+  //  Pages
   const [isProfile, setIsProfile] = useState(false);
 
-  // Multi Level
+  //  Multi Level
   const [isLevel1, setIsLevel1] = useState(false);
   const [isLevel2, setIsLevel2] = useState(false);
 
@@ -87,7 +88,7 @@ const Navdata = () => {
       document.body.classList.add("twocolumn-panel");
     }
     if (isCurrentState === "Components") {
-      Router.push("https://hybrix-nextjs-components.vercel.app/");
+      Router.push("https:hybrix-nextjs-components.vercel.app/");
       document.body.classList.add("twocolumn-panel");
     }
     if (localStorage.getItem("currentrole")) {
@@ -95,6 +96,7 @@ const Navdata = () => {
       setUserobj(obj[0]);
     }
   }, [isCurrentState, isAuth, isPages, isMultiLevel]);
+
   const menuItems: any =
     userObj.role === "SUPERADMIN" || userObj.role === "ADMIN"
       ? [
@@ -250,32 +252,7 @@ const Navdata = () => {
               },
             ],
           },
-          {
-            id: "projects",
-            label: "Projects",
-            icon: "ri-file-list-3-line",
-            link: "/#",
-            click: function (e: any) {
-              e.preventDefault();
-              setIsProjects(!isProjects);
-              setIsCurrentState("Stats");
-              updateIconSidebar(e);
-            },
-            stateVariables: isProjects,
-            subItems: [
-              {
-                id: "manageProjects",
-                label: "Manage Projects",
-                link: "/projects/manage-projects",
-                click: function (e: any) {
-                  e.preventDefault();
-                  setIsSignIn(!isSignIn);
-                },
-                parentId: "projects",
-                stateVariables: isSignIn,
-              },
-            ],
-          },
+
           {
             id: "client",
             label: "Clients",
@@ -624,40 +601,53 @@ const Navdata = () => {
               },
             ],
           },
+        ]
+      : userObj.role === "MODERATOR"
+      ? [
           {
-            id: "projects",
-            label: "Projects",
-            icon: "ri-file-list-3-line",
+            id: "user",
+            label: "Users",
+            icon: "bi bi-person-circle ",
             link: "/#",
             click: function (e: any) {
               e.preventDefault();
-              setIsProjects(!isProjects);
-              setIsCurrentState("Stats");
+              setUser(!user);
+              setIsCurrentState("User");
               updateIconSidebar(e);
             },
-            stateVariables: isProjects,
+            stateVariables: user,
             subItems: [
               {
-                id: "manageProjects",
-                label: "Manage Projects",
-                link: "/projects/manage-projects",
+                id: "adduser",
+                label: "Add-Users",
+                link: "/users/add-user",
                 click: function (e: any) {
                   e.preventDefault();
                   setIsSignIn(!isSignIn);
                 },
-                parentId: "projects",
+                parentId: "user",
                 stateVariables: isSignIn,
+              },
+              {
+                id: "viewuser",
+                label: "View-Users",
+                link: "/users/view-user",
+                click: function (e: any) {
+                  e.preventDefault();
+                  setIsSignUp(!isSignUp);
+                },
+                parentId: "user",
+                stateVariables: isSignUp,
               },
             ],
           },
         ]
-      : [];
-  return <React.Fragment>{menuItems}</React.Fragment>;
-};
-export default Navdata;
-
-/* userObj.rollId === "RECRUITER"
+      : userObj.role === "GENERALMANAGER"
       ? [
+          {
+            label: "Menu",
+            isHeader: true,
+          },
           {
             id: "dashboard",
             label: "Dashboard",
@@ -668,7 +658,6 @@ export default Navdata;
               setIsCurrentState("Dashboard");
             },
           },
-
           {
             id: "jobs",
             label: "Jobs",
@@ -683,6 +672,17 @@ export default Navdata;
             stateVariables: isAuth,
             subItems: [
               {
+                id: "client",
+                label: "Client-Jobs",
+                link: "/jobs/client",
+                click: function (e: any) {
+                  e.preventDefault();
+                  setIsSignIn(!isSignIn);
+                },
+                parentId: "jobs",
+                stateVariables: isSignIn,
+              },
+              {
                 id: "allJobs",
                 label: "All-Jobs",
                 link: "/jobs/all-feeds",
@@ -694,9 +694,9 @@ export default Navdata;
                 stateVariables: isSignUp,
               },
               {
-                id: "assignedManager",
-                label: "Assigned Jobs",
-                link: "/jobs/manager",
+                id: "assignedJobs",
+                label: "Assigned-Jobs",
+                link: "/jobs/assigned",
                 click: function (e: any) {
                   e.preventDefault();
                   setIsSignUp(!isSignUp);
@@ -707,4 +707,7 @@ export default Navdata;
             ],
           },
         ]
-      : */
+      : [];
+  return <React.Fragment>{menuItems}</React.Fragment>;
+};
+export default Navdata;

@@ -54,7 +54,6 @@ const Dashboard = () => {
           .map((ite: any) => ite)
       : [];
 
-
   const columns = useMemo<MRT_ColumnDef<Jobs>[]>(
     () => [
       {

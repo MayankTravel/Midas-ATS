@@ -458,7 +458,6 @@ const ManagerJobs = () => {
     ],
     []
   );
-  
 
   if (account_manager.length !== 0) {
     for (let index = 0; index < account_manager.length; index++) {
@@ -542,7 +541,7 @@ const ManagerJobs = () => {
       setUserCurrent(obj);
       setUserObj(obj);
     }
-    fetchAllUser(dispatch);
+    dispatch(fetchAllUser());
 
     const managerJobs = async () => {
       try {

@@ -1,7 +1,19 @@
+/* Live */
 export const hrms_api_host = "http://44.213.229.250:8077";
-// export const job_api_host = "http://34.230.215.187:9291/api";
-export const job_api_host = "http://10.0.0.99:9291/api";
-export const redirect = "http://localhost:3000/auth/reset-password/";
+export const job_api_host = "http://34.230.215.187:9291/api";
+export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
+
+/* LOCAL */
+
+/* Dheeraj Sir */
+// export const job_api_host = "http://10.0.0.99:9291/api";
+// export const hrms_api_host = "http://10.0.0.99:8077";
+// export const redirect = "http://localhost:3000/auth/reset-password/";
+
+/* Own */
+// export const job_api_host = "http://localhost:9291/api";
+// export const hrms_api_host = "http://10.0.0.101:8077";
+// export const redirect = "http://localhost:3000/auth/reset-password/";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
@@ -9,7 +21,7 @@ export const POST_FAKE_REGISTER = "/post-fake-register";
 //LOGIN
 export const POST_LOGIN = "/api/v1/user/authenticate";
 export const POST_FAKE_JWT_LOGIN = "/post-jwt-login";
-export const POST_RESET_ = "/v1/user";
+export const POST_RESET_ = "/api/v1/user";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
 export const SOCIAL_LOGIN = "/social-login";
@@ -94,6 +106,9 @@ export const ORGANISATION = "/api/v1/organisation";
 
 // Employee Config
 export const EMPLOYEE = "/api/v1/employee";
+export const ADDEMPLOYEE = "/api/v1/employee/saveEmployee";
+export const POST_DOCUMENT = "/api/v1/employee/uploadFile";
+export const GET_DOCUMENT = "/api/v1/employee/getDocsByEmployeeId";
 
 //VMS Config
 export const POST_VMS = "/api/v1/vms";
@@ -103,6 +118,7 @@ export const CLIENT = "/api/v1/client";
 
 //Project Config
 export const PROJECT = "/api/v1/project";
+export const GET_PROJECT = "/api/v1/project/getProjectByEmployeeId";
 
 //Facility Config
 export const FACILITY = "/api/v1/facility";

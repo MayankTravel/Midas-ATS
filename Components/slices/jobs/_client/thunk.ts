@@ -23,6 +23,7 @@ import {
 } from "../_assigned/reducers";
 
 export const clientJobs = (assigntouser: any) => async (dispatch: any) => {
+  console.log(assigntouser);
   if (
     assigntouser.length === 0 ||
     assigntouser == null ||

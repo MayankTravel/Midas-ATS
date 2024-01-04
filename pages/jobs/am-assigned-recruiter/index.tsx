@@ -12,11 +12,9 @@ const index = () => {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
       setUserCurrent(obj);
     }
-    fetchAllUser(dispatch);
+    dispatch(fetchAllUser());
     // AmParent();
   }, []);
-  console.log(userCurrent);
-  console.log(userdata);
   return (
     <div>
       <Recruiter

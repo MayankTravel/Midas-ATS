@@ -11,7 +11,6 @@ import {
   MRT_ToggleFiltersButton,
 } from "material-react-table";
 import {
-
   Box,
   Button,
   Card,
@@ -39,7 +38,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { deleteVMS, submitAssignedPayload } from "Components/slices/vms/thunk";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { api_is_loading } from "Components/slices/vms/reducers";
 
 const Assigned_VMS = () => {
   var rows: any[] = [];
@@ -106,26 +104,38 @@ const Assigned_VMS = () => {
 
   useEffect(() => {
     dispatch(fetchAllAssignedVms());
-    fetchAllUser(dispatch);
+    dispatch(fetchAllUser());
   }, []);
-  const AccountManager = userdata
-    .filter((ite: any) => ite.rollId == "7")
-    .map((item: any) => item);
+  var rolesArray: any = [];
 
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     var name = "";
+
     userdata
-      .filter((item: any) => item.id == element.accountManager)
+      .filter((item: any) => item.id === element.accountManager)
       .map((ite: any) => {
-        return (name = ite.name);
+        return (name = ite.fullName);
       });
+
     rows.push({
       ...element,
       accountManager: name,
     });
   }
 
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+
+    for (var role of element.roles) {
+      rolesArray.push({ ...element, roles: role.id });
+    }
+  }
+
+  const AccountManager = rolesArray.filter(
+    (ite: any) => ite.roles === "658472f94b18126ca69a4927"
+  );
+  console.log(data);
   const active_vms = [
     "AHSA",
     "FieldGlass",
@@ -166,6 +176,7 @@ const Assigned_VMS = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
   return (
     <React.Fragment>
       <Head>
@@ -174,7 +185,7 @@ const Assigned_VMS = () => {
 
       <div className="page-content">
         <Container fluid>
-        <Alert variant="error">{isError} </Alert>
+          <Alert variant="error">{isError} </Alert>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -201,7 +212,7 @@ const Assigned_VMS = () => {
                           );
                           validation.setFieldValue(
                             "accountManagerName",
-                            item.target.value.name
+                            item.target.value.fullName
                           );
                         }}
                       />
@@ -234,8 +245,10 @@ const Assigned_VMS = () => {
                     type="submit"
                   >
                     {isLoading == true ? (
-                     <div className="spinner-border text-light" role="status">
-                   </div>
+                      <div
+                        className="spinner-border text-light"
+                        role="status"
+                      ></div>
                     ) : (
                       "Submit"
                     )}
@@ -252,7 +265,6 @@ const Assigned_VMS = () => {
             </Card>
           </Form>
           <div className="main-table-content">
-
             <Material
               columns={columns}
               data={rows}

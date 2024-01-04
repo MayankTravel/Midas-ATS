@@ -4,6 +4,7 @@ import {
   GET_ALL_USER,
   MAIL,
   POST_NEW_USER,
+  POST_RESET_,
   hrms_api_host,
   job_api_host,
   redirect,
@@ -18,6 +19,7 @@ import {
 } from "./reducers";
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
+import { apiError } from "../auth/login/reducer";
 
 export const fetchAllUser = () => async (dispatch: any) => {
   try {
@@ -93,7 +95,7 @@ export const MailSent = (values: any, router: any) => async (dispatch: any) => {
       name: values.fullName,
       link: `${redirect}${values.id}`,
     };
-    console.log(body);
+
     const fetch: any = await Factory("POST", setter, url, body);
     if (fetch.status === "OK") {
       dispatch(api_is_userdata_success(fetch));
@@ -109,17 +111,16 @@ export const MailSent = (values: any, router: any) => async (dispatch: any) => {
 
 export const EditNewUser =
   (values: any, router: any) => async (dispatch: any) => {
-    console.log(values);
     try {
       var setter: any = [];
       const url = `${hrms_api_host}${EDIT_USER}`;
       const body = {
-        active: true,
+        active: values.status,
         email: values.email,
         firstName: values.firstName,
         id: values.id,
         lastName: values.lastName,
-        manager: "null",
+        manager: values.manager,
         mobileNumber: JSON.stringify(values.mobileNumber),
         password: values.password,
         profilePicture: "string",
@@ -127,22 +128,50 @@ export const EditNewUser =
         userType: "INTERNAL",
       };
       const fetch: any = await Factory("PATCH", setter, url, body);
-      console.log("fetch:", fetch);
+      console.log("fetch:", JSON.stringify(fetch));
       if (fetch.status === "OK") {
-        console.log(fetch);
         dispatch(api_is_userdata_success(fetch));
-      } else {
-        dispatch(api_is_userdata_error(fetch));
-
-        // Display SweetAlert on success
-        Swal.fire("Success", "User Edit successfully", "success").then(() => {
-          // Redirect using router after user clicks "OK"
+        Swal.fire("Success", "User edited successfully", "success").then(() => {
           router.push("/users/view-user");
         });
+      } else {
+        dispatch(api_is_userdata_error(fetch));
       }
       dispatch(api_is_userdata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_userdata_error(error));
+    }
+  };
+
+export const ResetPassword =
+  (values: any, router: any, id: any) => async (dispatch: any) => {
+    console.log("API HiT ResetPassword");
+    try {
+      const options: any = {
+        method: "PATCH",
+        url: `${hrms_api_host}${POST_RESET_}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          newPassword: values.password,
+          userId: id,
+        },
+      };
+      const response: any = await axios.request(options);
+      if (response.status === "OK") {
+        Swal.fire(
+          "Success",
+          "Password has been reset successfully ",
+          "success"
+        ).then(() => {
+          // Redirect using router after user clicks "OK"
+          router.push("/auth/login", undefined, { shallow: true });
+        });
+      }
+      return response;
+    } catch (error) {
+      dispatch(apiError(error));
     }
   };

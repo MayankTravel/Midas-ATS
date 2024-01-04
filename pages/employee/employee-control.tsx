@@ -9,11 +9,11 @@ import { data } from "@common/data/fakeTableData";
 import Link from "next/link";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployee } from "Components/slices/employee/thunk";
 import { useRouter } from "next/router";
 import Loader2 from "@common/Loader2";
 import { is_selected_success } from "Components/slices/employee/reducers";
 import { LAYOUT_MODE_TYPES } from "../../Components/Common/constants/layout";
+import { fetchEmployee } from "Components/slices/employee/thunk";
 
 const EmployeeControl = () => {
   const router = useRouter();
@@ -69,6 +69,7 @@ const EmployeeControl = () => {
           className="cursor-pointer"
           title="Edit"
           onClick={() => {
+            console.log("row:", row);
             dispatch(is_selected_success(row));
             router.push(`/employee/edit-employee`);
           }}
@@ -84,16 +85,28 @@ const EmployeeControl = () => {
       sortable: true,
       width: "100px",
       cell: (row: any) => (
-        <span
-          className="cursor-pointer"
-          title="See Project"
-          // onClick={() => router.push(`/employee/edit-employee?${row.id}`)}
-        >
-          <i
-            style={{ fontSize: "20px", marginLeft: "10px" }}
-            className="bi bi-eye-fill"
-          ></i>
-        </span>
+        <>
+          <span
+            className="cursor-pointer"
+            title="See Project"
+            onClick={() => router.push(`/projects/view/${row.id}`)}
+          >
+            <i
+              style={{ fontSize: "20px", marginLeft: "10px" }}
+              className="bi bi-eye-fill"
+            ></i>
+          </span>
+          <span
+            className="cursor-pointer"
+            title="See Project"
+            onClick={() => router.push(`/projects/add/${row.id}`)}
+          >
+            <i
+              style={{ fontSize: "20px", marginLeft: "10px" }}
+              className="bi bi-plus-square-fill"
+            ></i>
+          </span>
+        </>
       ),
     },
     {
@@ -104,7 +117,7 @@ const EmployeeControl = () => {
         <span
           className="cursor-pointer"
           title="Upload document"
-          // onClick={() => router.push(`/employee/edit-employee?${row.id}`)}
+          onClick={() => router.push(`/document/${row.id}`)}
         >
           <i
             style={{ fontSize: "20px", marginLeft: "20px" }}

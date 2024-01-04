@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 4001",
+    "start": "next start -p 6001",
     "lint": "next lint",
     "export": "next export"
   },
@@ -68,6 +68,7 @@
     "react-i18next": "^13.5.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^8.1.3",
+    "react-select": "^5.8.0",
     "react-table": "^7.8.0",
     "react-toastify": "^9.1.3",
     "recharts": "^2.10.3",
