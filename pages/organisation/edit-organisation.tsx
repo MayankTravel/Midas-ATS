@@ -19,8 +19,9 @@ const EditOrganisation = () => {
   const router = useRouter();
   var userid = authData().id;
 
-  const { selectedorganisation } = useSelector((state: any) => ({
+  const { selectedorganisation, isLoading } = useSelector((state: any) => ({
     selectedorganisation: state.organisationdata.selectedorganisation,
+    isLoading: state.organisationdata.isLoading,
   }));
 
   const formik: any = useFormik({
@@ -34,12 +35,10 @@ const EditOrganisation = () => {
       website: Yup.string().required("Website is required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewOrganisation(values, router));
     },
   });
-
-  console.log(selectedorganisation);
-  const { errors } = formik;
 
   return (
     <React.Fragment>
@@ -93,7 +92,7 @@ const EditOrganisation = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Edit Organisation
                 </Button>
               </Col>

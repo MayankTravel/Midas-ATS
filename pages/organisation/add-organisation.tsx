@@ -29,6 +29,7 @@ const AddOrganisation = () => {
       website: Yup.string().required("Website is required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewOrganisation(values, router));
     },
   });

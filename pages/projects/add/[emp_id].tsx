@@ -15,7 +15,7 @@ import { fetchOrganisation } from "Components/slices/organisation/thunk";
 
 const AddProjects = (props: any) => {
   const { emp_id } = props;
-  console.log(props);
+
   const router = useRouter();
   const dispatch: any = useDispatch();
   const { organisationdata, facilitydata, isLoading } = useSelector(
@@ -106,6 +106,7 @@ const AddProjects = (props: any) => {
       travelAllowance: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewProject(values, router));
     },
   });
@@ -434,7 +435,6 @@ AddProjects.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps = (context: any) => {
   const { emp_id } = context.query;
-
 
   return {
     props: { emp_id },

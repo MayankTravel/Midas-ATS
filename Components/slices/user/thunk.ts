@@ -81,11 +81,14 @@ export const AddNewUser =
           router.push("/users/view-user");
         });
       } else {
-        dispatch(api_is_userdata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
 
         // Display SweetAlert on success
       }
-      dispatch(api_is_userdata_loading(false));
     } catch (error) {
       console.log(error);
       dispatch(api_is_userdata_error(error));
@@ -147,7 +150,8 @@ export const EditNewUser =
           router.push("/users/view-user");
         });
       } else {
-        dispatch(api_is_userdata_error(fetch));
+        dispatch(api_is_userdata_loading(false));
+        Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {
       console.log(error);
@@ -178,6 +182,12 @@ export const ResetPassword =
         ).then(() => {
           // Redirect using router after user clicks "OK"
           router.push("/auth/login", undefined, { shallow: true });
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response.errors,
+          timer: 2000,
         });
       }
       return response;

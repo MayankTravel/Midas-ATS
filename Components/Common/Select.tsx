@@ -24,6 +24,7 @@ const MenuProps = {
 export default function Select_Comp(props: any) {
   const { data, input, label, multiple, onChange, onBlur, name, value } = props;
   const [personName, setPersonName] = React.useState<string[]>([]);
+  
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
       target: { value },

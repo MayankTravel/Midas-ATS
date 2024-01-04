@@ -67,6 +67,7 @@ const AddEmployee = () => {
         .max(10, "Contact Number should not be long more than 10 digits"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewEmployee(values, router));
     },
   });
@@ -127,7 +128,7 @@ const AddEmployee = () => {
                 </span>
               </Col>
 
-              <Col lg={4} xs={4} className="mt-3">
+              <Col lg={4} xs={4}>
                 <FormLabel for="address" labelname="Address" />
                 <FormInput
                   inpType="text"

@@ -45,6 +45,7 @@ const EditFacility = (props: any) => {
       vmsId: Yup.string().required("Please Choose VMS"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       const editedValue = {
         ...values,
         id: selectedrow.id,

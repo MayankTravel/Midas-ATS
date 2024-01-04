@@ -42,6 +42,7 @@ const AddFacility = () => {
       vmsId: Yup.string().required("Please Choose VMS"),
     }),
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(AddNewFacility(values, router));
     },
   });

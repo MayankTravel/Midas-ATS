@@ -80,8 +80,8 @@ const ViewFacility = () => {
             title="Delete"
             onClick={() => {
               Swal.fire({
-                title: "Delete VMS?",
-                text: `Are you sure you want to delete the vms?`,
+                title: "Delete Facility?",
+                text: `Are you sure you want to delete the facility?`,
               }).then(() => dispatch(deteleFacility(row.id)));
             }}
           >

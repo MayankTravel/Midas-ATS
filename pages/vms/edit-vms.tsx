@@ -28,10 +28,8 @@ const EditVMS = () => {
       id: selectedvms.id,
       name: selectedvms.name,
       url: selectedvms.url,
-      orgCode: selectedvms.orgCode,
-      password: selectedvms.password,
-      parentOrganization: selectedvms.organisation?.id,
     },
+
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       url: Yup.string().required("URL is required"),
@@ -39,7 +37,9 @@ const EditVMS = () => {
       password: Yup.string().required("Password is required"),
       parentOrganization: Yup.string().required("Required"),
     }),
+
     onSubmit: (values) => {
+      formik.resetForm();
       dispatch(EditNewVMS(values, router));
     },
   });
@@ -76,70 +76,7 @@ const EditVMS = () => {
                 </span>
               </Col>
 
-              <Col lg={4} xs={4}>
-                <FormLabel for="orgCode" labelname="Org Code" />
-                <FormInput
-                  inpType="text"
-                  inpchange={formik.handleChange}
-                  inpId="orgCode"
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.orgCode}
-                  inpPlaceholder="Enter your Org Code"
-                />
-                <span className="text-danger">
-                  {formik.touched.orgCode && formik.errors.orgCode ? (
-                    <div className="text-danger">{formik.errors.orgCode}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col lg={4} xs={4}>
-                <FormLabel for="password" labelname="Password" />
-                <FormInput
-                  inpType="password"
-                  inpchange={formik.handleChange}
-                  inpId="password"
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.password}
-                  inpPlaceholder="Enter Password"
-                />
-                <span className="text-danger">
-                  {formik.touched.password && formik.errors.password ? (
-                    <div className="text-danger">{formik.errors.password}</div>
-                  ) : null}
-                </span>
-              </Col>
-              <Col className="mt-3" lg={6} xs={6}>
-                <FormLabel
-                  for="organisationName"
-                  labelname="Parent Organization"
-                />
-
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  name="parentOrganization"
-                  value={formik.values.parentOrganization}
-                >
-                  {organisationdata
-                    .filter(
-                      (ite: any) => ite.id === selectedvms.organisation?.id
-                    )
-                    .map((item: any) => (
-                      <option selected>(Current) : {item.name}</option>
-                    ))}
-
-                  <option>Open this to select</option>
-
-                  {organisationdata.map((item: any) => {
-                    return <option value={item.id}>{item.name}</option>;
-                  })}
-                </select>
-              </Col>
-
-              <Col className="mt-3" lg={6} xs={6}>
+              <Col lg={6} xs={6}>
                 <FormLabel for="url" labelname="URL" />
                 <FormInput
                   inpType="text"

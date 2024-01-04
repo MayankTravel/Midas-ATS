@@ -45,7 +45,8 @@ export const AddNewFacility =
           }
         );
       } else {
-        dispatch(api_is_facilitydata_error(fetch));
+         dispatch(api_is_facilitydata_loading(false));
+        Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {
       console.log(error);
@@ -84,7 +85,11 @@ export const EditedFacility =
           }
         );
       } else {
-        dispatch(api_is_facilitydata_error(fetch));
+        Swal.fire({
+          title: "Error",
+          text: fetch.errors,
+          timer: 2000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -97,7 +102,7 @@ export const deteleFacility = (id: any) => async (dispatch: any) => {
     var setter: any = [];
     const url = `${hrms_api_host}${FACILITY}/${id}`;
     const fetch: any = await Factory("DELETE", setter, url, {});
-    console.log(fetch);
+
     if (fetch.status === "OK") {
       dispatch(fetchFacilty());
     }
