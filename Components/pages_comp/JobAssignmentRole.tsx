@@ -70,7 +70,7 @@ const JobAssignmentRole = (props: any) => {
   };
 
   useEffect(() => handleCheckuser(), []);
-  const recruiterOptions =
+  const recruiterOptions: any =
     user[0].role === "RECRUITER"
       ? recruiterData.filter((item: any) => item.managerId === user[0].id)
       : user[0].role == "ACCOUNTMANAGER"

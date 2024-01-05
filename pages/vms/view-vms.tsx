@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 const ViewVMS = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
+  const [currentRole, setCurrentRole] = useState<any>([]);
+
   const { isLoading, vmsdata } = useSelector((state: any) => ({
     isLoading: state.VMS.isLoading,
     vmsdata: state.VMS.vmsdata,
@@ -58,32 +60,40 @@ const ViewVMS = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          <span
-            className="cursor-pointer"
-            title="Delete"
-            onClick={() => {
-              Swal.fire({
-                title: "Delete VMS?",
-                text: `Are you sure you want to delete the vms?`,
-                showCancelButton: true,
-                showCloseButton: true,
-              }).then((results) => {
-                if (results.isConfirmed) {
-                  dispatch(deteleVMS(row.id));
-                }
-              });
-            }}
-          >
-            <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "15px" }}
-              className="bi bi-trash"
-            ></i>
-          </span>
+          {currentRole[0].role === "SUPERADMIN" && (
+            <span
+              className="cursor-pointer"
+              title="Delete"
+              onClick={() => {
+                Swal.fire({
+                  title: "Delete VMS?",
+                  text: `Are you sure you want to delete the vms?`,
+                  showCancelButton: true,
+                  showCloseButton: true,
+                }).then((results) => {
+                  if (results.isConfirmed) {
+                    dispatch(deteleVMS(row.id));
+                  }
+                });
+              }}
+            >
+              <i
+                style={{ fontSize: "18px", color: "red", marginLeft: "15px" }}
+                className="bi bi-trash"
+              ></i>
+            </span>
+          )}
         </>
       ),
     },
   ];
 
+  useEffect(() => {
+    if (localStorage.getItem("currentrole")) {
+      var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
+      setCurrentRole(currentRole);
+    }
+  }, []);
   return (
     <React.Fragment>
       <Head>

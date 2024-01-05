@@ -23,6 +23,8 @@ import Swal from "sweetalert2";
 const ViewOrganisation = () => {
   const dispatch: any = useDispatch();
   const router = useRouter();
+  const [currentRole, setCurrentRole] = useState<any>([]);
+
   const { organisationdata } = useSelector(
     (state: any) => state.organisationdata
   );
@@ -67,32 +69,38 @@ const ViewOrganisation = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          <span
-            className="cursor-pointer"
-            onClick={() => {
-              Swal.fire({
-                title: "Delete Organisation?",
-                text: `Are you sure you want to delete the organisation?`,
-                showCancelButton: true,
-                showCloseButton: true,
-              }).then((results) => {
-                if (results.isConfirmed) {
-                  dispatch(deteleOrganisation(row.id));
-                }
-              });
-            }}
-          >
-            <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
-              className="bi bi-trash"
-            ></i>
-          </span>
+          {currentRole[0].role === "SUPERADMIN" && (
+            <span
+              className="cursor-pointer"
+              onClick={() => {
+                Swal.fire({
+                  title: "Delete Organisation?",
+                  text: `Are you sure you want to delete the organisation?`,
+                  showCancelButton: true,
+                  showCloseButton: true,
+                }).then((results) => {
+                  if (results.isConfirmed) {
+                    dispatch(deteleOrganisation(row.id));
+                  }
+                });
+              }}
+            >
+              <i
+                style={{ fontSize: "18px", color: "red", marginLeft: "5px" }}
+                className="bi bi-trash"
+              ></i>
+            </span>
+          )}
         </>
       ),
     },
   ];
 
   useEffect(() => {
+    if (localStorage.getItem("currentrole")) {
+      var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
+      setCurrentRole(currentRole);
+    }
     dispatch(fetchOrganisation());
   }, []);
   return (

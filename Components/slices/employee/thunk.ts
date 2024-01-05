@@ -1,6 +1,8 @@
 import {
   ADDEMPLOYEE,
+  DELETE_EMPLOYEE_DOCS,
   EMPLOYEE,
+  GET_ACCESS_TOKEN,
   GET_ALL_USER,
   GET_DOCUMENT,
   POST_DOCUMENT,
@@ -79,6 +81,7 @@ export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
     const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
     dispatch(api_is_employeedata_loading(true));
     const fetch: any = await Factory("GET", setter, url, {});
+    console.log("fetch:", fetch);
     if (fetch.status === "OK") {
       dispatch(api_is_employeedata_loading(false));
       dispatch(is_doc_success(fetch));
@@ -182,6 +185,40 @@ export const PostDocument =
     } catch (error) {
       console.log(error);
       dispatch(api_is_employeedata_error(error));
+    }
+  };
+export const GetAccessToken =
+  (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_employeedata_loading(true));
+
+    try {
+      dispatch(api_is_employeedata_loading(true));
+      var setter: any = [];
+      const url = `${hrms_api_host}${GET_ACCESS_TOKEN}`;
+      dispatch(api_is_employeedata_loading(true));
+      const fetch: any = await Factory("GET", setter, url, {});
+      if (fetch.status === "OK") {
+        dispatch(api_is_employeedata_loading(false));
+      } else {
+        dispatch(api_is_employeedata_loading(false));
+      }
+    } catch (error) {
+      dispatch(api_is_employeedata_error(error));
+    }
+  };
+export const DeleteDocument =
+  (id: any, empId: any) => async (dispatch: any) => {
+    dispatch(api_is_employeedata_loading(true));
+    try {
+      var setter: any = [];
+      const url = `${hrms_api_host}${DELETE_EMPLOYEE_DOCS}/${id}`;
+      const fetch: any = await Factory("DELETE", setter, url, {});
+
+      if (fetch.status === "OK") {
+        dispatch(fetchEmployeeDoc(empId));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -109,6 +109,8 @@ export const EMPLOYEE = "/api/v1/employee";
 export const ADDEMPLOYEE = "/api/v1/employee/saveEmployee";
 export const POST_DOCUMENT = "/api/v1/employee/uploadFile";
 export const GET_DOCUMENT = "/api/v1/employee/getDocsByEmployeeId";
+export const GET_ACCESS_TOKEN = "/api/v1/employee//getAccessToken";
+export const DELETE_EMPLOYEE_DOCS = "/api/v1/employee/deleteEmployeeDocument";
 
 //VMS Config
 export const POST_VMS = "/api/v1/vms";
