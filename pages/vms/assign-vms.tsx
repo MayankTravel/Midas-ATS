@@ -117,7 +117,7 @@ const Assigned_VMS = () => {
       .map((ite: any) => {
         return (name = ite.fullName);
       });
-
+      
     rows.push({
       ...element,
       accountManager: name,
@@ -135,7 +135,6 @@ const Assigned_VMS = () => {
   const AccountManager = rolesArray.filter(
     (ite: any) => ite.roles === "658472f94b18126ca69a4927"
   );
-  console.log(data);
   const active_vms = [
     "AHSA",
     "FieldGlass",
