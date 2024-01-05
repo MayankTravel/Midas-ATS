@@ -68,10 +68,8 @@ export const AddNewUser =
 
       const fetch: any = await Factory("POST", setter, url, body);
       if (fetch.status === "OK") {
-        dispatch(api_is_userdata_success(fetch));
         dispatch(MailSent(fetch.payload, router));
         dispatch(api_is_userdata_loading(false));
-
         Swal.fire(
           "Success",
           "User added successfully and activation mail has been send to user e-mail address",
@@ -84,7 +82,7 @@ export const AddNewUser =
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
 
         // Display SweetAlert on success
@@ -122,7 +120,6 @@ export const EditNewUser =
   (values: any, router: any) => async (dispatch: any) => {
     try {
       dispatch(api_is_userdata_loading(true));
-
       var setter: any = [];
       const url = `${hrms_api_host}${EDIT_USER}`;
       const body = {
@@ -132,20 +129,17 @@ export const EditNewUser =
         id: values.id,
         lastName: values.lastName,
         manager: values.manager,
-        mobileNumber: JSON.stringify(values.mobileNumber),
+        mobileNumber: values.mobileNumber,
         password: values.password,
         profilePicture: "string",
         roles: values.roles,
         userType: "INTERNAL",
       };
       dispatch(api_is_userdata_loading(true));
-
       const fetch: any = await Factory("PATCH", setter, url, body);
       dispatch(api_is_userdata_loading(true));
-
       if (fetch.status === "OK") {
         dispatch(api_is_userdata_loading(false));
-        dispatch(api_is_userdata_success(fetch));
         Swal.fire("Success", "User edited successfully", "success").then(() => {
           router.push("/users/view-user");
         });
@@ -155,7 +149,6 @@ export const EditNewUser =
       }
     } catch (error) {
       console.log(error);
-      dispatch(api_is_userdata_error(error));
     }
   };
 
@@ -187,7 +180,7 @@ export const ResetPassword =
         Swal.fire({
           title: "Error",
           text: response.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
       return response;

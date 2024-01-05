@@ -73,7 +73,13 @@ const ViewOrganisation = () => {
               Swal.fire({
                 title: "Delete Organisation?",
                 text: `Are you sure you want to delete the organisation?`,
-              }).then(() => dispatch(deteleOrganisation(row.id)));
+                showCancelButton: true,
+                showCloseButton: true,
+              }).then((results) => {
+                if (results.isConfirmed) {
+                  dispatch(deteleOrganisation(row.id));
+                }
+              });
             }}
           >
             <i
@@ -92,11 +98,11 @@ const ViewOrganisation = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>View Users | Midas - HRMS</title>
+        <title>View Organisation | Midas - HRMS</title>
       </Head>
 
       <div className="page-content">
-        <Breadcrumb breadcrumbItem="View User" breadcrumb="Dashboard" />
+        <Breadcrumb breadcrumbItem="View Organisation" breadcrumb="Dashboard" />
         <Container fluid={true}>
           {isLoading === true ? (
             <Loader2 />

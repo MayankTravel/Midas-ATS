@@ -11,6 +11,7 @@ import {
   api_is_employeedata_error,
   api_is_employeedata_loading,
   api_is_employeedata_success,
+  is_doc_success,
 } from "./reducers";
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
@@ -78,9 +79,10 @@ export const fetchEmployeeDoc = (id: any) => async (dispatch: any) => {
     const url = `${hrms_api_host}${GET_DOCUMENT}/${id}`;
     dispatch(api_is_employeedata_loading(true));
     const fetch: any = await Factory("GET", setter, url, {});
-
     if (fetch.status === "OK") {
-      dispatch(api_is_employeedata_success(fetch));
+      dispatch(api_is_employeedata_loading(false));
+      dispatch(is_doc_success(fetch));
+    } else {
       dispatch(api_is_employeedata_loading(false));
     }
   } catch (error) {
@@ -126,7 +128,7 @@ export const EditedEmployee =
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
     } catch (error) {
@@ -135,15 +137,19 @@ export const EditedEmployee =
   };
 export const PostDocument =
   (values: any, router: any) => async (dispatch: any) => {
+    dispatch(api_is_employeedata_loading(true));
+
     try {
       var form = new FormData();
       var setter: any = [];
       const url = `${hrms_api_host}${POST_DOCUMENT}`;
+      dispatch(api_is_employeedata_loading(true));
 
       form.append("docType", values.docType);
       form.append("file", values.file[0]);
       form.append("expiryDate", moment(values.expiryDate).format("YYYY-MM-DD"));
       form.append("empId", values.empId);
+      dispatch(api_is_employeedata_loading(true));
 
       const options = {
         method: "POST",
@@ -154,20 +160,24 @@ export const PostDocument =
         },
         data: form,
       };
+      dispatch(api_is_employeedata_loading(true));
+
       const fetch_axios = await axios.request(options);
       const response: any = await fetch_axios;
+      dispatch(api_is_employeedata_loading(true));
+
       if (response.status === "OK") {
+        dispatch(api_is_employeedata_loading(false));
+        dispatch(fetchEmployeeDoc(values.empId));
         Swal.fire(
           "Success",
           "Employee Document Uploaded successfully",
           "success"
-        ).then(() => {
-          router.push("#");
-        });
+        );
       } else {
+        dispatch(api_is_employeedata_loading(false));
         Swal.fire("Error ", "Error while uploading document", "error");
       }
-      dispatch(api_is_employeedata_loading(false));
       return response;
     } catch (error) {
       console.log(error);

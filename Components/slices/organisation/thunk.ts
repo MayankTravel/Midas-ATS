@@ -33,13 +33,11 @@ export const AddNewOrganisation =
         website: values.website,
       };
       dispatch(api_is_organisationdata_loading(true));
-
       const fetch: any = await Factory("POST", setter, url, body);
       dispatch(api_is_organisationdata_loading(true));
 
       if (fetch.status === "OK") {
         dispatch(api_is_organisationdata_loading(false));
-
         Swal.fire("Success", "Organisation added successfully", "success").then(
           () => {
             router.push("/organisation/view-organisation");
@@ -49,13 +47,11 @@ export const AddNewOrganisation =
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
     } catch (error: any) {
-      console.error("Response error data:", error);
-      console.error("Response error status:", error);
-      console.error("Response error headers:", error);
+      console.log("Response:", error);
     }
   };
 
@@ -75,7 +71,7 @@ export const EditNewOrganisation =
       };
       dispatch(api_is_organisationdata_loading(true));
 
-      const fetch: any = await Factory("POST", setter, url, body);
+      const fetch: any = await Factory("PATCH", setter, url, body);
       dispatch(api_is_organisationdata_loading(true));
 
       if (fetch.status === "OK") {

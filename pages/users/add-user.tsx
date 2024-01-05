@@ -40,24 +40,19 @@ const AddUser = () => {
     validationSchema: Yup.object({
       firstName: Yup.string().required("First Name is Required"),
       lastName: Yup.string().required("Last Name is Required"),
-      mobileNumber: Yup.string().required("Mobile Number is Required"),
-
+      mobileNumber: Yup.string()
+        .min(10, "Miniumm digits should be 10")
+        .max(10, "Maximum digits should be 10")
+        .required("Mobile Number is Required"),
       email: Yup.string()
-
         .email("Invalid email address")
-
         .required("Email is Required"),
-
       password: Yup.string()
-
         .matches(
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-
           "Must Contain 5 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
         )
-
         .required("Password is required"),
-
       roles: Yup.array().required("Required"),
     }),
 
@@ -65,7 +60,6 @@ const AddUser = () => {
       formik.resetForm();
       // console.log(values);
       dispatch(AddNewUser(values, router));
-      formik.resetForm();
     },
   });
 
@@ -88,11 +82,10 @@ const AddUser = () => {
     const element = userdata[index];
 
     for (var role of element.roles) {
-      rolesArray.push({ ...element, roles: role.id });
+      rolesArray.push({ ...element, roles: role === null ? "" : role.id });
     }
   }
 
-  console.log(userdata);
   return (
     <React.Fragment>
       <Head>

@@ -40,7 +40,6 @@ const PassResetBasic = (props: any) => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      formik.resetForm();
       dispatch(userForgetPassword(values, props.history));
     },
   });

@@ -69,10 +69,12 @@ export const AddNewProject =
           }
         );
       } else {
+        dispatch(api_is_projectdata_loading(false));
+
         Swal.fire({
           title: "Error",
           text: fetch.errors,
-          timer: 2000,
+          timer: 8000,
         });
       }
     } catch (error) {
@@ -119,7 +121,7 @@ export const EditedProject =
           }
         );
       } else {
-         dispatch(api_is_projectdata_loading(false));
+        dispatch(api_is_projectdata_loading(false));
         Swal.fire({ title: "Error", text: fetch.errors, timer: 2000 });
       }
     } catch (error) {

@@ -13,6 +13,7 @@ import { EditedProject } from "Components/slices/project/thunk";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
 import { fetchFacilty } from "Components/slices/facility/thunk";
 import Loader from "@common/Loader";
+import moment from "moment";
 
 const EditProjects = (props: any) => {
   const router = useRouter();
@@ -75,7 +76,7 @@ const EditProjects = (props: any) => {
       id: selecteddata.id,
       billRates: selecteddata.billRates,
       designation: selecteddata.designation,
-      endDate: selecteddata.endDate,
+      endDate: moment(selecteddata.endDate).format("DD-MM-YYYY"),
       facilityId: selecteddata.facility?.id,
       guaranteeHours: selecteddata.guaranteeHours,
       name: selecteddata.name,
@@ -84,7 +85,7 @@ const EditProjects = (props: any) => {
       overTimeRates: selecteddata.overTimeRates,
       payRates: selecteddata.payRates,
       preDeim: selecteddata.preDeim,
-      startDate: selecteddata.startDate,
+      startDate: moment(selecteddata.startDate).format("DD-MM-YYYY"),
       projectStatus: selecteddata.projectStatus,
       timeSheets: selecteddata.timeSheets,
       travelAllowance: selecteddata.travelAllowance,
@@ -126,9 +127,38 @@ const EditProjects = (props: any) => {
               })
             );
           }
+        )
+        .test(
+          "valid-end-date",
+          "End date must be greater than start date",
+          function (value, context) {
+            const { startDate } = context.parent;
+            // Compare start and end dates
+            return (
+              new Date(value) > new Date(startDate) ||
+              this.createError({
+                message: "End date must be greater than start date",
+              })
+            );
+          }
         ),
       billRates: Yup.string().required("Required"),
-      payRates: Yup.string().required("Required"),
+      payRates: Yup.string()
+        .required("Required")
+        .test(
+          "valid-rates",
+          "Pay rates cannot exceed bill rates",
+          function (value, context) {
+            const { billRates } = context.parent;
+            // Compare pay rates and bill rates
+            return (
+              parseFloat(value) <= parseFloat(billRates) ||
+              this.createError({
+                message: "Pay rates cannot exceed Bill rates",
+              })
+            );
+          }
+        ),
       preDeim: Yup.string().required("Required"),
       overTimeRates: Yup.string().required("Required"),
       name: Yup.string().required("Required"),
@@ -143,14 +173,17 @@ const EditProjects = (props: any) => {
   useEffect(() => {
     dispatch(fetchOrganisation());
     dispatch(fetchFacilty());
+    formik.setFieldValue("startDate", selecteddata.startDate);
+    formik.setFieldValue("endDate", selecteddata.endDate);
   }, []);
 
   if (isLoading) {
     return <Loader />;
   } else if (selecteddata === undefined || selecteddata === null) {
+    router.push("/employee/employee-control");
     return (
       <div className="page-content">
-        "Please Select A Project From Project Table"
+        Please Select A Project From Project Table
       </div>
     );
   } else {
@@ -274,11 +307,10 @@ const EditProjects = (props: any) => {
                     onBlur={formik.handleBlur}
                     name="occupationType"
                   >
-                    {" "}
                     <option selected>
                       Current : {selecteddata.occupationType}
                     </option>
-                    <option selected>Open this select menu</option>
+                    <option>Open this select menu</option>
                     {OCCUPATION.map((item, index) => {
                       return <option value={item.value}>{item.label}</option>;
                     })}
@@ -331,7 +363,12 @@ const EditProjects = (props: any) => {
                 </Col>
 
                 <Col className="mt-3" lg={4} xs={4}>
-                  <FormLabel for="Start Date" labelname="Start Date" />
+                  <FormLabel
+                    for="Start Date"
+                    labelname={`Start Date Current: ${moment(
+                      selecteddata.startDate
+                    ).format("DD-MM-YYYY")}`}
+                  />
                   <FormInput
                     inpType="date"
                     inpId="startDate"
@@ -339,6 +376,7 @@ const EditProjects = (props: any) => {
                     inpblur={formik.handleBlur}
                     inpvalue={formik.values.startDate}
                     inpPlaceholder="Enter your Start Date"
+                    defaultValue={selecteddata.startDate}
                   />
                   <span className="text-danger">
                     {formik.touched.startDate && formik.errors.startDate ? (
@@ -350,7 +388,12 @@ const EditProjects = (props: any) => {
                 </Col>
 
                 <Col className="mt-3" lg={4} xs={4}>
-                  <FormLabel for="End Date" labelname="End Date" />
+                  <FormLabel
+                    for="End Date"
+                    labelname={`End Date Current: ${moment(
+                      selecteddata.endDate
+                    ).format("DD-MM-YYYY")}`}
+                  />
                   <FormInput
                     inpType="date"
                     inpId="endDate"

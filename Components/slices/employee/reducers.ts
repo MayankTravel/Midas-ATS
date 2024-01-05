@@ -5,6 +5,7 @@ const initialState = {
   isError: "",
   employeedata: [],
   selected: <any>{},
+  docs: <any>[],
 };
 
 const employeeSlice = createSlice({
@@ -31,6 +32,11 @@ const employeeSlice = createSlice({
       state.isError = "";
       state.selected = action.payload;
     },
+    is_doc_success(state, action) {
+      state.isLoading = false;
+      state.isError = "";
+      state.docs = action.payload.payload;
+    },
   },
 });
 
@@ -39,5 +45,6 @@ export const {
   api_is_employeedata_error,
   api_is_employeedata_success,
   is_selected_success,
+  is_doc_success,
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

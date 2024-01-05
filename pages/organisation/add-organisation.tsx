@@ -18,6 +18,9 @@ const AddOrganisation = () => {
   const dispatch: any = useDispatch();
   const router = useRouter();
   var userid = authData().id;
+  const { isLoading } = useSelector((state: any) => ({
+    isLoading: state.organisationdata.isLoading,
+  }));
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +29,25 @@ const AddOrganisation = () => {
     },
     validationSchema: Yup.object({
       organizationName: Yup.string().required("Organisation Name is required"),
-      website: Yup.string().required("Website is required"),
+      website: Yup.string()
+        .required("Website Url is required")
+        .test(
+          "no-space",
+          "Website Url cannot include a space",
+          function (value) {
+            // Check if the Website includes a space
+            return (
+              !/\s/.test(value) ||
+              this.createError({
+                message: "Website Url cannot include a space",
+              })
+            );
+          }
+        ),
+      // website: Yup.string()
+      //   .trim()
+      //   .matches(urlRegex, "URL cannot contain spaces")
+      //   .required("Website is required"),
     }),
     onSubmit: (values) => {
       formik.resetForm();
@@ -87,7 +108,7 @@ const AddOrganisation = () => {
               </Col>
 
               <Col lg={12} className="mt-4">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isLoading}>
                   Add Organisation
                 </Button>
               </Col>

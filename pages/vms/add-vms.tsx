@@ -15,10 +15,12 @@ import { fetchOrganisation } from "Components/slices/organisation/thunk";
 const AddVMS = () => {
   const router = useRouter();
   const dispatch: any = useDispatch();
+
   const { organisationdata } = useSelector((state: any) => ({
     organisationdata: state.organisationdata.organisationdata,
     isLoading: state.isLoading,
   }));
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -26,10 +28,20 @@ const AddVMS = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
-      url: Yup.string().required("URL is required"),
+      url: Yup.string()
+        .required("Url is required")
+        .test("no-space", "Url cannot include a space", function (value) {
+          // Check if the Website includes a space
+          return (
+            !/\s/.test(value) ||
+            this.createError({
+              message: "Url cannot include a space",
+            })
+          );
+        }),
     }),
     onSubmit: (values) => {
-formik.resetForm();
+      formik.resetForm();
       dispatch(AddNewVMS(values, router));
     },
   });

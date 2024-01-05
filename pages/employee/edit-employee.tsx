@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { EditedEmployee } from "Components/slices/employee/thunk";
 import { fetchProjects } from "Components/slices/project/thunk";
+import Loader from "@common/Loader";
 
 const EditEmployee = () => {
   const router = useRouter();
@@ -35,6 +36,8 @@ const EditEmployee = () => {
     value: item.id,
     label: item.name,
   }));
+
+  console.log(selecteddata);
 
   const formik: any = useFormik({
     initialValues: {
@@ -84,7 +87,15 @@ const EditEmployee = () => {
       dispatch(EditedEmployee(values, router));
     },
   });
-
+  if (isLoading) {
+    return <Loader />;
+  } else if (selecteddata === undefined || selecteddata === null) {
+    return (
+    <div className="page-content">
+        Please Select A Project From Project Table
+      </div>
+    );
+  }
   return (
     <React.Fragment>
       <Head>

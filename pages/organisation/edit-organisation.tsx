@@ -32,7 +32,21 @@ const EditOrganisation = () => {
     },
     validationSchema: Yup.object({
       organizationName: Yup.string().required("Organisation Name is required"),
-      website: Yup.string().required("Website is required"),
+      website: Yup.string()
+        .required("Website Url is required")
+        .test(
+          "no-space",
+          "Website Url cannot include a space",
+          function (value) {
+            // Check if the Website includes a space
+            return (
+              !/\s/.test(value) ||
+              this.createError({
+                message: "Website Url cannot include a space",
+              })
+            );
+          }
+        ),
     }),
     onSubmit: (values) => {
       formik.resetForm();

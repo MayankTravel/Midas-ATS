@@ -1,6 +1,6 @@
 /* Live */
 export const hrms_api_host = "http://44.213.229.250:8077";
-export const job_api_host = "http://34.230.215.187:9291/api";
+export const job_api_host = "http://34.230.215.187:9292/api";
 export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 
 /* LOCAL */

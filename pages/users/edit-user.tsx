@@ -39,12 +39,15 @@ const EditUser = (props: any) => {
       password: selectedRow.password,
       manager: "",
       rolesName: "",
-      status: "",
+      status: selectedRow.active,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("First Name is Required"),
       lastName: Yup.string().required("Last Name is Required"),
-      mobileNumber: Yup.string().required("Mobile Number is Required"),
+      mobileNumber: Yup.string()
+        .min(10, "Miniumm digits should be 10")
+        .max(10, "Maximum digits should be 10")
+        .required("Mobile Number is Required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is Required"),
@@ -66,11 +69,15 @@ const EditUser = (props: any) => {
     return "Wait";
   }
   var rolesArray: any = [];
+
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];
 
     for (var role of element.roles) {
-      rolesArray.push({ ...element, roles: role.id });
+      rolesArray.push({
+        ...element,
+        roles: role === null ? "" : role.id,
+      });
     }
   }
 
@@ -242,6 +249,7 @@ const EditUser = (props: any) => {
                   onBlur={formik.handleBlur}
                   name="status"
                 >
+                  <option>Current : {selectedRow.status}</option>
                   <option>Open this select menu</option>
                   {status.map((item: any) => {
                     return (

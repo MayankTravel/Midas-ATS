@@ -29,7 +29,6 @@ const ViewFacility = () => {
     layoutModeType: state.Layout.layoutModeType,
   }));
 
-  console.log("facilitydata:", facilitydata);
   const columns = [
     {
       name: "Name",
@@ -44,15 +43,27 @@ const ViewFacility = () => {
       sortable: true,
     },
     {
-      name: "Address",
-      id: "address",
-      selector: (row: any) => row.address,
+      name: "Zip",
+      id: "zip",
+      selector: (row: any) => row.zip,
+      sortable: true,
+    },
+    {
+      name: "City",
+      id: "city",
+      selector: (row: any) => row.city,
+      sortable: true,
+    },
+    {
+      name: "State",
+      id: "state",
+      selector: (row: any) => row.state,
       sortable: true,
     },
 
     {
-      name: "Edit",
-      id: "edit",
+      name: "Action",
+      id: "action",
       sortable: true,
       width: "100px",
       cell: (row: any) => (
@@ -63,10 +74,12 @@ const ViewFacility = () => {
               var organisation = row.organisation;
               var selectedObj = {
                 id: row.id,
-                address: row.address,
+                zip: row.zip,
+                city: row.city,
+                state: row.state,
                 clientId: row.client?.id,
                 name: row.name,
-                parentOrganization: organisation.id,
+                parentOrganization: organisation?.id,
                 vmsId: row.vms?.id,
               };
 
@@ -83,7 +96,13 @@ const ViewFacility = () => {
               Swal.fire({
                 title: "Delete Facility?",
                 text: `Are you sure you want to delete the facility?`,
-              }).then(() => dispatch(deteleFacility(row.id)));
+                showCancelButton: true,
+                showCloseButton: true,
+              }).then((results) => {
+                if (results.isConfirmed) {
+                  dispatch(deteleFacility(row.id));
+                }
+              });
             }}
           >
             <i
