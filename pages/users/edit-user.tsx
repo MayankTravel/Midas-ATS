@@ -69,6 +69,7 @@ const EditUser = (props: any) => {
     return "Wait";
   }
   var rolesArray: any = [];
+
   for (let index = 0; index < userdata.length; index++) {
     const element = userdata[index];
 
@@ -80,7 +81,6 @@ const EditUser = (props: any) => {
     }
   }
 
-  console.log(selectedRow);
   return (
     <React.Fragment>
       <Head>

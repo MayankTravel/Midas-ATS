@@ -21,8 +21,6 @@ const AddVMS = () => {
     isLoading: state.isLoading,
   }));
 
-  const urlRegex = /^\S+(?:\s+\S+)*$/;
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -31,9 +29,16 @@ const AddVMS = () => {
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       url: Yup.string()
-        .trim("")
-        .matches(urlRegex, "URL cannot contain spaces")
-        .required("URL is required"),
+        .required("Url is required")
+        .test("no-space", "Url cannot include a space", function (value) {
+          // Check if the Website includes a space
+          return (
+            !/\s/.test(value) ||
+            this.createError({
+              message: "Url cannot include a space",
+            })
+          );
+        }),
     }),
     onSubmit: (values) => {
       formik.resetForm();

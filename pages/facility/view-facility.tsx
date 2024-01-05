@@ -44,9 +44,21 @@ const ViewFacility = () => {
       sortable: true,
     },
     {
-      name: "Address",
-      id: "address",
-      selector: (row: any) => row.address,
+      name: "Zip",
+      id: "zip",
+      selector: (row: any) => row.zip,
+      sortable: true,
+    },
+    {
+      name: "City",
+      id: "city",
+      selector: (row: any) => row.city,
+      sortable: true,
+    },
+    {
+      name: "State",
+      id: "state",
+      selector: (row: any) => row.state,
       sortable: true,
     },
 
@@ -63,7 +75,9 @@ const ViewFacility = () => {
               var organisation = row.organisation;
               var selectedObj = {
                 id: row.id,
-                address: row.address,
+                zip: row.zip,
+                city: row.city,
+                state: row.state,
                 clientId: row.client?.id,
                 name: row.name,
                 parentOrganization: organisation?.id,
