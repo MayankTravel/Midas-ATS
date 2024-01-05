@@ -129,7 +129,7 @@ const Register = ({ id }: any) => {
                             <p className="mb-0">
                               © {new Date().getFullYear()} Midas. Crafted with
                               <i className="mdi mdi-heart text-danger"></i> by
-                              midasconsulting
+                              Midas Tech
                             </p>
                           </div>
                         </Card.Body>
