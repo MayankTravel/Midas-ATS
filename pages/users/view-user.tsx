@@ -27,7 +27,6 @@ const ViewUser = () => {
   const { layoutModeType } = useSelector((state: any) => ({
     layoutModeType: state.Layout.layoutModeType,
   }));
-  console.log(userdata);
   /* ------------------------------------------Adding Elements To Array-------------------------------- */
 
   for (let index = 0; index < userdata.length; index++) {

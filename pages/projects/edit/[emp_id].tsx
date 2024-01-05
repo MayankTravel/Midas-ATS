@@ -127,9 +127,38 @@ const EditProjects = (props: any) => {
               })
             );
           }
+        )
+        .test(
+          "valid-end-date",
+          "End date must be greater than start date",
+          function (value, context) {
+            const { startDate } = context.parent;
+            // Compare start and end dates
+            return (
+              new Date(value) > new Date(startDate) ||
+              this.createError({
+                message: "End date must be greater than start date",
+              })
+            );
+          }
         ),
       billRates: Yup.string().required("Required"),
-      payRates: Yup.string().required("Required"),
+      payRates: Yup.string()
+        .required("Required")
+        .test(
+          "valid-rates",
+          "Pay rates cannot exceed bill rates",
+          function (value, context) {
+            const { billRates } = context.parent;
+            // Compare pay rates and bill rates
+            return (
+              parseFloat(value) <= parseFloat(billRates) ||
+              this.createError({
+                message: "Pay rates cannot exceed Bill rates",
+              })
+            );
+          }
+        ),
       preDeim: Yup.string().required("Required"),
       overTimeRates: Yup.string().required("Required"),
       name: Yup.string().required("Required"),

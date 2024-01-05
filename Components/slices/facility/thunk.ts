@@ -27,13 +27,14 @@ export const AddNewFacility =
       var setter: any = [];
       const url = `${hrms_api_host}${FACILITY}`;
       const body = {
-        address: values.address,
+        zip: values.zip,
+        city: values.city,
+        state: values.state,
         clientId: values.clientId,
         name: values.name,
         parentOrganization: values.parentOrganization,
         vmsId: values.vmsId,
       };
-      console.log("bodyL", body);
       dispatch(api_is_facilitydata_loading(true));
       const fetch: any = await Factory("POST", setter, url, body);
       dispatch(api_is_facilitydata_loading(true));
@@ -64,7 +65,9 @@ export const EditedFacility =
       const url = `${hrms_api_host}${FACILITY}`;
       const body = {
         id: values.id,
-        address: values.address,
+        zip: values.zip,
+        city: values.city,
+        state: values.state,
         clientId: values.clientId,
         name: values.name,
         parentOrganization: values.parentOrganization,

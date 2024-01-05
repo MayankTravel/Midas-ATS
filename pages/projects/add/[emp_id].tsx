@@ -96,6 +96,38 @@ const AddProjects = (props: any) => {
       projectStatus: Yup.string().required("Required"),
       guaranteeHours: Yup.number().required("Required"),
       designation: Yup.string().required("Required"),
+      // startDate: Yup.string()
+      //   .required("Required")
+      //   .test(
+      //     "valid-year",
+      //     "Invalid year format. Please enter a valid year.",
+      //     function (value) {
+      //       const year = value.split("-")[0];
+      //       // Check if the year is a valid numeric value greater than or equal to 4 digits
+      //       return (
+      //         (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
+      //         this.createError({
+      //           message: "Invalid year format. Please enter a valid year.",
+      //         })
+      //       );
+      //     }
+      //   ),
+      // endDate: Yup.string()
+      //   .required("Required")
+      //   .test(
+      //     "valid-year",
+      //     "Invalid year format. Please enter a valid year.",
+      //     function (value) {
+      //       const year = value.split("-")[0];
+      //       // Check if the year is a valid numeric value greater than or equal to 4 digits
+      //       return (
+      //         (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
+      //         this.createError({
+      //           message: "Invalid year format. Please enter a valid year.",
+      //         })
+      //       );
+      //     }
+      //   ),
       startDate: Yup.string()
         .required("Required")
         .test(
@@ -127,9 +159,38 @@ const AddProjects = (props: any) => {
               })
             );
           }
+        )
+        .test(
+          "valid-end-date",
+          "End date must be greater than start date",
+          function (value, context) {
+            const { startDate } = context.parent;
+            // Compare start and end dates
+            return (
+              new Date(value) > new Date(startDate) ||
+              this.createError({
+                message: "End date must be greater than start date",
+              })
+            );
+          }
         ),
       billRates: Yup.string().required("Required"),
-      payRates: Yup.string().required("Required"),
+      payRates: Yup.string()
+        .required("Required")
+        .test(
+          "valid-rates",
+          "Pay rates cannot exceed bill rates",
+          function (value, context) {
+            const { billRates } = context.parent;
+            // Compare pay rates and bill rates
+            return (
+              parseFloat(value) <= parseFloat(billRates) ||
+              this.createError({
+                message: "Pay rates cannot exceed Bill rates",
+              })
+            );
+          }
+        ),
       preDeim: Yup.string().required("Required"),
       overTimeRates: Yup.string().required("Required"),
       name: Yup.string().required("Required"),

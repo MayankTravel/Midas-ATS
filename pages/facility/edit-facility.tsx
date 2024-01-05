@@ -13,6 +13,7 @@ import { fetchOrganisation } from "Components/slices/organisation/thunk";
 import { EditedFacility, fetchFacilty } from "Components/slices/facility/thunk";
 import { fetchVMS } from "Components/slices/vms/thunk";
 import { fetchClient } from "Components/slices/client/thunk";
+import USCities from "../../Components/Common/utils/USCities.json";
 
 const EditFacility = (props: any) => {
   const {
@@ -33,10 +34,13 @@ const EditFacility = (props: any) => {
   const [disable, setDisabled] = useState<boolean>(true);
   const router = useRouter();
   const dispatch: any = useDispatch();
+
   const formik: any = useFormik({
     initialValues: {
       id: selectedrow.id,
-      address: selectedrow.address,
+      zip: selectedrow.zip,
+      city: selectedrow.city,
+      state: selectedrow.state,
       clientId: selectedrow.clientId,
       name: selectedrow.name,
       parentOrganization: selectedrow.parentOrganization,
@@ -44,7 +48,12 @@ const EditFacility = (props: any) => {
     },
     validationSchema: Yup.object({
       clientId: Yup.string().required("Please Choose Client"),
-      address: Yup.string().required("Address is Required"),
+      zip: Yup.string()
+        .required("Zip Code is Required")
+        .min(3, "Zip Code must be at least 3 characters")
+        .max(5, "Zip Code must be at most 5 characters"),
+      city: Yup.string().required("City is Required"),
+      state: Yup.string().required("State is Required"),
       name: Yup.string().required("Name is Required"),
       parentOrganization: Yup.string().required("Please Choose Organization"),
       vmsId: Yup.string().required("Please Choose VMS"),
@@ -54,6 +63,24 @@ const EditFacility = (props: any) => {
       dispatch(EditedFacility(values, router));
     },
   });
+
+  const handleZipChange = (event: any) => {
+    const enteredZip = event.target.value;
+    formik.handleChange(event);
+    const uscity: any = USCities;
+    // Find the matching zip data in the JSON file
+    const matchingZipData = uscity.find(
+      (zipData: any) => zipData.zip_code === parseInt(enteredZip)
+    );
+
+    if (matchingZipData) {
+      formik.setFieldValue("city", matchingZipData.city);
+      formik.setFieldValue("state", matchingZipData.state);
+    } else {
+      formik.setFieldValue("city", "");
+      formik.setFieldValue("state", "");
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchOrganisation());
@@ -93,20 +120,50 @@ const EditFacility = (props: any) => {
               </Col>
 
               <Col lg={6} xs={6}>
-                <FormLabel for="address" labelname="Address" />
+                <FormLabel for="zip" labelname="Zip Code" />
                 <FormInput
                   inpType="text"
-                  inpId="address"
-                  inpchange={(e: any) => {
-                    formik.handleChange(e);
-                  }}
+                  inpId="zip"
+                  inpchange={handleZipChange}
                   inpblur={formik.handleBlur}
-                  inpvalue={formik.values.address}
-                  inpPlaceholder="Enter your Address"
+                  inpvalue={formik.values.zip}
+                  inpPlaceholder="Enter your Zip Code"
                 />
                 <span className="text-danger">
-                  {formik.touched.address && formik.errors.address ? (
-                    <div className="text-danger">{formik.errors.address}</div>
+                  {formik.touched.zip && formik.errors.zip ? (
+                    <div className="text-danger">{formik.errors.zip}</div>
+                  ) : null}
+                </span>
+              </Col>
+              <Col className="mt-3" lg={6} xs={6}>
+                <FormLabel for="city" labelname="City" />
+                <FormInput
+                  inpType="text"
+                  inpId="city"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.city} // Use the local state or formik value for city
+                  inpPlaceholder="Enter your city"
+                />
+                <span className="text-danger">
+                  {formik.touched.city && formik.errors.city ? (
+                    <div className="text-danger">{formik.errors.city}</div>
+                  ) : null}
+                </span>
+              </Col>
+              <Col className="mt-3" lg={6} xs={6}>
+                <FormLabel for="state" labelname="State" />
+                <FormInput
+                  inpType="text"
+                  inpId="state"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.state} // Use the local state or formik value for state
+                  inpPlaceholder="Enter your state"
+                />
+                <span className="text-danger">
+                  {formik.touched.state && formik.errors.state ? (
+                    <div className="text-danger">{formik.errors.state}</div>
                   ) : null}
                 </span>
               </Col>
