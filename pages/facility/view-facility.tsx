@@ -19,6 +19,7 @@ const ViewFacility = () => {
   const dispatch: any = useDispatch();
   const router = useRouter();
   const [filteredData, setFilteredData] = useState<any>([]);
+  const [currentRole, setCurrentRole] = useState<any>([]);
 
   const { facilitydata, isLoading } = useSelector((state: any) => ({
     facilitydata: state.facility.facilitydata,
@@ -89,33 +90,39 @@ const ViewFacility = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          <span
-            className="cursor-pointer"
-            title="Delete"
-            onClick={() => {
-              Swal.fire({
-                title: "Delete Facility?",
-                text: `Are you sure you want to delete the facility?`,
-                showCancelButton: true,
-                showCloseButton: true,
-              }).then((results) => {
-                if (results.isConfirmed) {
-                  dispatch(deteleFacility(row.id));
-                }
-              });
-            }}
-          >
-            <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "10px" }}
-              className="bi bi-trash"
-            ></i>
-          </span>
+          {currentRole.role === "SUPERADMIN" && (
+            <span
+              className="cursor-pointer"
+              title="Delete"
+              onClick={() => {
+                Swal.fire({
+                  title: "Delete Facility?",
+                  text: `Are you sure you want to delete the facility?`,
+                  showCancelButton: true,
+                  showCloseButton: true,
+                }).then((results) => {
+                  if (results.isConfirmed) {
+                    dispatch(deteleFacility(row.id));
+                  }
+                });
+              }}
+            >
+              <i
+                style={{ fontSize: "18px", color: "red", marginLeft: "10px" }}
+                className="bi bi-trash"
+              ></i>
+            </span>
+          )}
         </>
       ),
     },
   ];
 
   useEffect(() => {
+    if (localStorage.getItem("currentrole")) {
+      var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
+      setCurrentRole(currentRole[0]);
+    }
     dispatch(fetchFacilty());
   }, []);
 

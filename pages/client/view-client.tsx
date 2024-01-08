@@ -19,6 +19,7 @@ const ViewClient = () => {
   const dispatch: any = useDispatch();
   const { clientdata } = useSelector((state: any) => state.client);
   const [filteredData, setFilteredData] = useState<any>([]);
+  const [currentRole, setCurrentRole] = useState<any>([]);
 
   const { isLoading } = useSelector((state: any) => ({
     isLoading: state.client.isLoading,
@@ -65,37 +66,41 @@ const ViewClient = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          <span
-            className="cursor-pointer"
-            title="Delete"
-            onClick={() => {
-              Swal.fire({
-                title: "Delete Client?",
-                text: `Are you sure you want to delete the client?`,
-                showCancelButton: true,
-                showCloseButton: true,
-              }).then((results) => {
-                if (results.isConfirmed) {
-                  dispatch(deteleClient(row.id));
-                }
-              });
-            }}
-          >
-            <i
-              style={{ fontSize: "18px", color: "red", marginLeft: "15px" }}
-              className="bi bi-trash"
-            ></i>
-          </span>
+          {currentRole[0].role === "SUPERADMIN" && (
+            <span
+              className="cursor-pointer"
+              title="Delete"
+              onClick={() => {
+                Swal.fire({
+                  title: "Delete Client?",
+                  text: `Are you sure you want to delete the client?`,
+                  showCancelButton: true,
+                  showCloseButton: true,
+                }).then((results) => {
+                  if (results.isConfirmed) {
+                    dispatch(deteleClient(row.id));
+                  }
+                });
+              }}
+            >
+              <i
+                style={{ fontSize: "18px", color: "red", marginLeft: "15px" }}
+                className="bi bi-trash"
+              ></i>
+            </span>
+          )}
         </>
       ),
     },
   ];
 
   useEffect(() => {
+    if (localStorage.getItem("currentrole")) {
+      var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
+      setCurrentRole(currentRole);
+    }
     dispatch(fetchClient());
   }, []);
-
-  console.log(clientdata);
 
   return (
     <React.Fragment>
