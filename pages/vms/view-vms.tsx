@@ -25,7 +25,7 @@ const ViewVMS = () => {
   const [filteredData, setFilteredData] = useState<any>([]);
   useEffect(() => {
     dispatch(fetchVMS());
-  }, [filteredData]);
+  }, []);
 
   const { layoutModeType } = useSelector((state: any) => ({
     layoutModeType: state.Layout.layoutModeType,
@@ -60,7 +60,7 @@ const ViewVMS = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          {currentRole[0].role === "SUPERADMIN" && (
+          {currentRole.role === "SUPERADMIN" && (
             <span
               className="cursor-pointer"
               title="Delete"
@@ -91,7 +91,7 @@ const ViewVMS = () => {
   useEffect(() => {
     if (localStorage.getItem("currentrole")) {
       var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
-      setCurrentRole(currentRole);
+      setCurrentRole(currentRole[0]);
     }
   }, []);
   return (

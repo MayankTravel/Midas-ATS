@@ -40,7 +40,7 @@ const clientSlice = createSlice({
     api_is_job_assigned_error(state, action) {
       state.isLoading = false;
       state.isError = action.payload;
-      state.jobsAssigned = action.payload.message;
+      state.jobsAssigned = action.payload;
     },
   },
 });

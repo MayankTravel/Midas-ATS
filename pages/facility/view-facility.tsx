@@ -90,7 +90,7 @@ const ViewFacility = () => {
           >
             <i className="bi bi-pencil-square"></i>
           </span>
-          {currentRole[0].role === "SUPERADMIN" && (
+          {currentRole.role === "SUPERADMIN" && (
             <span
               className="cursor-pointer"
               title="Delete"
@@ -121,7 +121,7 @@ const ViewFacility = () => {
   useEffect(() => {
     if (localStorage.getItem("currentrole")) {
       var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
-      setCurrentRole(currentRole);
+      setCurrentRole(currentRole[0]);
     }
     dispatch(fetchFacilty());
   }, []);

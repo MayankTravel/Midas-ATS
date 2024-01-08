@@ -56,6 +56,7 @@ export const Material = (props: any) => {
   const [selected, setSelected] = useState<any>(data);
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
   const [username, setusername] = useState<any>({});
+  const [roles, setroles] = useState<any>({});
   const router = useRouter();
   const rowSelectionIndexes: any = Object.keys(rowSelection);
 
@@ -71,7 +72,9 @@ export const Material = (props: any) => {
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+      const role = JSON.parse(localStorage.getItem("currentrole") || "");
       setusername(obj);
+      setroles(role[0]);
     }
   }, []);
 
@@ -107,15 +110,16 @@ export const Material = (props: any) => {
     enableFacetedValues: true,
     enableRowSelection: (row: any) => {
       if (
-        username.rollId == 7 &&
+        roles.role === "ACCOUNTMANAGER" &&
         row.original.isAssigned === true &&
         router.asPath === "/jobs/client"
       ) {
         return false;
       } else if (
-        (username.rollId === 5 && row.original.tlId !== 0) ||
-        (username.rollId === 5 &&
-          row.original.amId !== 0 &&
+        (roles.role === "RECUITER" && row.original.tlId !== "0") ||
+        (roles.role === "TEAMLEAD" && row.original.finalUserAssignee !== "0") ||
+        (roles.role === "RECUITER" &&
+          row.original.amId !== "0" &&
           router.asPath === "/jobs/assigned")
       ) {
         return false;
@@ -170,7 +174,7 @@ export const Material = (props: any) => {
                   unassignedJobs({
                     id: username.id,
                     jobsdata: {},
-                    rollId: username.rollId,
+                    rollId: roles,
                     selectedJobs: selecteds,
                   })
                 );
@@ -236,7 +240,7 @@ export const Material = (props: any) => {
                     unassignedJobs({
                       id: username.id,
                       jobsdata: row.original,
-                      rollId: username.rollId,
+                      rollId: roles,
                       selectedJobs: selecteds,
                     })
                   );

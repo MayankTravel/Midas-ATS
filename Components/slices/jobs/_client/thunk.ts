@@ -19,11 +19,11 @@ import { getAssignedJobByoMe, getAssignedJobsToMe } from "../_assigned/thunk";
 import { fetchAllAssignedVms } from "Components/slices/thunk";
 import {
   api_is_assigndata_loading,
+  api_is_assignment_error,
   api_is_assignment_success,
 } from "../_assigned/reducers";
 
 export const clientJobs = (assigntouser: any) => async (dispatch: any) => {
-  console.log(assigntouser);
   if (
     assigntouser.length === 0 ||
     assigntouser == null ||
@@ -53,40 +53,72 @@ export const clientJobs = (assigntouser: any) => async (dispatch: any) => {
 };
 export const assignjobs =
   (payload: any, setShow: any, router: any) => async (dispatch: any) => {
-    try {
-      const options = {
-        method: "POST",
-        url: `${job_api_host}${POST_ASSIGNED_JOB}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: payload,
-      };
-      dispatch(api_is_clientdata_loading(true));
-      const fetch_api: any = axios.request(options);
-      const data: any = await fetch_api;
-      if (router.asPath === "/jobs/client" && data.status === "OK") {
-        dispatch(api_is_assigndata_loading(false));
-        router.push("/jobs/assigned");
-        await dispatch(fetchAllAssignedVms());
-        await dispatch(getAssignedJobByoMe());
-        await dispatch(getAssignedJobsToMe());
-        dispatch(api_is_job_assigned_success(data));
-        dispatch(api_is_jobsel_success([]));
-        dispatch(api_is_job_assigned_error(""));
-      } else if (data.status === "OK" && router.asPath === "/jobs/assigned") {
-        dispatch(api_is_assigndata_loading(false));
-        dispatch(api_is_assignment_success("Jobs Assigned Successfully"));
-        await dispatch(getAssignedJobByoMe());
-        await dispatch(getAssignedJobsToMe());
-        await dispatch(api_is_job_assigned_success(data));
-        await dispatch(api_is_jobsel_success([]));
-        await dispatch(api_is_job_assigned_error(""));
-      } else {
-        dispatch(api_is_job_assigned_error(data));
-      }
-      return data;
-    } catch (error) {
-      return error;
+    // try {
+    const options = {
+      method: "POST",
+      url: `${job_api_host}${POST_ASSIGNED_JOB}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: payload,
+    };
+    dispatch(api_is_clientdata_loading(true));
+    const fetch_api: any = axios.request(options);
+    const data: any = await fetch_api;
+
+    if (router.asPath === "/jobs/client" && data.status === "OK") {
+      dispatch(api_is_assigndata_loading(false));
+      router.push("/jobs/assigned");
+      await dispatch(fetchAllAssignedVms());
+      await dispatch(getAssignedJobByoMe());
+      await dispatch(getAssignedJobsToMe());
+      dispatch(api_is_job_assigned_success(data));
+      dispatch(api_is_jobsel_success([]));
+      dispatch(api_is_job_assigned_error(""));
+      dispatch(
+        api_is_assignment_success({
+          payload: {
+            variant: "success",
+            message: "Jobs has been assigned successfully",
+          },
+        })
+      );
+    } else if (data.status === "OK" && router.asPath === "/jobs/assigned") {
+      dispatch(api_is_assigndata_loading(false));
+      dispatch(
+        api_is_assignment_success({
+          payload: {
+            variant: "success",
+            message: "Jobs has been assigned successfully",
+          },
+        })
+      );
+      await dispatch(getAssignedJobByoMe());
+      await dispatch(getAssignedJobsToMe());
+      await dispatch(api_is_job_assigned_success(data));
+      await dispatch(api_is_jobsel_success([]));
+      await dispatch(api_is_job_assigned_error(""));
+    } else {
+      dispatch(api_is_assigndata_loading(false));
+      await dispatch(api_is_jobsel_success([]));
+      await dispatch(getAssignedJobByoMe());
+      await dispatch(getAssignedJobsToMe());
+      dispatch(
+        api_is_assignment_error({
+          payload: {
+            variant: "danger",
+            message: "Jobs had been already assigned",
+          },
+        })
+      );
+      dispatch(api_is_job_assigned_error(data.message));
     }
+    return data;
+    // } catch (error: any) {
+    //   Swal.fire({
+    //     title: "Error",
+    //     text: error,
+    //   });
+    //   return error;
+    // }
   };

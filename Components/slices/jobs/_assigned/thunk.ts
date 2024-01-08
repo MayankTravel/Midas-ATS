@@ -17,10 +17,11 @@ import {
 } from "./reducers";
 import Swal from "sweetalert2";
 
-export const getAssignedJobsToMe = () => async (dispatch: any) => {
+export const getAssignedJobsToMe = (id: any) => async (dispatch: any) => {
   try {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+      console.log(`${job_api_host}${GET_ASSIGNED_JOBS_TO_ME}/${obj.id}`);
       const options = {
         url: `${job_api_host}${GET_ASSIGNED_JOBS_TO_ME}/${obj.id}`,
         method: "GET",
@@ -39,7 +40,7 @@ export const getAssignedJobsToMe = () => async (dispatch: any) => {
   }
 };
 
-export const getAssignedJobByoMe = () => async (dispatch: any) => {
+export const getAssignedJobByoMe = (id: any) => async (dispatch: any) => {
   try {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
@@ -110,8 +111,8 @@ const unassignmap = async ({ rollId, selectedJobs, dispatch }: any) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     data: {
-      managerId: rollId === 7 ? am[0] : tl[0],
-      recruiterId: rollId === 7 ? tl[0] : finalUser[0],
+      managerId: rollId.role === "ACCOUNTMANAGER" ? am[0] : tl[0],
+      recruiterId: rollId.role === "ACCOUNTMANAGER" ? tl[0] : finalUser[0],
       jobProviderIds: selectedJobs.map((item: any) => item.ProviderJobID),
     },
   };
@@ -125,7 +126,6 @@ const unassignmap = async ({ rollId, selectedJobs, dispatch }: any) => {
       timer: 10000,
     });
     dispatch(unassigned_success(data.message));
-    window.location.reload();
   } else {
     Swal.fire({
       title: data.message,
@@ -140,11 +140,17 @@ const unassign = async ({ id, jobsdata, rollId, dispatch }: any) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     data: {
-      managerId: rollId === 7 ? jobsdata.amId : jobsdata.tlId,
-      recruiterId: rollId === 7 ? jobsdata.tlId : jobsdata.finalUserAssignee,
+      managerId:
+        rollId.role === "ACCOUNTMANAGER" ? jobsdata.amId : jobsdata.tlId,
+      recruiterId:
+        rollId.role === "ACCOUNTMANAGER"
+          ? jobsdata.tlId
+          : jobsdata.finalUserAssignee,
       jobProviderIds: [jobsdata.ProviderJobID],
     },
   };
+
+  console.log(options.data);
   const fetch_api = axios.request(options);
   const data: any = await fetch_api;
   if (data.status === "OK") {
@@ -155,7 +161,7 @@ const unassign = async ({ id, jobsdata, rollId, dispatch }: any) => {
       timer: 6000,
     });
     dispatch(unassigned_success(data.message));
-    window.location.reload();
+    // window.location.reload();
   } else {
     Swal.fire({
       title: data.message,
@@ -181,7 +187,6 @@ export const unassignedJobs =
           } else {
             unassign({ id, jobsdata, rollId, selectedJobs, dispatch });
           }
-          console.log(selectedJobs.length);
         }
       });
     } catch (error) {
