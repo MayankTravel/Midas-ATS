@@ -9,18 +9,18 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Loader from "@common/Loader";
 import { useRouter } from "next/router";
+import { fetchUserByManagerId } from "Components/slices/user/thunk";
 
 const JobAssignmentRole = (props: any) => {
-  const { finalClickInfo, teamLead, recruiterData, selectedIds, setShow } =
-    props;
-  const { seljob, jobAssigned, isLoading, assignedLoading } = useSelector(
-    (state: any) => ({
+  const { finalClickInfo, teamLead, recruiterData, setShow } = props;
+  const { seljob, jobAssigned, isLoading, assignedLoading, manager } =
+    useSelector((state: any) => ({
       seljob: state.clientFeeds.selJobs,
       jobAssigned: state.assignFeed.jobsAssigned,
       isLoading: state.clientFeeds.isLoading,
       assignedLoading: state.assignFeed.isLoading,
-    })
-  );
+      manager: state.user.manager,
+    }));
   const router = useRouter();
   const dispatch: any = useDispatch();
   const data: any = localStorage.getItem("currentrole");
@@ -61,7 +61,7 @@ const JobAssignmentRole = (props: any) => {
       dispatch(api_is_jobsel_success([]));
     },
   });
-
+  console.log("manager", manager);
   const handleCheckuser = () => {
     var tel = teamLead.filter(
       (item: any, index: any) => item.managerId === user.id
@@ -69,7 +69,10 @@ const JobAssignmentRole = (props: any) => {
     setTeamLead(tel);
   };
 
-  useEffect(() => handleCheckuser(), []);
+  useEffect(() => {
+    handleCheckuser();
+    dispatch(fetchUserByManagerId(parseUser.id));
+  }, []);
   const recruiterOptions =
     user[0].role === "RECRUITER"
       ? recruiterData.filter((item: any) => item.managerId === user[0].id)
@@ -131,12 +134,15 @@ const JobAssignmentRole = (props: any) => {
                             );
                             setTeamLeadId(JSON.parse(e.target.value));
                             setRecruiter(recruiterData);
+                            dispatch(
+                              fetchUserByManagerId(JSON.parse(e.target.value))
+                            );
                           }}
                           onBlur={formik.handleBlur}
                           value={formik.values.assigneeUserId}
                         >
                           <option value={0}>Open this select menu</option>
-                          {teamlead.map((item: any, index: any) => (
+                          {manager.map((item: any, index: any) => (
                             <option key={index} value={item.id}>
                               {item.name}
                             </option>
@@ -194,7 +200,7 @@ const JobAssignmentRole = (props: any) => {
                         onClick={() => setActiveRecruiter(true)}
                       >
                         <option value={0}>Open this select menu</option>
-                        {recruiterOptions.map((item: any, index: any) => (
+                        {manager.map((item: any, index: any) => (
                           <option key={index} value={item.id}>
                             {item.name}
                           </option>

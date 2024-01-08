@@ -6,6 +6,7 @@ const initialState = {
   userdata: <any>[],
   roles: <any>[],
   selected: <any>{},
+  manager: <any>[],
 };
 
 const userSlice = createSlice({
@@ -37,6 +38,11 @@ const userSlice = createSlice({
       state.isError = "";
       state.selected = action.payload;
     },
+    is_user_manager_success(state, action) {
+      state.isLoading = false;
+      state.isError = "";
+      state.manager = action.payload;
+    },
   },
 });
 
@@ -46,5 +52,6 @@ export const {
   api_is_userdata_success,
   is_user_selected_success,
   api_is_roles_fetched,
+  is_user_manager_success,
 } = userSlice.actions;
 export default userSlice.reducer;

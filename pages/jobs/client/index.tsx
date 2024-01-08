@@ -14,6 +14,7 @@ import Calculator from "Components/pages_comp/Calculator";
 
 import { fetchAllAssignedVms } from "Components/slices/thunk";
 import { api_is_selected_job_success } from "Components/slices/calculator/reducers";
+import { fetchAllRoles } from "Components/slices/user/thunk";
 
 const index = () => {
   const [assignedvms, setassignedvmsuser] = useState<any>();
@@ -28,14 +29,17 @@ const index = () => {
     isLoading,
     selectedJob,
     assigntouser,
+    allroles,
   } = useSelector((state: any) => ({
     isLoading: state.clientFeeds.isLoading,
     clientdata: state.clientFeeds.clientdata,
     selJobs: state.clientFeeds.selJobs,
     userdata: state.user.userdata,
+    allroles: state.user.roles,
     selectedJob: state.calc.selectedJob,
     assigntouser: state.VMS.assigntouser,
   }));
+  var rolesArray: any = [];
 
   const columns = useMemo<MRT_ColumnDef<Jobs>[]>(
     () => [
@@ -384,9 +388,21 @@ const index = () => {
     ],
     []
   );
+  var user: any = [];
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+
+    for (var role of element.roles) {
+      rolesArray.push({ ...element, roles: role === null ? "" : role.role });
+    }
+
+  }
+
+  console.log("userdata::", rolesArray);
 
   const teamlead = userdata.filter((ite: any) => ite.rollId == "6");
   const recruiterData = userdata.filter((ite: any) => ite.rollId == "5");
+  console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
@@ -394,6 +410,7 @@ const index = () => {
       setassignedvmsuser(obj);
     }
     dispatch(fetchAllAssignedVms());
+    dispatch(fetchAllRoles());
   }, []);
   return (
     <React.Fragment>
