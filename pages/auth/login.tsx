@@ -122,7 +122,7 @@ const Login = () => {
                             <p className="mb-0">
                               ©{new Date().getFullYear()} Midas. Crafted with{" "}
                               <i className="mdi mdi-heart text-danger"></i> by
-                              Midas Consulting
+                              Midas Tech
                             </p>
                           </div>
                         </Card.Body>

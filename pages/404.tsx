@@ -5,7 +5,7 @@ import NonAuthLayout from "@common/Layout/NonAuthLayout";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
 //import images
-import logoLightFull from "@assets/images/logo-light-full.png";
+import logoLightFull from "@assets/images/logob.png";
 import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import error400 from "@assets/images/error400.png";
@@ -58,9 +58,9 @@ const Error404Basic = () => {
                           </div>
                           <div className="text-center text-white-75">
                             <p className="mb-0">
-                              © {new Date().getFullYear()} Hybrix. Crafted with{" "}
+                              © {new Date().getFullYear()} Midas. Crafted with{" "}
                               <i className="mdi mdi-heart text-danger"></i> by
-                              Themesbrand
+                              Midas Tech
                             </p>
                           </div>
                         </Card.Body>

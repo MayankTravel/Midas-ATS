@@ -9,6 +9,7 @@ const initialState = {
   unAssignSucess: "",
   jobsAssigned: <string>"",
   assignedByAmToRecruiter: <any>[],
+  variant: <any>"",
 };
 
 const assignSlice = createSlice({
@@ -48,14 +49,17 @@ const assignSlice = createSlice({
       state.assigned_tome = action.payload;
     },
     api_is_assignment_success(state, action) {
+      console.log(action.payload);
       state.isLoading = false;
       state.isError = "";
       state.jobsAssigned = action.payload;
+      state.variant = action.payload.payload.variant;
     },
     api_is_assignment_error(state, action) {
       state.isLoading = false;
       state.isError = action.payload;
       state.jobsAssigned = action.payload;
+      state.variant = action.payload.payload.variant;
     },
     api_is_assigned_by_am(state, action) {
       state.isLoading = false;

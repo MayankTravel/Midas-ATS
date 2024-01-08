@@ -1,14 +1,14 @@
 /* Live */
 export const hrms_api_host = "http://44.213.229.250:8077";
-export const job_api_host = "http://34.230.215.187:9292/api";
+// export const job_api_host = "http://34.230.215.187:9292/api";
 export const redirect = "http://34.230.215.187:6001/auth/reset-password/";
 
 /* LOCAL */
 
 /* Dheeraj Sir */
-// export const job_api_host = "http://10.0.0.101:9291/api";
-// export const hrms_api_host = "http://10.0.0.101:8077";
 // export const redirect = "http://localhost:3000/auth/reset-password/";
+export const job_api_host = "http://10.0.0.101:9292/api";
+// export const hrms_api_host = "http://10.0.0.101:8077";
 
 /* Own */
 // export const job_api_host = "http://localhost:9291/api";
@@ -109,6 +109,8 @@ export const EMPLOYEE = "/api/v1/employee";
 export const ADDEMPLOYEE = "/api/v1/employee/saveEmployee";
 export const POST_DOCUMENT = "/api/v1/employee/uploadFile";
 export const GET_DOCUMENT = "/api/v1/employee/getDocsByEmployeeId";
+export const GET_ACCESS_TOKEN = "/api/v1/employee//getAccessToken";
+export const DELETE_EMPLOYEE_DOCS = "/api/v1/employee/deleteEmployeeDocument";
 
 //VMS Config
 export const POST_VMS = "/api/v1/vms";

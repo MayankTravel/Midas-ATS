@@ -18,11 +18,13 @@ import Recruiter from "Components/Recruit";
 import { fetchAllUser } from "Components/slices/user/thunk";
 const AssignedJobs = () => {
   const dispatch: any = useDispatch();
+
+  const [parseRole, setParseRole] = useState<any>([]);
   const { isLoading, jobdata, assignFeed, assignFeedByMe, userdata } =
     useSelector((state: any) => ({
       jobdata: state.jobFeeds.jobdata,
-      assignFeed: state.assignFeed.assigned_tome,
-      assignFeedByMe: state.assignFeed.assignedfeedsbyme,
+      assignFeed: state.assignFeed.assigned_tome || [],
+      assignFeedByMe: state.assignFeed.assignedfeedsbyme || [],
       isLoading: state.assignFeed.isLoading,
       userdata: state.user.userdata,
     }));
@@ -405,31 +407,30 @@ const AssignedJobs = () => {
           ? element.jobsFeedsSet
           : [];
       for (var x of jobsFeeeds) {
-        if (obj.rollId === 6) {
+        if (parseRole.role === "TEAMLEAD" && x.finalUserAssignee !== 0) {
           userdata
             .filter((item: any) => item.id === x.finalUserAssignee)
             .map((ite: any) => {
-              console.log(ite.name);
-              return (assignee = ite.name);
+              return (assignee = ite.fullName);
             });
         } else {
           userdata
             .filter((item: any) => item.id === x.tlId)
             .map((ite: any) => {
-              return (assignee = ite.name);
+              return (assignee = ite.fullName);
             });
         }
-        if (obj.rollId === 7) {
+        if (parseRole.role === "ACCOUNTMANAGER") {
           userdata
             .filter((item: any) => item.id === x.amId)
             .map((ite: any) => {
-              return (assigner = ite.name);
+              return (assigner = ite.fullName);
             });
         } else {
           userdata
             .filter((item: any) => item.id === x.tlId)
             .map((ite: any) => {
-              return (assigner = ite.name);
+              return (assigner = ite.fullName);
             });
         }
 
@@ -453,30 +454,31 @@ const AssignedJobs = () => {
           ? element.jobsFeedsSet
           : [];
       for (var x of jobsFeeeds) {
-        if (x.finalUserAssignee === 0) {
+        console.log("jobsFeeedsrows:::", jobsFeeeds);
+        if (x.finalUserAssignee === "0") {
           userdata
             .filter((item: any) => item.id === x.tlId)
             .map((ite: any) => {
-              return (assignee = ite.name);
+              return (assignee = ite.fullName);
             });
         } else {
           userdata
             .filter((item: any) => item.id === x.finalUserAssignee)
             .map((ite: any) => {
-              return (assignee = ite.name);
+              return (assignee = ite.fullName);
             });
         }
-        if (x.tlId !== 0 && obj.rollId === 5) {
+        if (x.tlId !== "0" && parseRole.role === "TEAMLEAD") {
           userdata
-            .filter((item: any) => item.id === x.tlId)
+            .filter((item: any) => item.id === x.amId)
             .map((ite: any) => {
-              return (assigner = ite.name);
+              return (assigner = ite.fullName);
             });
         } else {
           userdata
             .filter((item: any) => item.id === x.amId)
             .map((ite: any) => {
-              return (assigner = ite.name);
+              return (assigner = ite.fullName);
             });
         }
         rows.push({
@@ -487,19 +489,36 @@ const AssignedJobs = () => {
       }
     }
   }
+  var rolesArray: any = [];
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+    for (var role of element.roles) {
+      // for (var manager of element.manager) {
 
-  const teamlead = userdata.filter((ite: any) => ite.rollId == "6");
-  const recruiterData = userdata.filter((ite: any) => ite.rollId == "5");
+      rolesArray.push({
+        ...element,
+        roleName: role === null ? "" : role.role,
+        managerId: element.manager === null ? "" : element.manager.id,
+      });
+    }
+  }
+  const teamlead = rolesArray.filter((ite: any) => ite.roleName === "TEAMLEAD");
+  const recruiterData = rolesArray.filter(
+    (ite: any) => ite.roleName === "RECRUITER"
+  );
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+      const role = JSON.parse(localStorage.getItem("currentrole") || "");
       setUserCurrent(obj);
       setUserObj(obj);
+      setParseRole(role[0]);
     }
     dispatch(fetchAllUser());
-    dispatch(getAssignedJobByoMe());
-    dispatch(getAssignedJobsToMe());
+    dispatch(getAssignedJobByoMe(userObj.id));
+    dispatch(getAssignedJobsToMe(userObj.id));
   }, []);
+
   return (
     <React.Fragment>
       <Head>
@@ -507,7 +526,7 @@ const AssignedJobs = () => {
       </Head>
 
       <div className="page-content">
-        {userObj.rollId == 6 ? (
+        {parseRole.role === "TEAMLEAD" ? (
           <div>
             <span
               className={`${
@@ -515,7 +534,7 @@ const AssignedJobs = () => {
               } btn my-2 mx-2 cursor-pointer`}
               onClick={() => {
                 setActive(1);
-                dispatch(getAssignedJobsToMe());
+                dispatch(getAssignedJobsToMe(userObj.id));
               }}
             >
               Assigned To Me
@@ -526,7 +545,7 @@ const AssignedJobs = () => {
               } btn my-2 mx-2 cursor-pointer`}
               onClick={() => {
                 setActive(2);
-                dispatch(getAssignedJobByoMe());
+                dispatch(getAssignedJobByoMe(userObj.id));
               }}
             >
               Assigned To Team
@@ -538,7 +557,7 @@ const AssignedJobs = () => {
           (assignFeedByMe.length !== 0 && isLoading === false) ||
           (userObj !== undefined && userObj !== null) ? (
             <>
-              {userObj.rollId === 7 ? (
+              {parseRole.role === "ACCOUNTMANAGER" ? (
                 <Material
                   columns={columns}
                   data={ByMeRow}
@@ -557,7 +576,7 @@ const AssignedJobs = () => {
                     />
                   }
                 />
-              ) : userObj.rollId === 6 ? (
+              ) : parseRole.role === "TEAMLEAD" ? (
                 <>
                   {active === 1 ? (
                     <>

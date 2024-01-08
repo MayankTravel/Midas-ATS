@@ -30,7 +30,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 //import images
-import logoLightFull from "@assets/images/logo-light-full.png";
+import logoLightFull from "@assets/images/logob.png";
 import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import { ResetPassword } from "Components/slices/user/thunk";
@@ -129,7 +129,7 @@ const Register = ({ id }: any) => {
                             <p className="mb-0">
                               © {new Date().getFullYear()} Midas. Crafted with
                               <i className="mdi mdi-heart text-danger"></i> by
-                              midasconsulting
+                              Midas Tech
                             </p>
                           </div>
                         </Card.Body>

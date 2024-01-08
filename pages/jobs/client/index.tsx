@@ -14,28 +14,25 @@ import Calculator from "Components/pages_comp/Calculator";
 
 import { fetchAllAssignedVms } from "Components/slices/thunk";
 import { api_is_selected_job_success } from "Components/slices/calculator/reducers";
+import { useer_filter } from "@common/utils/user_filter";
 
 const index = () => {
   const [assignedvms, setassignedvmsuser] = useState<any>();
   const [selectedIds, setSelectedIds] = useState<Set<number>>();
   const [show, setShow] = useState<boolean>(false);
   const [vms, setvms] = useState<any>();
+  const [rolesArr, setRolesArr] = useState<any>([]);
   const dispatch: any = useDispatch();
-  const {
-    clientdata,
-    selJobs,
-    userdata,
-    isLoading,
-    selectedJob,
-    assigntouser,
-  } = useSelector((state: any) => ({
-    isLoading: state.clientFeeds.isLoading,
-    clientdata: state.clientFeeds.clientdata,
-    selJobs: state.clientFeeds.selJobs,
-    userdata: state.user.userdata,
-    selectedJob: state.calc.selectedJob,
-    assigntouser: state.VMS.assigntouser,
-  }));
+  const { clientdata, selJobs, userdata, isLoading, selectedJob, roles } =
+    useSelector((state: any) => ({
+      isLoading: state.clientFeeds.isLoading,
+      clientdata: state.clientFeeds.clientdata,
+      selJobs: state.clientFeeds.selJobs,
+      userdata: state.user.userdata,
+      roles: state.user.roles,
+      selectedJob: state.calc.selectedJob,
+      assigntouser: state.VMS.assigntouser,
+    }));
 
   const columns = useMemo<MRT_ColumnDef<Jobs>[]>(
     () => [
@@ -385,9 +382,19 @@ const index = () => {
     []
   );
 
-  const teamlead = userdata.filter((ite: any) => ite.rollId == "6");
-  const recruiterData = userdata.filter((ite: any) => ite.rollId == "5");
+  var rolesArray: any = [];
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+    for (var role of element.roles) {
+      // for (var manager of element.manager) {
 
+      rolesArray.push({
+        ...element,
+        roleName: role === null ? "" : role.role,
+        managerId: element.manager === null ? "" : element.manager.id,
+      });
+    }
+  }
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
@@ -395,6 +402,11 @@ const index = () => {
     }
     dispatch(fetchAllAssignedVms());
   }, []);
+
+  const teamlead = rolesArray.filter((ite: any) => ite.roleName === "TEAMLEAD");
+  const recruiterData = rolesArray.filter(
+    (ite: any) => ite.roleName === "RECRUITER"
+  );
   return (
     <React.Fragment>
       <Head>
