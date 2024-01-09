@@ -37,9 +37,9 @@ const EmployeeControl = () => {
       sortable: true,
     },
     {
-      name: "SSN",
-      id: "ssn",
-      selector: (row: any) => row.ssn,
+      name: "Contact Details",
+      id: "contactDetails",
+      selector: (row: any) => row.contactDetails,
       sortable: true,
     },
     {
@@ -127,6 +127,8 @@ const EmployeeControl = () => {
       ),
     },
   ];
+
+  console.log(employeedata);
 
   useEffect(() => {
     dispatch(fetchEmployee());

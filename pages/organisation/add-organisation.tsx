@@ -78,7 +78,7 @@ const AddOrganisation = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.organizationName}
-                  inpPlaceholder="Enter your Organization Name"
+                  inpPlaceholder="Enter Organization Name"
                 />
                 <span className="text-danger">
                   {formik.touched.organizationName &&
@@ -98,7 +98,7 @@ const AddOrganisation = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.website}
-                  inpPlaceholder="Enter your website Address"
+                  inpPlaceholder="Enter website Address"
                 />
                 <span className="text-danger">
                   {formik.touched.website && formik.errors.website ? (
@@ -109,7 +109,7 @@ const AddOrganisation = () => {
 
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Add Organisation
+                  Save
                 </Button>
               </Col>
             </Row>

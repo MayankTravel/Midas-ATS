@@ -194,7 +194,6 @@ const AddProjects = (props: any) => {
       preDeim: Yup.string().required("Required"),
       overTimeRates: Yup.string().required("Required"),
       name: Yup.string().required("Required"),
-      travelAllowance: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
       formik.resetForm();
@@ -324,14 +323,14 @@ const AddProjects = (props: any) => {
               </Col>
 
               <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="Designation" labelname="Designation" />
+                <FormLabel for="Job Title" labelname="Job Title" />
                 <FormInput
                   inpType="text"
                   inpId="designation"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.designation}
-                  inpPlaceholder="Enter your designation"
+                  inpPlaceholder="Enter Job Title"
                 />
                 <span className="text-danger">
                   {formik.touched.designation && formik.errors.designation ? (
@@ -343,14 +342,14 @@ const AddProjects = (props: any) => {
               </Col>
 
               <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="name" labelname="Name" />
+                <FormLabel for="Job-ID" labelname="Job-ID" />
                 <FormInput
                   inpType="text"
                   inpId="name"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter Job-ID"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -367,7 +366,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.startDate}
-                  inpPlaceholder="Enter your Start Date"
+                  inpPlaceholder="Enter Start Date"
                 />
                 <span className="text-danger">
                   {formik.touched.startDate && formik.errors.startDate ? (
@@ -384,7 +383,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.endDate}
-                  inpPlaceholder="Enter your End Date"
+                  inpPlaceholder="Enter End Date"
                 />
                 <span className="text-danger">
                   {formik.touched.endDate && formik.errors.endDate ? (
@@ -395,14 +394,17 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Bill Rates" labelname="Bill Rates" />
-                <FormInput
-                  inpType="text"
-                  inpId="billRates"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.billRates}
-                  inpPlaceholder="Enter your Bill Rates"
-                />
+                <div className="input-group ">
+                  <span className="input-group-text">$</span>
+                  <FormInput
+                    inpType="text"
+                    inpId="billRates"
+                    inpchange={formik.handleChange}
+                    inpblur={formik.handleBlur}
+                    inpvalue={formik.values.billRates}
+                    inpPlaceholder="Enter Bill Rates"
+                  />
+                </div>
                 <span className="text-danger">
                   {formik.touched.billRates && formik.errors.billRates ? (
                     <div className="text-danger">{formik.errors.billRates}</div>
@@ -412,14 +414,17 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Pay Rates" labelname="Pay Rates" />
-                <FormInput
-                  inpType="text"
-                  inpId="payRates"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.payRates}
-                  inpPlaceholder="Enter your contact details"
-                />
+                <div className="input-group ">
+                  <span className="input-group-text">$</span>
+                  <FormInput
+                    inpType="text"
+                    inpId="payRates"
+                    inpchange={formik.handleChange}
+                    inpblur={formik.handleBlur}
+                    inpvalue={formik.values.payRates}
+                    inpPlaceholder="Enter Pay Rates"
+                  />
+                </div>
                 <span className="text-danger">
                   {formik.touched.payRates && formik.errors.payRates ? (
                     <div className="text-danger">{formik.errors.payRates}</div>
@@ -429,14 +434,17 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Per-Diem" labelname="Per-Diem" />
-                <FormInput
-                  inpType="text"
-                  inpId="preDeim"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.preDeim}
-                  inpPlaceholder="Enter your Per Diem"
-                />
+                <div className="input-group ">
+                  <span className="input-group-text">$</span>
+                  <FormInput
+                    inpType="text"
+                    inpId="preDeim"
+                    inpchange={formik.handleChange}
+                    inpblur={formik.handleBlur}
+                    inpvalue={formik.values.preDeim}
+                    inpPlaceholder="Enter Per Diem"
+                  />
+                </div>
                 <span className="text-danger">
                   {formik.touched.preDeim && formik.errors.preDeim ? (
                     <div className="text-danger">{formik.errors.preDeim}</div>
@@ -452,7 +460,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.guaranteeHours}
-                  inpPlaceholder="Enter your Guarantee Hours"
+                  inpPlaceholder="Enter Guarantee Hours"
                 />
                 <span className="text-danger">
                   {formik.touched.guaranteeHours &&
@@ -466,14 +474,17 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Over Time Rates" labelname="Over Time Rates" />
-                <FormInput
-                  inpType="text"
-                  inpId="overTimeRates"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.overTimeRates}
-                  inpPlaceholder="Enter Over Time Rates"
-                />
+                <div className="input-group ">
+                  <span className="input-group-text">$</span>
+                  <FormInput
+                    inpType="text"
+                    inpId="overTimeRates"
+                    inpchange={formik.handleChange}
+                    inpblur={formik.handleBlur}
+                    inpvalue={formik.values.overTimeRates}
+                    inpPlaceholder="Enter Over Time Rates"
+                  />
+                </div>
                 <span className="text-danger">
                   {formik.touched.overTimeRates &&
                   formik.errors.overTimeRates ? (
@@ -489,14 +500,17 @@ const AddProjects = (props: any) => {
                   for="Travel Allowance"
                   labelname="Travel Allowance (Optional)"
                 />
-                <FormInput
-                  inpType="text"
-                  inpId="travelAllowance"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.travelAllowance}
-                  inpPlaceholder="Enter your contact details"
-                />
+                <div className="input-group ">
+                  <span className="input-group-text">$</span>
+                  <FormInput
+                    inpType="text"
+                    inpId="travelAllowance"
+                    inpchange={formik.handleChange}
+                    inpblur={formik.handleBlur}
+                    inpvalue={formik.values.travelAllowance}
+                    inpPlaceholder="Enter Travel Allowance"
+                  />
+                </div>
                 <span className="text-danger">
                   {formik.touched.travelAllowance &&
                   formik.errors.travelAllowance ? (
@@ -509,7 +523,7 @@ const AddProjects = (props: any) => {
 
               <Col lg={12} className="mt-4 mb-3">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Create Project
+                  Save
                 </Button>
               </Col>
             </Row>

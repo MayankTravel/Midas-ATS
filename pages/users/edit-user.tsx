@@ -100,7 +100,7 @@ const EditUser = (props: any) => {
                   inpId="firstName"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.firstName}
-                  inpPlaceholder="Enter your First Name"
+                  inpPlaceholder="Enter First Name"
                 />
                 <span className="text-danger">
                   {formik.touched.firstName && formik.errors.firstName ? (
@@ -116,7 +116,7 @@ const EditUser = (props: any) => {
                   inpId="lastName"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.lastName}
-                  inpPlaceholder="Enter your Last Name"
+                  inpPlaceholder="Enter Last Name"
                 />
                 <span className="text-danger">
                   {formik.touched.lastName && formik.errors.lastName ? (
@@ -132,7 +132,7 @@ const EditUser = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.email}
-                  inpPlaceholder="Enter your email address"
+                  inpPlaceholder="Enter email address"
                 />
                 <span className="text-danger">
                   {formik.touched.email && formik.errors.email ? (
@@ -149,7 +149,7 @@ const EditUser = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.mobileNumber}
-                  inpPlaceholder="Enter your Mobile Number"
+                  inpPlaceholder="Enter Mobile Number"
                 />
                 <span className="text-danger">
                   {formik.touched.mobileNumber && formik.errors.mobileNumber ? (
@@ -284,7 +284,7 @@ const EditUser = (props: any) => {
               </Col>
               <Col lg={12} className="mt-4 mb-3">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Edit User
+                  Save
                 </Button>
               </Col>
             </Row>

@@ -67,7 +67,7 @@ const AddVMS = () => {
                   inpId="name"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -84,7 +84,7 @@ const AddVMS = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.url}
-                  inpPlaceholder="Enter your URL Address"
+                  inpPlaceholder="Enter URL Address"
                 />
                 <span className="text-danger">
                   {formik.touched.url && formik.errors.url ? (
@@ -95,7 +95,7 @@ const AddVMS = () => {
 
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit">
-                  Add VMS
+                  Save
                 </Button>
               </Col>
             </Row>

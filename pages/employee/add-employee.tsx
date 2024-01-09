@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { AddNewEmployee } from "Components/slices/employee/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
+import USCities from "../../Components/Common/utils/USCities.json";
 
 import { fetchProjects } from "Components/slices/project/thunk";
 
@@ -67,9 +68,9 @@ const AddEmployee = () => {
       city: Yup.string().required("Required"),
       state: Yup.string().required("Required"),
       zipCode: Yup.string()
-        .required("Zipcode is required")
-        .min(5, "Zipcode should not be long less than 5 digits")
-        .max(5, "Zipcode should not be long more than 5 digits"),
+        .required("Zip Code is Required")
+        .min(3, "Zip Code must be at least 3 characters")
+        .max(5, "Zip Code must be at most 5 characters"),
       email: Yup.string().email("Invalid email address").required("Required"),
       contactDetails: Yup.string()
         .required("Contact-Number is required")
@@ -81,6 +82,24 @@ const AddEmployee = () => {
       dispatch(AddNewEmployee(values, router));
     },
   });
+
+  const handleZipChange = (event: any) => {
+    const enteredZip = event.target.value;
+    formik.handleChange(event);
+    const uscity: any = USCities;
+    // Find the matching zip data in the JSON file
+    const matchingZipData = uscity.find(
+      (zipData: any) => zipData.zip_code === parseInt(enteredZip)
+    );
+
+    if (matchingZipData) {
+      formik.setFieldValue("city", matchingZipData.city);
+      formik.setFieldValue("state", matchingZipData.state);
+    } else {
+      formik.setFieldValue("city", "");
+      formik.setFieldValue("state", "");
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchOrganisation());
@@ -129,7 +148,7 @@ const AddEmployee = () => {
                   inpId="name"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -139,107 +158,6 @@ const AddEmployee = () => {
               </Col>
 
               <Col lg={4} xs={4}>
-                <FormLabel for="address" labelname="Address" />
-                <FormInput
-                  inpType="text"
-                  inpId="address"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.address}
-                  inpPlaceholder="Enter your address"
-                />
-                <span className="text-danger">
-                  {formik.touched.address && formik.errors.address ? (
-                    <div className="text-danger">{formik.errors.address}</div>
-                  ) : null}
-                </span>
-              </Col>
-              <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="dob" labelname="DOB" />
-                <FormInput
-                  inpType="date"
-                  inpId="dob"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.dob}
-                  inpPlaceholder="Enter your dob"
-                />
-                <span className="text-danger">
-                  {formik.touched.dob && formik.errors.dob ? (
-                    <div className="text-danger">{formik.errors.dob}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="ssn" labelname="Social Security Number" />
-                <FormInput
-                  inpType="number"
-                  inpId="ssn"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.ssn}
-                  inpPlaceholder="Enter your ssn"
-                />
-                <span className="text-danger">
-                  {formik.touched.ssn && formik.errors.ssn ? (
-                    <div className="text-danger">{formik.errors.ssn}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="city" labelname="City" />
-                <FormInput
-                  inpType="text"
-                  inpId="city"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.city}
-                  inpPlaceholder="Enter your city"
-                />
-                <span className="text-danger">
-                  {formik.touched.city && formik.errors.city ? (
-                    <div className="text-danger">{formik.errors.city}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="state" labelname="State" />
-                <FormInput
-                  inpType="text"
-                  inpId="state"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.state}
-                  inpPlaceholder="Enter your state"
-                />
-                <span className="text-danger">
-                  {formik.touched.state && formik.errors.state ? (
-                    <div className="text-danger">{formik.errors.state}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="zip code" labelname="Zip Code" />
-                <FormInput
-                  inpType="number"
-                  inpId="zipCode"
-                  inpchange={formik.handleChange}
-                  inpblur={formik.handleBlur}
-                  inpvalue={formik.values.zipCode}
-                  inpPlaceholder="Enter your zipCode"
-                />
-                <span className="text-danger">
-                  {formik.touched.zipCode && formik.errors.zipCode ? (
-                    <div className="text-danger">{formik.errors.zipCode}</div>
-                  ) : null}
-                </span>
-              </Col>
-
-              <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="email" labelname="Email" />
                 <FormInput
                   inpType="email"
@@ -247,7 +165,7 @@ const AddEmployee = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.email}
-                  inpPlaceholder="Enter your email address"
+                  inpPlaceholder="Enter email address"
                 />
                 <span className="text-danger">
                   {formik.touched.email && formik.errors.email ? (
@@ -264,7 +182,7 @@ const AddEmployee = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.contactDetails}
-                  inpPlaceholder="Enter your contact details"
+                  inpPlaceholder="Enter contact details"
                 />
                 <span className="text-danger">
                   {formik.touched.contactDetails &&
@@ -276,6 +194,108 @@ const AddEmployee = () => {
                 </span>
               </Col>
 
+              <Col className="mt-3" lg={4} xs={4}>
+                <FormLabel for="dob" labelname="DOB" />
+                <FormInput
+                  inpType="date"
+                  inpId="dob"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.dob}
+                  inpPlaceholder="Enter dob"
+                />
+                <span className="text-danger">
+                  {formik.touched.dob && formik.errors.dob ? (
+                    <div className="text-danger">{formik.errors.dob}</div>
+                  ) : null}
+                </span>
+              </Col>
+
+              <Col className="mt-3" lg={4} xs={4}>
+                <FormLabel for="ssn" labelname="Social Security Number" />
+                <FormInput
+                  inpType="number"
+                  inpId="ssn"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.ssn}
+                  inpPlaceholder="Enter ssn"
+                />
+                <span className="text-danger">
+                  {formik.touched.ssn && formik.errors.ssn ? (
+                    <div className="text-danger">{formik.errors.ssn}</div>
+                  ) : null}
+                </span>
+              </Col>
+
+              <Col className="mt-3" lg={3} xs={3}>
+                <FormLabel for="address" labelname="Street Address" />
+                <FormInput
+                  inpType="text"
+                  inpId="address"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.address}
+                  inpPlaceholder="Enter Street Address"
+                />
+                <span className="text-danger">
+                  {formik.touched.address && formik.errors.address ? (
+                    <div className="text-danger">{formik.errors.address}</div>
+                  ) : null}
+                </span>
+              </Col>
+
+              <Col className="mt-3" lg={3} xs={3}>
+                <FormLabel for="zip code" labelname="Zip Code" />
+                <FormInput
+                  inpType="number"
+                  inpId="zipCode"
+                  inpchange={handleZipChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.zipCode}
+                  inpPlaceholder="Enter Zip Code"
+                />
+                <span className="text-danger">
+                  {formik.touched.zipCode && formik.errors.zipCode ? (
+                    <div className="text-danger">{formik.errors.zipCode}</div>
+                  ) : null}
+                </span>
+              </Col>
+
+              <Col className="mt-3" lg={3} xs={3}>
+                <FormLabel for="city" labelname="City" />
+                <FormInput
+                  inpType="text"
+                  inpId="city"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.city}
+                  inpPlaceholder="Enter city"
+                />
+                <span className="text-danger">
+                  {formik.touched.city && formik.errors.city ? (
+                    <div className="text-danger">{formik.errors.city}</div>
+                  ) : null}
+                </span>
+              </Col>
+
+              <Col className="mt-3" lg={3} xs={3}>
+                <FormLabel for="state" labelname="State" />
+                <FormInput
+                  inpType="text"
+                  inpId="state"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.state}
+                  inpPlaceholder="Enter state"
+                />
+                <span className="text-danger">
+                  {formik.touched.state && formik.errors.state ? (
+                    <div className="text-danger">{formik.errors.state}</div>
+                  ) : null}
+                </span>
+              </Col>
+
               <Col lg={12} className="mt-3 mb-3">
                 <Button
                   style={{ marginTop: "20px" }}
@@ -283,7 +303,7 @@ const AddEmployee = () => {
                   type="submit"
                   disabled={isLoading}
                 >
-                  Add Employee
+                  Save
                 </Button>
               </Col>
             </Row>

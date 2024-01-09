@@ -69,7 +69,7 @@ const AddClient = () => {
                   inpId="name"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -85,7 +85,7 @@ const AddClient = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.email}
-                  inpPlaceholder="Enter your email address"
+                  inpPlaceholder="Enter email address"
                 />
                 <span className="text-danger">
                   {formik.touched.email && formik.errors.email ? (
@@ -102,7 +102,7 @@ const AddClient = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.address}
-                  inpPlaceholder="Enter your Address"
+                  inpPlaceholder="Enter Address"
                 />
                 <span className="text-danger">
                   {formik.touched.address && formik.errors.address ? (
@@ -118,7 +118,7 @@ const AddClient = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.phone}
-                  inpPlaceholder="Enter your Phone Number"
+                  inpPlaceholder="Enter Phone Number"
                 />
                 <span className="text-danger">
                   {formik.touched.phone && formik.errors.phone ? (
@@ -138,7 +138,7 @@ const AddClient = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.contactPerson}
-                  inpPlaceholder="Enter your Contact Person Name"
+                  inpPlaceholder="Enter Contact Person Name"
                 />
                 <span className="text-danger">
                   {formik.touched.contactPerson &&
@@ -174,7 +174,7 @@ const AddClient = () => {
 
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Add Client
+                  Save
                 </Button>
               </Col>
             </Row>

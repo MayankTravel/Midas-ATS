@@ -55,7 +55,6 @@ const AddFacility = () => {
     },
   });
 
-
   const handleZipChange = (event: any) => {
     const enteredZip = event.target.value;
     formik.handleChange(event);
@@ -101,7 +100,7 @@ const AddFacility = () => {
                   inpId="name"
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -118,7 +117,7 @@ const AddFacility = () => {
                   inpchange={handleZipChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.zip}
-                  inpPlaceholder="Enter your Zip Code"
+                  inpPlaceholder="Enter Zip Code"
                 />
                 <span className="text-danger">
                   {formik.touched.zip && formik.errors.zip ? (
@@ -134,7 +133,7 @@ const AddFacility = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.city} // Use the local state or formik value for city
-                  inpPlaceholder="Enter your city"
+                  inpPlaceholder="Enter City"
                 />
                 <span className="text-danger">
                   {formik.touched.city && formik.errors.city ? (
@@ -150,7 +149,7 @@ const AddFacility = () => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.state} // Use the local state or formik value for state
-                  inpPlaceholder="Enter your state"
+                  inpPlaceholder="Enter State"
                 />
                 <span className="text-danger">
                   {formik.touched.state && formik.errors.state ? (
@@ -235,7 +234,7 @@ const AddFacility = () => {
               </Col>
               <Col lg={12} className="mt-4">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Add Facility
+                  Save
                 </Button>
               </Col>
             </Row>
