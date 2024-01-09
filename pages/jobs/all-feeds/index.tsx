@@ -377,6 +377,7 @@ const AllJobs = () => {
               data={jobdata[0]}
               jobDetailModal={true}
               exportData={true}
+              billCalculator={true}
             />
           ) : (
             <Loader />

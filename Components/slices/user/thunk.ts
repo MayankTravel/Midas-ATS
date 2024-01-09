@@ -3,6 +3,7 @@ import {
   GET_ALL_ROLES,
   GET_ALL_USER,
   MAIL,
+  MANAGER_BY_ROLE,
   POST_NEW_USER,
   POST_RESET_,
   hrms_api_host,
@@ -16,6 +17,7 @@ import {
   api_is_userdata_error,
   api_is_userdata_loading,
   api_is_userdata_success,
+  is_user_manager_success,
 } from "./reducers";
 import Factory from "Components/APIFactory/Factory";
 import Swal from "sweetalert2";
@@ -27,11 +29,9 @@ export const fetchAllUser = () => async (dispatch: any) => {
     const fetch_api = axios.get(`${hrms_api_host}${GET_ALL_USER}`);
     const data = await fetch_api;
     dispatch(api_is_userdata_success(data));
-    toast.success("API Key Added Successfully", { autoClose: 3000 });
     return data;
   } catch (error) {
     dispatch(api_is_userdata_error(error));
-    toast.error("API Key Added Failed", { autoClose: 3000 });
     return error;
   }
 };
@@ -43,6 +43,18 @@ export const fetchAllRoles = () => async (dispatch: any) => {
     dispatch(api_is_userdata_loading(true));
     const fetch = await Factory("GET", setter, url, {});
     dispatch(api_is_roles_fetched(fetch));
+    dispatch(api_is_userdata_loading(false));
+  } catch (error) {
+    dispatch(api_is_userdata_error(error));
+  }
+};
+export const fetchUserByManagerId = (id: any) => async (dispatch: any) => {
+  try {
+    var setter: any = [];
+    const url = `${hrms_api_host}${MANAGER_BY_ROLE}/${id}`;
+    dispatch(api_is_userdata_loading(true));
+    const fetch = await Factory("GET", setter, url, {});
+    dispatch(is_user_manager_success(fetch));
     dispatch(api_is_userdata_loading(false));
   } catch (error) {
     dispatch(api_is_userdata_error(error));

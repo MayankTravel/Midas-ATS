@@ -12,19 +12,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddNewProject } from "Components/slices/project/thunk";
 import { fetchFacilty } from "Components/slices/facility/thunk";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
+import moment from "moment";
 
 const AddProjects = (props: any) => {
   const { emp_id } = props;
 
   const router = useRouter();
   const dispatch: any = useDispatch();
-  const { organisationdata, facilitydata, isLoading } = useSelector(
-    (state: any) => ({
+  const { organisationdata, facilitydata, isLoading, selecteddata } =
+    useSelector((state: any) => ({
       organisationdata: state.organisationdata.organisationdata,
       facilitydata: state.facility.facilitydata,
       isLoading: state.project.isLoading,
-    })
-  );
+      selecteddata: state.project.selecteddata,
+    }));
 
   console.log(emp_id);
 
@@ -69,39 +70,40 @@ const AddProjects = (props: any) => {
       label: "Terminated",
     },
   ];
-
-  const formik = useFormik({
+  const formik: any = useFormik({
     initialValues: {
-      billRates: "",
-      designation: "",
-      endDate: "",
-      facilityId: "",
-      guaranteeHours: "",
-      name: "",
-      occupationType: "",
-      organisationId: "",
-      overTimeRates: "",
-      payRates: "",
-      preDeim: "",
-      startDate: "",
-      projectStatus: "",
-      timeSheets: "",
-      travelAllowance: "",
-      empId: emp_id,
-      projectType: "NEW",
+      emp_id: emp_id,
+      id: selecteddata.id,
+      billRates: selecteddata.billRates,
+      designation: selecteddata.designation,
+      endDate: moment(selecteddata.endDate).format("DD-MM-YYYY"),
+      facilityId: selecteddata.facility?.id,
+      guaranteeHours: selecteddata.guaranteeHours,
+      name: selecteddata.name,
+      occupationType: selecteddata.occupationType,
+      organisationId: selecteddata.organisation?.id,
+      overTimeRates: selecteddata.overTimeRates,
+      payRates: selecteddata.payRates,
+      preDeim: selecteddata.preDeim,
+      startDate: moment(selecteddata.startDate).format("DD-MM-YYYY"),
+      projectStatus: selecteddata.projectStatus,
+      timeSheets: selecteddata.timeSheets,
+      travelAllowance: selecteddata.travelAllowance,
+      projectType: "EXTENSION",
+      projectId: selecteddata.id,
     },
     validationSchema: Yup.object({
-      facilityId: Yup.string().required("Required"),
-      occupationType: Yup.string().required("Required"),
-      organisationId: Yup.string().required("Required"),
-      projectStatus: Yup.string().required("Required"),
+      facilityId: Yup.string().required("required fields."),
+      occupationType: Yup.string().required("required fields."),
+      organisationId: Yup.string().required("required fields."),
+      projectStatus: Yup.string().required("required fields."),
       guaranteeHours: Yup.string()
         .matches(/^\d+$/, "Please enter only numbers")
-        .required("Required"),
-      designation: Yup.string().required("Required"),
+        .required("required fields."),
+      designation: Yup.string().required("required fields."),
 
       startDate: Yup.string()
-        .required("Required")
+        .required("required fields.")
         .test(
           "valid-year",
           "Invalid year format. Please enter a valid year.",
@@ -117,7 +119,7 @@ const AddProjects = (props: any) => {
           }
         ),
       endDate: Yup.string()
-        .required("Required")
+        .required("required fields.")
         .test(
           "valid-year",
           "Invalid year format. Please enter a valid year.",
@@ -150,8 +152,8 @@ const AddProjects = (props: any) => {
         .matches(/^\d+$/, "Please enter only numbers")
         .required("required fields."),
       payRates: Yup.string()
-        .required("Required")
         .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields.")
         .test(
           "valid-rates",
           "Pay rates cannot exceed bill rates",
@@ -302,14 +304,14 @@ const AddProjects = (props: any) => {
               </Col>
 
               <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="Job Title" labelname="Job Title" />
+                <FormLabel for="Designation" labelname="Designation" />
                 <FormInput
                   inpType="text"
                   inpId="designation"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.designation}
-                  inpPlaceholder="Enter Job Title"
+                  inpPlaceholder="Enter Project designation"
                 />
                 <span className="text-danger">
                   {formik.touched.designation && formik.errors.designation ? (
@@ -321,14 +323,14 @@ const AddProjects = (props: any) => {
               </Col>
 
               <Col className="mt-3" lg={4} xs={4}>
-                <FormLabel for="Job-ID" labelname="Job-ID" />
+                <FormLabel for="name" labelname="Name" />
                 <FormInput
                   inpType="text"
                   inpId="name"
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter Job-ID"
+                  inpPlaceholder="Enter Project name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -345,7 +347,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.startDate}
-                  inpPlaceholder="Enter Start Date"
+                  inpPlaceholder="Enter Project Start Date"
                 />
                 <span className="text-danger">
                   {formik.touched.startDate && formik.errors.startDate ? (
@@ -362,7 +364,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.endDate}
-                  inpPlaceholder="Enter End Date"
+                  inpPlaceholder="Enter Project End Date"
                 />
                 <span className="text-danger">
                   {formik.touched.endDate && formik.errors.endDate ? (
@@ -373,17 +375,14 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Bill Rates" labelname="Bill Rates" />
-                <div className="input-group ">
-                  <span className="input-group-text">$</span>
-                  <FormInput
-                    inpType="text"
-                    inpId="billRates"
-                    inpchange={formik.handleChange}
-                    inpblur={formik.handleBlur}
-                    inpvalue={formik.values.billRates}
-                    inpPlaceholder="Enter Bill Rates"
-                  />
-                </div>
+                <FormInput
+                  inpType="text"
+                  inpId="billRates"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.billRates}
+                  inpPlaceholder="Enter  Bill Rates"
+                />
                 <span className="text-danger">
                   {formik.touched.billRates && formik.errors.billRates ? (
                     <div className="text-danger">{formik.errors.billRates}</div>
@@ -393,17 +392,14 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Pay Rates" labelname="Pay Rates" />
-                <div className="input-group ">
-                  <span className="input-group-text">$</span>
-                  <FormInput
-                    inpType="text"
-                    inpId="payRates"
-                    inpchange={formik.handleChange}
-                    inpblur={formik.handleBlur}
-                    inpvalue={formik.values.payRates}
-                    inpPlaceholder="Enter Pay Rates"
-                  />
-                </div>
+                <FormInput
+                  inpType="text"
+                  inpId="payRates"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.payRates}
+                  inpPlaceholder="Enter Pay Rates"
+                />
                 <span className="text-danger">
                   {formik.touched.payRates && formik.errors.payRates ? (
                     <div className="text-danger">{formik.errors.payRates}</div>
@@ -413,17 +409,14 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Per-Diem" labelname="Per-Diem" />
-                <div className="input-group ">
-                  <span className="input-group-text">$</span>
-                  <FormInput
-                    inpType="text"
-                    inpId="preDeim"
-                    inpchange={formik.handleChange}
-                    inpblur={formik.handleBlur}
-                    inpvalue={formik.values.preDeim}
-                    inpPlaceholder="Enter Per Diem"
-                  />
-                </div>
+                <FormInput
+                  inpType="text"
+                  inpId="preDeim"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.preDeim}
+                  inpPlaceholder="Enter Project Per Diem"
+                />
                 <span className="text-danger">
                   {formik.touched.preDeim && formik.errors.preDeim ? (
                     <div className="text-danger">{formik.errors.preDeim}</div>
@@ -439,7 +432,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.guaranteeHours}
-                  inpPlaceholder="Enter Guarantee Hours"
+                  inpPlaceholder="Enter Guaranteed Hours"
                 />
                 <span className="text-danger">
                   {formik.touched.guaranteeHours &&
@@ -453,17 +446,14 @@ const AddProjects = (props: any) => {
 
               <Col className="mt-3" lg={4} xs={4}>
                 <FormLabel for="Over Time Rates" labelname="Over Time Rates" />
-                <div className="input-group ">
-                  <span className="input-group-text">$</span>
-                  <FormInput
-                    inpType="text"
-                    inpId="overTimeRates"
-                    inpchange={formik.handleChange}
-                    inpblur={formik.handleBlur}
-                    inpvalue={formik.values.overTimeRates}
-                    inpPlaceholder="Enter Over Time Rates"
-                  />
-                </div>
+                <FormInput
+                  inpType="text"
+                  inpId="overTimeRates"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.overTimeRates}
+                  inpPlaceholder="Enter Over Time Rates"
+                />
                 <span className="text-danger">
                   {formik.touched.overTimeRates &&
                   formik.errors.overTimeRates ? (
@@ -479,17 +469,14 @@ const AddProjects = (props: any) => {
                   for="Travel Allowance"
                   labelname="Travel Allowance (Optional)"
                 />
-                <div className="input-group ">
-                  <span className="input-group-text">$</span>
-                  <FormInput
-                    inpType="text"
-                    inpId="travelAllowance"
-                    inpchange={formik.handleChange}
-                    inpblur={formik.handleBlur}
-                    inpvalue={formik.values.travelAllowance}
-                    inpPlaceholder="Enter Travel Allowance"
-                  />
-                </div>
+                <FormInput
+                  inpType="text"
+                  inpId="travelAllowance"
+                  inpchange={formik.handleChange}
+                  inpblur={formik.handleBlur}
+                  inpvalue={formik.values.travelAllowance}
+                  inpPlaceholder="Enter Travel Allowance"
+                />
                 <span className="text-danger">
                   {formik.touched.travelAllowance &&
                   formik.errors.travelAllowance ? (
@@ -502,7 +489,7 @@ const AddProjects = (props: any) => {
 
               <Col lg={12} className="mt-4 mb-3">
                 <Button variant="primary" type="submit" disabled={isLoading}>
-                  Save
+                  Submit
                 </Button>
               </Col>
             </Row>

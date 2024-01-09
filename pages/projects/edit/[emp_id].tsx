@@ -92,12 +92,14 @@ const EditProjects = (props: any) => {
       projectType: selecteddata.projectType,
     },
     validationSchema: Yup.object({
-      occupationType: Yup.string().required("Required"),
-      projectStatus: Yup.string().required("Required"),
-      guaranteeHours: Yup.string().required("Required"),
-      designation: Yup.string().required("Required"),
+      occupationType: Yup.string().required("required fields."),
+      projectStatus: Yup.string().required("required fields."),
+      guaranteeHours: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
+      designation: Yup.string().required("required fields."),
       startDate: Yup.string()
-        .required("Required")
+        .required("required fields.")
         .test(
           "valid-year",
           "Invalid year format. Please enter a valid year.",
@@ -113,7 +115,7 @@ const EditProjects = (props: any) => {
           }
         ),
       endDate: Yup.string()
-        .required("Required")
+        .required("required fields.")
         .test(
           "valid-year",
           "Invalid year format. Please enter a valid year.",
@@ -142,9 +144,12 @@ const EditProjects = (props: any) => {
             );
           }
         ),
-      billRates: Yup.string().required("Required"),
+      billRates: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
       payRates: Yup.string()
-        .required("Required")
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields.")
         .test(
           "valid-rates",
           "Pay rates cannot exceed bill rates",
@@ -159,9 +164,16 @@ const EditProjects = (props: any) => {
             );
           }
         ),
-      preDeim: Yup.string().required("Required"),
-      overTimeRates: Yup.string().required("Required"),
-      name: Yup.string().required("Required"),
+      preDeim: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
+      overTimeRates: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
+      name: Yup.string().required("required fields."),
+      travelAllowance: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
     }),
     onSubmit: (values) => {
       formik.resetForm();

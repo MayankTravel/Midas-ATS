@@ -140,6 +140,22 @@ export const Material = (props: any) => {
 
     renderTopToolbarCustomActions: ({ table }) => (
       <>
+        {exportData === true ? (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "16px",
+              padding: "8px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Button onClick={handleExportData} startIcon={<FileDownloadIcon />}>
+              Export
+            </Button>
+          </Box>
+        ) : (
+          ""
+        )}
         <Box
           sx={{
             display: "flex",
@@ -191,23 +207,6 @@ export const Material = (props: any) => {
             </Button>
           ) : null}
         </Box>
-
-        {exportData === true ? (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "16px",
-              padding: "8px",
-              flexWrap: "wrap",
-            }}
-          >
-            <Button onClick={handleExportData} startIcon={<FileDownloadIcon />}>
-              Export All Data
-            </Button>
-          </Box>
-        ) : (
-          ""
-        )}
       </>
     ),
     renderRowActions: ({ row }) => (

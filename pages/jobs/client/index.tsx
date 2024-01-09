@@ -15,6 +15,7 @@ import Calculator from "Components/pages_comp/Calculator";
 import { fetchAllAssignedVms } from "Components/slices/thunk";
 import { api_is_selected_job_success } from "Components/slices/calculator/reducers";
 import { useer_filter } from "@common/utils/user_filter";
+import { fetchAllRoles } from "Components/slices/user/thunk";
 
 const index = () => {
   const [assignedvms, setassignedvmsuser] = useState<any>();
@@ -382,33 +383,31 @@ const index = () => {
     []
   );
 
-  var rolesArray: any = [];
-  for (let index = 0; index < userdata.length; index++) {
-    const element = userdata[index];
-    for (var role of element.roles) {
-      // for (var manager of element.manager) {
-
-      rolesArray.push({
-        ...element,
-        roleName: role === null ? "" : role.role,
-        managerId: element.manager === null ? "" : element.manager.id,
-      });
-    }
-  }
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
       setassignedvmsuser(obj);
     }
     dispatch(fetchAllAssignedVms());
+    dispatch(fetchAllRoles());
   }, []);
 
+  var rolesArray: any = [];
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+    for (var role of element.roles) {
+      rolesArray.push({
+        ...element,
+        roleName: role === null || role === undefined ? "" : role.role,
+        managerId: element.manager === null ? "" : element.manager.id,
+      });
+    }
+  }
   const teamlead = rolesArray.filter((ite: any) => ite.roleName === "TEAMLEAD");
   const recruiterData = rolesArray.filter(
     (ite: any) => ite.roleName === "RECRUITER"
   );
 
-  console.log(clientdata);
   return (
     <React.Fragment>
       <Head>

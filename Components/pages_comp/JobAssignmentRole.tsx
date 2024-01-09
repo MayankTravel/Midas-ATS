@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Loader from "@common/Loader";
 import { useRouter } from "next/router";
+import { fetchUserByManagerId } from "Components/slices/user/thunk";
 
 const JobAssignmentRole = (props: any) => {
   const { finalClickInfo, teamLead, recruiterData, selectedIds, setShow } =
@@ -122,6 +123,9 @@ const JobAssignmentRole = (props: any) => {
                             );
                             setTeamLeadId(e.target.value);
                             setRecruiter(recruiterData);
+                            dispatch(
+                              fetchUserByManagerId(JSON.parse(e.target.value))
+                            );
                           }}
                           onBlur={formik.handleBlur}
                           value={formik.values.assigneeUserId}

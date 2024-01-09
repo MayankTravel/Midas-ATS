@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import Head from "next/head";
 import Layout from "@common/Layout";
 import Breadcrumb from "@common/Breadcrumb";
@@ -10,9 +10,9 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { EditedEmployee } from "Components/slices/employee/thunk";
-import { fetchProjects } from "Components/slices/project/thunk";
 import Loader from "@common/Loader";
 import USCities from "../../Components/Common/utils/USCities.json";
+import { fetchOrganisation } from "Components/slices/organisation/thunk";
 
 const EditEmployee = () => {
   const router = useRouter();
@@ -32,14 +32,7 @@ const EditEmployee = () => {
     projectdata: state.project.projectdata,
     isLoading: state.employee.isLoading,
   }));
-
-  const options = projectdata.map((item: any) => ({
-    value: item.id,
-    label: item.name,
-  }));
-
-  console.log(selecteddata);
-
+  const { organisation } = selecteddata;
   const formik: any = useFormik({
     initialValues: {
       id: selecteddata.id,
@@ -52,6 +45,7 @@ const EditEmployee = () => {
       zipCode: selecteddata.zipCode,
       email: selecteddata.email,
       contactDetails: selecteddata.contactDetails,
+      organisation: selecteddata.organisation,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -79,6 +73,7 @@ const EditEmployee = () => {
         .max(5, "Zip Code must be at most 5 characters"),
       email: Yup.string().email("Invalid email address").required("Required"),
       contactDetails: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
         .required("Contact-Number is required")
         .min(10, "Contact Number should not be long less than 10 digits")
         .max(10, "Contact Number should not be long more than 10 digits"),
@@ -116,6 +111,11 @@ const EditEmployee = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    dispatch(fetchOrganisation());
+  }, []);
+
   return (
     <React.Fragment>
       <Head>
@@ -127,6 +127,30 @@ const EditEmployee = () => {
         <Container fluid={true}>
           <form onSubmit={formik.handleSubmit}>
             <Row className="mt-n1">
+              {/* <Col lg={4} xs={4}>
+                <FormLabel for="organisation" labelname="Organisation" />
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="organisation"
+                >
+                  <option selected>{organisation.id}</option>;
+                  <option>Open this select menu</option>;
+                  {organisationdata.map((item: any) => {
+                    return <option value={item.id}>{item.name}</option>;
+                  })}
+                </select>
+
+                <span className="text-danger">
+                  {formik.touched.organisation && formik.errors.organisation ? (
+                    <div className="text-danger">
+                      {formik.errors.organisation}
+                    </div>
+                  ) : null}
+                </span>
+              </Col> */}
               <Col lg={4} xs={4}>
                 <FormLabel for="name" labelname="Name" />
                 <FormInput

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
 import { Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 //import images
-import avatar1 from "../assets/images/users/avatar-1.jpg";
+
 import { fetchAllUser } from "Components/slices/user/thunk";
 
 const ProfileDropdown = () => {
@@ -13,6 +14,7 @@ const ProfileDropdown = () => {
     user: state.user.userdata,
   }));
 
+  const [usernamefirst, setusernamefirst] = useState<any>("");
   const [username, setusername] = useState<any>({});
   const [role, setRole] = useState<any>({});
 
@@ -24,8 +26,9 @@ const ProfileDropdown = () => {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
       const role = JSON.parse(localStorage.getItem("currentrole") || "");
       setusername(obj);
-      setRole(role);
+      setRole(role[0]);
       dispatch(fetchAllUser());
+      setusernamefirst(obj.fullName.split("")[0]);
     }
   }, []);
   return (
@@ -37,17 +40,13 @@ const ProfileDropdown = () => {
           id="page-header-user-dropdown"
         >
           <span className="d-flex align-items-center">
-            <Image
-              className="rounded-circle header-profile-user"
-              src={avatar1}
-              alt="Header Avatar"
-            />
+            <Avatar>{usernamefirst}</Avatar>
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                 {username.fullName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-13 text-muted user-name-sub-text">
-                {/* {role[0]} */}
+                {role.role}
               </span>
             </span>
           </span>

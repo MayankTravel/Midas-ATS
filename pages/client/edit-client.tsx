@@ -38,6 +38,7 @@ const EditClient = () => {
       email: Yup.string().email("Invalid email address").required("Required"),
       address: Yup.string().required("Required"),
       phone: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
         .required("Contact-Number is required")
         .min(10, "Contact Number should not be long less than 10 digits")
         .max(10, "Contact Number should not be long more than 10 digits"),

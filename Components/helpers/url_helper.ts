@@ -25,6 +25,7 @@ export const POST_RESET_ = "/api/v1/user";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
 export const SOCIAL_LOGIN = "/social-login";
+export const MANAGER_BY_ROLE = "/api/v1/user/getUsersByManager";
 
 //PROFILE
 export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile";

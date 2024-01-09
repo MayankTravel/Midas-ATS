@@ -45,6 +45,7 @@ const EditUser = (props: any) => {
       firstName: Yup.string().required("First Name is Required"),
       lastName: Yup.string().required("Last Name is Required"),
       mobileNumber: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
         .min(10, "Miniumm digits should be 10")
         .max(10, "Maximum digits should be 10")
         .required("Mobile Number is Required"),

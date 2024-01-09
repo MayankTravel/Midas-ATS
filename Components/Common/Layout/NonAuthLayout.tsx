@@ -11,18 +11,18 @@ const NonAuthLayout = ({ children }: NonAuthLayoutProps) => {
   const { userProfile, loading } = useProfile();
   const router = useRouter();
 
-  // const redirectLoginFunction = () => {
-  //   if (typeof window !== "undefined") {
-  //     // Check if we're on the client-side
-  //     if (!userProfile) {
-  //       router.push("/auth/login");
-  //     }
-  //   }
-  // };
+  const redirectLoginFunction = () => {
+    if (typeof window !== "undefined") {
+      // Check if we're on the client-side
+      if (!userProfile) {
+        router.push("/auth/login");
+      }
+    }
+  };
 
-  // useEffect(() => {
-  //   redirectLoginFunction();
-  // }, []);
+  useEffect(() => {
+    redirectLoginFunction();
+  }, []);
   return <React.Fragment>{children}</React.Fragment>;
 };
 

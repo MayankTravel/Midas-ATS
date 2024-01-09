@@ -28,7 +28,7 @@ const EmployeeControl = () => {
   const { layoutModeType } = useSelector((state: any) => ({
     layoutModeType: state.Layout.layoutModeType,
   }));
-
+  console.log(employeedata);
   const columns = [
     {
       name: "Name",
@@ -88,7 +88,7 @@ const EmployeeControl = () => {
         <>
           <span
             className="cursor-pointer"
-            title="See Project"
+            title="View Project"
             onClick={() => router.push(`/projects/view/${row.id}`)}
           >
             <i
@@ -98,7 +98,7 @@ const EmployeeControl = () => {
           </span>
           <span
             className="cursor-pointer"
-            title="See Project"
+            title="Add Project"
             onClick={() => router.push(`/projects/add/${row.id}`)}
           >
             <i
