@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import {
   api_is_assigndata_error,
   api_is_assigndata_loading,
-  api_is_assigndata_success,
   api_is_assigned_by_am,
   assigned_feed_to_me,
   assigned_feeds_by_me,
@@ -17,11 +16,10 @@ import {
 } from "./reducers";
 import Swal from "sweetalert2";
 
-export const getAssignedJobsToMe = (id: any) => async (dispatch: any) => {
+export const getAssignedJobsToMe = () => async (dispatch: any) => {
   try {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
-      console.log(`${job_api_host}${GET_ASSIGNED_JOBS_TO_ME}/${obj.id}`);
       const options = {
         url: `${job_api_host}${GET_ASSIGNED_JOBS_TO_ME}/${obj.id}`,
         method: "GET",
@@ -40,7 +38,7 @@ export const getAssignedJobsToMe = (id: any) => async (dispatch: any) => {
   }
 };
 
-export const getAssignedJobByoMe = (id: any) => async (dispatch: any) => {
+export const getAssignedJobByoMe = () => async (dispatch: any) => {
   try {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
@@ -161,7 +159,7 @@ const unassign = async ({ id, jobsdata, rollId, dispatch }: any) => {
       timer: 6000,
     });
     dispatch(unassigned_success(data.message));
-    // window.location.reload();
+    window.location.reload();
   } else {
     Swal.fire({
       title: data.message,
@@ -203,9 +201,7 @@ export const getJobsByAmAndRecruiter =
         var filterAraya: any = userdata.filter(
           (item: any) => item.id === obj.id
         );
-        console.log(
-          `${job_api_host}${GET_ASSIGNED_JOBS_BY_ME}/${filterAraya[0].managerId}`
-        );
+
         const options = {
           url: `${job_api_host}${GET_ASSIGNED_JOBS_BY_ME}/${filterAraya[0].managerId}`,
           method: "POST",

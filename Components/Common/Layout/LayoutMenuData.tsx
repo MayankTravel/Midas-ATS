@@ -704,6 +704,17 @@ const Navdata = () => {
                 parentId: "jobs",
                 stateVariables: isSignUp,
               },
+              {
+                id: "manager",
+                label: "Assigned-By-Manager",
+                link: "/jobs/manager",
+                click: function (e: any) {
+                  e.preventDefault();
+                  setIsSignUp(!isSignUp);
+                },
+                parentId: "jobs",
+                stateVariables: isSignUp,
+              },
             ],
           },
         ]

@@ -407,6 +407,8 @@ const index = () => {
   const recruiterData = rolesArray.filter(
     (ite: any) => ite.roleName === "RECRUITER"
   );
+
+  console.log(clientdata);
   return (
     <React.Fragment>
       <Head>

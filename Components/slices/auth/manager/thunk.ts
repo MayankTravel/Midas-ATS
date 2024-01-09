@@ -12,19 +12,25 @@ import {
   job_api_host,
 } from "Components/helpers/url_helper";
 import axios from "axios";
+import { token } from "Components/APIFactory/token";
 
 export const ManagerData = async (dispatch: any) => {
   try {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
       dispatch(api_is_managerdata_loading(true));
-      const fetch_api = axios.get(
-        `${hrms_api_host}${GET_MANAGER_DATA}/${obj.id}`
-      );
+      const options = {
+        method: "GET",
+        url: `${hrms_api_host}${GET_MANAGER_DATA}/${obj.id}`,
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token()}`,
+        },
+      };
+      const fetch_api = axios.request(options);
       const data: any = await fetch_api;
       dispatch(api_is_managerdata_success(data.payload));
       AccountData(dispatch, data.payload);
-      toast.success("API Key Added Successfully", { autoClose: 3000 });
       return data;
     }
   } catch (error) {
@@ -41,7 +47,9 @@ export const AccountData = async (dispatch: any, objArray: any) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: {
-        accountManagers: objArray.map((ite: any) => ite.id),
+        accountManagers: objArray.map((item: any) => {
+          return item.id;
+        }),
       },
     };
     const fetch_api: any = axios.request(options);

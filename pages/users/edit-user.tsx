@@ -76,11 +76,11 @@ const EditUser = (props: any) => {
     for (var role of element.roles) {
       rolesArray.push({
         ...element,
-        roles: role === null ? "" : role.id,
+        roles: role === null ? "" : role.role,
       });
     }
   }
-
+  console.log(formik.values);
   return (
     <React.Fragment>
       <Head>
@@ -203,9 +203,7 @@ const EditUser = (props: any) => {
                     <option selected>Open this select menu</option>
 
                     {rolesArray
-                      .filter(
-                        (ite: any) => ite.roles === "658472f94b18126ca69a4925"
-                      )
+                      .filter((ite: any) => ite.roles === "TEAMLEAD")
                       .map((item: any) => {
                         return <option value={item.id}>{item.fullName}</option>;
                       })}
@@ -227,9 +225,28 @@ const EditUser = (props: any) => {
                     <option selected>Open this select menu</option>
 
                     {rolesArray
-                      .filter(
-                        (ite: any) => ite.roles === "658472f94b18126ca69a4927"
-                      )
+                      .filter((ite: any) => ite.roles === "ACCOUNTMANAGER")
+                      .map((item: any) => {
+                        return <option value={item.id}>{item.fullName}</option>;
+                      })}
+                  </select>
+                </Col>
+              ) : null}
+              {formik.values.rolesName === "ACCOUNTMANAGER" ? (
+                <Col className="mt-3" lg={4} xs={4}>
+                  <FormLabel for="accountmanager" labelname="Account Manager" />
+
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="manager"
+                  >
+                    <option selected>Open this select menu</option>
+
+                    {rolesArray
+                      .filter((ite: any) => ite.roles === "GENERALMANAGER")
                       .map((item: any) => {
                         return <option value={item.id}>{item.fullName}</option>;
                       })}
