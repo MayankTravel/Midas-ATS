@@ -382,30 +382,7 @@ const index = () => {
     ],
     []
   );
-  var user: any = [];
-  for (let index = 0; index < userdata.length; index++) {
-    const element = userdata[index];
 
-    for (var role of element.roles) {
-      rolesArray.push({ ...element, roles: role === null ? "" : role.role });
-    }
-  }
-
-  console.log("userdata::", rolesArray);
-
-  var rolesArray: any = [];
-  for (let index = 0; index < userdata.length; index++) {
-    const element = userdata[index];
-    for (var role of element.roles) {
-      // for (var manager of element.manager) {
-
-      rolesArray.push({
-        ...element,
-        roleName: role === null ? "" : role.role,
-        managerId: element.manager === null ? "" : element.manager.id,
-      });
-    }
-  }
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser") || "");
@@ -415,10 +392,22 @@ const index = () => {
     dispatch(fetchAllRoles());
   }, []);
 
+  var rolesArray: any = [];
+  for (let index = 0; index < userdata.length; index++) {
+    const element = userdata[index];
+    for (var role of element.roles) {
+      rolesArray.push({
+        ...element,
+        roleName: role === null || role === undefined ? "" : role.role,
+        managerId: element.manager === null ? "" : element.manager.id,
+      });
+    }
+  }
   const teamlead = rolesArray.filter((ite: any) => ite.roleName === "TEAMLEAD");
   const recruiterData = rolesArray.filter(
     (ite: any) => ite.roleName === "RECRUITER"
   );
+
   return (
     <React.Fragment>
       <Head>

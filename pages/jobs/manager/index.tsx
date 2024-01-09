@@ -488,28 +488,28 @@ const ManagerJobs = () => {
         userdata
           .filter((item: any) => item.id === finalAssignee)
           .map((ite: any) => {
-            return (finalUserAssignee = ite.name);
+            return (finalUserAssignee = ite.fullName);
           });
 
         userdata
           .filter((item: any) => item.id === x.tlId)
           .map((ite: any) => {
-            return (tlId = ite.name);
+            return (tlId = ite.fullName);
           });
         userdata
           .filter((item: any) => item.id === x.amId)
           .map((ite: any) => {
-            return (amId = ite.name);
+            return (amId = ite.fullName);
           });
         userdata
           .filter((item: any) => item.id === element.assignee)
           .map((ite: any) => {
-            return (assignee = ite.name);
+            return (assignee = ite.fullName);
           });
         userdata
           .filter((item: any) => item.id === element.assigner)
           .map((ite: any) => {
-            return (assigner = ite.name);
+            return (assigner = ite.fullName);
           });
 
         rows.push({

@@ -386,6 +386,7 @@ const Recruiter = ({
   var ByMeRow: any = [];
   var assignee = "";
   var assigner = "";
+
   for (let index = 0; index < assignedByAmToRecruiter.length; index++) {
     const userCurrent = JSON.parse(localStorage.getItem("authUser") || "");
     const element = assignedByAmToRecruiter[index];
@@ -459,7 +460,7 @@ const Recruiter = ({
         <Material
           columns={columns}
           data={rows}
-          //   assignJob={assignJob}
+          assignJob={assignJob}
           setShow={setShow}
           jobDetailModal={jobDetailModal}
           show={show}

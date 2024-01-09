@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import Head from "next/head";
 import Layout from "@common/Layout";
 import Breadcrumb from "@common/Breadcrumb";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Modal } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import Link from "next/link";
@@ -21,7 +21,12 @@ const ManageProjects = (props: any) => {
     projectdata: state.project.projectdata,
     isLoading: state.project.isLoading,
   }));
+
   const [filteredData, setFilteredData] = useState<any>([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const { layoutModeType } = useSelector((state: any) => ({
     layoutModeType: state.Layout.layoutModeType,
@@ -113,15 +118,23 @@ const ManageProjects = (props: any) => {
       selector: (row: any) => row.action,
       sortable: true,
       width: "150px",
+      cell: (row: any) => (
+        <div
+          className="cursor-pointer text-center"
+          onClick={() => {
+            router.push(`/projects/project-extension/${emp_id}`);
+            dispatch(selected_projectdata_success(row));
+          }}
+        >
+          <i className="bi bi-plus-square"></i>
+        </div>
+      ),
     },
   ];
 
   useEffect(() => {
     dispatch(fetchProjects(emp_id));
   }, []);
-
-  console.log(projectdata);
-
   return (
     <React.Fragment>
       <Head>

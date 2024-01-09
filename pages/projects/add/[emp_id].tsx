@@ -88,46 +88,18 @@ const AddProjects = (props: any) => {
       timeSheets: "",
       travelAllowance: "",
       empId: emp_id,
+      projectType: "NEW",
     },
     validationSchema: Yup.object({
       facilityId: Yup.string().required("Required"),
       occupationType: Yup.string().required("Required"),
       organisationId: Yup.string().required("Required"),
       projectStatus: Yup.string().required("Required"),
-      guaranteeHours: Yup.number().required("Required"),
+      guaranteeHours: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("Required"),
       designation: Yup.string().required("Required"),
-      // startDate: Yup.string()
-      //   .required("Required")
-      //   .test(
-      //     "valid-year",
-      //     "Invalid year format. Please enter a valid year.",
-      //     function (value) {
-      //       const year = value.split("-")[0];
-      //       // Check if the year is a valid numeric value greater than or equal to 4 digits
-      //       return (
-      //         (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
-      //         this.createError({
-      //           message: "Invalid year format. Please enter a valid year.",
-      //         })
-      //       );
-      //     }
-      //   ),
-      // endDate: Yup.string()
-      //   .required("Required")
-      //   .test(
-      //     "valid-year",
-      //     "Invalid year format. Please enter a valid year.",
-      //     function (value) {
-      //       const year = value.split("-")[0];
-      //       // Check if the year is a valid numeric value greater than or equal to 4 digits
-      //       return (
-      //         (/^\d{4,}$/.test(year) && parseInt(year) <= 2099) ||
-      //         this.createError({
-      //           message: "Invalid year format. Please enter a valid year.",
-      //         })
-      //       );
-      //     }
-      //   ),
+
       startDate: Yup.string()
         .required("Required")
         .test(
@@ -174,9 +146,12 @@ const AddProjects = (props: any) => {
             );
           }
         ),
-      billRates: Yup.string().required("Required"),
+      billRates: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
       payRates: Yup.string()
         .required("Required")
+        .matches(/^\d+$/, "Please enter only numbers")
         .test(
           "valid-rates",
           "Pay rates cannot exceed bill rates",
@@ -191,10 +166,13 @@ const AddProjects = (props: any) => {
             );
           }
         ),
-      preDeim: Yup.string().required("Required"),
-      overTimeRates: Yup.string().required("Required"),
-      name: Yup.string().required("Required"),
-      travelAllowance: Yup.string().required("Required"),
+      preDeim: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
+      overTimeRates: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
+        .required("required fields."),
+      name: Yup.string().required("required fields."),
     }),
     onSubmit: (values) => {
       formik.resetForm();
@@ -331,7 +309,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.designation}
-                  inpPlaceholder="Enter your designation"
+                  inpPlaceholder="Enter Designation"
                 />
                 <span className="text-danger">
                   {formik.touched.designation && formik.errors.designation ? (
@@ -350,7 +328,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.name}
-                  inpPlaceholder="Enter your name"
+                  inpPlaceholder="Enter Project Name"
                 />
                 <span className="text-danger">
                   {formik.touched.name && formik.errors.name ? (
@@ -367,7 +345,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.startDate}
-                  inpPlaceholder="Enter your Start Date"
+                  inpPlaceholder="Enter Project Start Date"
                 />
                 <span className="text-danger">
                   {formik.touched.startDate && formik.errors.startDate ? (
@@ -384,7 +362,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.endDate}
-                  inpPlaceholder="Enter your End Date"
+                  inpPlaceholder="Enter Project End Date"
                 />
                 <span className="text-danger">
                   {formik.touched.endDate && formik.errors.endDate ? (
@@ -401,7 +379,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.billRates}
-                  inpPlaceholder="Enter your Bill Rates"
+                  inpPlaceholder="Enter Project Bill Rates"
                 />
                 <span className="text-danger">
                   {formik.touched.billRates && formik.errors.billRates ? (
@@ -418,7 +396,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.payRates}
-                  inpPlaceholder="Enter your contact details"
+                  inpPlaceholder="Enter Pay Rates"
                 />
                 <span className="text-danger">
                   {formik.touched.payRates && formik.errors.payRates ? (
@@ -435,7 +413,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.preDeim}
-                  inpPlaceholder="Enter your Per Diem"
+                  inpPlaceholder="Enter Project Per Diem"
                 />
                 <span className="text-danger">
                   {formik.touched.preDeim && formik.errors.preDeim ? (
@@ -452,7 +430,7 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.guaranteeHours}
-                  inpPlaceholder="Enter your Guarantee Hours"
+                  inpPlaceholder="Enter Project Guarantee Hours"
                 />
                 <span className="text-danger">
                   {formik.touched.guaranteeHours &&
@@ -495,16 +473,8 @@ const AddProjects = (props: any) => {
                   inpchange={formik.handleChange}
                   inpblur={formik.handleBlur}
                   inpvalue={formik.values.travelAllowance}
-                  inpPlaceholder="Enter your contact details"
+                  inpPlaceholder="Enter Travel Allowance"
                 />
-                <span className="text-danger">
-                  {formik.touched.travelAllowance &&
-                  formik.errors.travelAllowance ? (
-                    <div className="text-danger">
-                      {formik.errors.travelAllowance}
-                    </div>
-                  ) : null}
-                </span>
               </Col>
 
               <Col lg={12} className="mt-4 mb-3">

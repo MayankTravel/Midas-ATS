@@ -12,8 +12,6 @@ import { AddNewEmployee } from "Components/slices/employee/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrganisation } from "Components/slices/organisation/thunk";
 
-import { fetchProjects } from "Components/slices/project/thunk";
-
 const AddEmployee = () => {
   const dispatch: any = useDispatch();
 
@@ -60,6 +58,7 @@ const AddEmployee = () => {
           }
         ),
       ssn: Yup.string()
+        .matches(/^\d+$/, "Please enter only numbers")
         .required("Social Security Number is required")
         .min(9, "Social Security Number Must be 9 Digits long")
         .max(9, "Social Security Number Must be 9 Digits long"),
@@ -73,6 +72,7 @@ const AddEmployee = () => {
       email: Yup.string().email("Invalid email address").required("Required"),
       contactDetails: Yup.string()
         .required("Contact-Number is required")
+        .matches(/^\d+$/, "Please enter only numbers")
         .min(10, "Contact Number should not be long less than 10 digits")
         .max(10, "Contact Number should not be long more than 10 digits"),
     }),

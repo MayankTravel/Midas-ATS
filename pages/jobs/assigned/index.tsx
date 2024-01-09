@@ -407,7 +407,7 @@ const AssignedJobs = () => {
           ? element.jobsFeedsSet
           : [];
       for (var x of jobsFeeeds) {
-        if (x.finalUserAssignee !== 0) {
+        if (x.finalUserAssignee !== "0") {
           userdata
             .filter((item: any) => item.id === x.finalUserAssignee)
             .map((ite: any) => {
@@ -515,8 +515,8 @@ const AssignedJobs = () => {
       setParseRole(role[0]);
     }
     dispatch(fetchAllUser());
-    dispatch(getAssignedJobByoMe(userObj.id));
-    dispatch(getAssignedJobsToMe(userObj.id));
+    dispatch(getAssignedJobByoMe());
+    dispatch(getAssignedJobsToMe());
   }, []);
 
   return (
@@ -534,7 +534,7 @@ const AssignedJobs = () => {
               } btn my-2 mx-2 cursor-pointer`}
               onClick={() => {
                 setActive(1);
-                dispatch(getAssignedJobsToMe(userObj.id));
+                dispatch(getAssignedJobsToMe());
               }}
             >
               Assigned To Me
@@ -545,7 +545,7 @@ const AssignedJobs = () => {
               } btn my-2 mx-2 cursor-pointer`}
               onClick={() => {
                 setActive(2);
-                dispatch(getAssignedJobByoMe(userObj.id));
+                dispatch(getAssignedJobByoMe());
               }}
             >
               Assigned To Team
@@ -651,6 +651,7 @@ const AssignedJobs = () => {
                           data={ByMeRow}
                           dispatch={dispatch}
                           assignJob={true}
+                          unassigned={true}
                           setShow={setShow}
                           show={show}
                           jobDetailModal={true}

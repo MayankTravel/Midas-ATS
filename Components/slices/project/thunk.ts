@@ -30,7 +30,6 @@ export const fetchProjects = (id: any) => async (dispatch: any) => {
 export const AddNewProject =
   (values: any, router: any) => async (dispatch: any) => {
     dispatch(api_is_projectdata_loading(true));
-
     try {
       dispatch(api_is_projectdata_loading(true));
 
@@ -42,16 +41,17 @@ export const AddNewProject =
         endDate: values.endDate,
         facilityId: values.facilityId,
         guaranteeHours: values.guaranteeHours,
-        name: values.name,
+        name: `${values.name} -  ${values.startDate}`,
         employeeId: values.empId,
         occupationType: values.occupationType,
         organisationId: values.organisationId,
         overTimeRates: values.overTimeRates,
         payRates: values.payRates,
         preDeim: values.preDeim,
-        projectType: "NEW",
+        projectType: values.projectType,
         startDate: values.startDate,
         projectStatus: values.projectStatus,
+        projectId: values.projectId,
         status: true,
         timeSheets: [],
         travelAllowance: values.travelAllowance,

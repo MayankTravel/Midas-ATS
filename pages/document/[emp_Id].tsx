@@ -18,8 +18,8 @@ import DataTable from "react-data-table-component";
 import Custom_Filter from "@common/utils/filter/filter_utils";
 import Loader2 from "@common/Loader2";
 import moment from "moment";
-import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import Swal from "sweetalert2";
+import Link from "next/link";
 const TAGS_OPTION = [
   "Driving-License",
   "SSN-Card",
@@ -102,17 +102,12 @@ const UploadDocument = (props: any) => {
       width: "100px",
       cell: (row: any) => (
         <>
-          <span
-            className="cursor-pointer"
-            title="Edit"
-            onClick={() => {
-              setShow(true);
-              setApiUrl(row.downloadUrl);
-            }}
-          >
-            <i style={{ fontSize: "18px" }} className="bi bi-pencil-square"></i>
-          </span>
-          {currentRole[0].role === "SUPERADMIN" && (
+          <Link href={row.webUrl} target="__blank">
+            <span className="cursor-pointer" title="Edit">
+              <i style={{ fontSize: "18px" }} className="bi bi-eye-fill"></i>
+            </span>
+          </Link>
+          {currentRole.role === "SUPERADMIN" && (
             <span
               className="cursor-pointer"
               title="Delete"
@@ -160,7 +155,7 @@ const UploadDocument = (props: any) => {
   useEffect(() => {
     if (localStorage.getItem("currentrole")) {
       var currentRole = JSON.parse(localStorage.getItem("currentrole") || "");
-      setCurrentRole(currentRole);
+      setCurrentRole(currentRole[0]);
     }
     dispatch(fetchEmployeeDoc(emp_Id));
   }, []);
@@ -176,15 +171,17 @@ const UploadDocument = (props: any) => {
     const element = docs[index];
     const parse_url =
       element.docStructure !== undefined && JSON.parse(element.docStructure);
-
+    console.log("docStructure:", parse_url);
     rows.push({
       id: element.id,
       type: element.type,
       employeeName: element.employee?.name,
       downloadUrl: parse_url["@microsoft.graph.downloadUrl"],
       expiryDate: element.expiryDate,
+      webUrl: parse_url.webUrl,
     });
   }
+  console.log("rows:", rows);
 
   return (
     <React.Fragment>
